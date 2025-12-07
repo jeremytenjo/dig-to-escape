@@ -30,7 +30,7 @@ function GuiTemplate.createLabel(config)
   -- Create TextLabel
   local textLabel = Instance.new('TextLabel')
   textLabel.Name = config.name or 'CustomLabel'
-  textLabel.Size = config.size or UDim2.new(0, 200, 0, 50)
+  textLabel.Size = config.size or UDim2.fromOffset(200, 50)
   textLabel.Position = config.position or UDim2.new(0.5, -100, 0, 20)
   textLabel.BackgroundColor3 = config.bgColor or Color3.fromRGB(0, 0, 0)
   textLabel.BackgroundTransparency = config.bgTransparency or 0.5
