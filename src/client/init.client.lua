@@ -1,4 +1,4 @@
-local GuiTemplate = require(script.Parent.gui.GuiTemplate)
+local GuiTemplate = require(script.Parent:WaitForChild('gui'):WaitForChild('GuiTemplate'))
 local Players = game:GetService('Players')
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
@@ -8,7 +8,7 @@ local jumpCount = 0
 -- Create the jump counter label using the template
 local jumpLabel = GuiTemplate.createLabel({
   text = 'Jumps: 0',
-  size = UDim2.new(0, 200, 0, 50),
+  size = UDim2.fromOffset(200, 50),
   position = UDim2.new(0.5, -100, 0, 20),
   bgColor = Color3.fromRGB(0, 0, 0),
   bgTransparency = 0.5,
@@ -18,7 +18,7 @@ local jumpLabel = GuiTemplate.createLabel({
   name = 'JumpCountLabel',
 })
 
-humanoid.StateChanged:Connect(function(oldState, newState)
+humanoid.StateChanged:Connect(function(_oldState, newState)
   if newState == Enum.HumanoidStateType.Jumping then
     jumpCount = jumpCount + 1
     print('hello')
