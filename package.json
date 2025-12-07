@@ -1,0 +1,7 @@
+{
+  "name": "dig-to-escape-clone",
+  "scripts": {
+    "dev": "rojo serve",
+    "build": "rojo build -o build.rbxlx"
+  }
+}
