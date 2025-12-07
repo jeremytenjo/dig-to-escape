@@ -25,12 +25,18 @@
       "StarterPlayerScripts": {
         "Client": {
           "$path": "src/client",
+          "StartScreen": {
+            "$path": "src/client/StartScreen.lua"
+          },
           "GuiService": {
             "$path": "src/client/gui/GuiService.lua"
           },
           "GuiTemplate": {
             "$path": "src/client/gui/GuiTemplate.lua"
           }
+        },
+        "init": {
+          "$path": "src/client/init.client.lua"
         }
       }
     },
