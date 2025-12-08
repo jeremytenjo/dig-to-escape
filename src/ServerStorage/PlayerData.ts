@@ -1,4 +1,4 @@
-import Leaderboard from './Leaderboard.js'
+import leaderboard from './leaderboard.js'
 
 type PlayerDataEntry = {
   userId: string
@@ -45,7 +45,7 @@ const PlayerData = {
 
     data[props.key] = newValue
 
-    Leaderboard.setStat({
+    leaderboard.setStat({
       player: props.player,
       statName: props.key,
       value: newValue,

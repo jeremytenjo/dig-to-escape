@@ -2423,7 +2423,7 @@ return TS
           <token name="RunContext">0</token>
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
+local playerData = TS.import(script, game:GetService("ServerStorage"), "TS", "playerData")
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local coinsFolder = Workspace:WaitForChild("World"):WaitForChild("Coins")
@@ -2440,9 +2440,9 @@ for _, coin in coins do
 				-- Player touched a coin
 				coin.Transparency = 1
 				coin:SetAttribute("Enabled", false)
-				PlayerData:updateValue({
+				playerData:updateValue({
 					player = player,
-					key = PlayerData.COIN_KEY_NAME,
+					key = playerData.COIN_KEY_NAME,
 				})
 				task.wait(10)
 				coin.Transparency = 0
@@ -2497,7 +2497,7 @@ return Leaderboard
           <string name="Name">PlayerData</string>
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard")
+local leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "leaderboard")
 local playerData = {}
 local function getData(props)
 	local userId = tostring(props.player.UserId)
@@ -2546,7 +2546,7 @@ local PlayerData = {
 		local oldValue = _condition
 		local newValue = oldValue + 1
 		data[props.key] = newValue
-		Leaderboard:setStat({
+		leaderboard:setStat({
 			player = props.player,
 			statName = props.key,
 			value = newValue,
