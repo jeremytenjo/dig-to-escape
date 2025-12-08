@@ -1,5 +1,6 @@
 {
   "name": "dig-to-escape-clone",
+  "type": "module",
   "scripts": {
     "dev": "rbxtsc --watch & rojo serve",
     "build": "rbxtsc && rojo build -o build.rbxlx",
