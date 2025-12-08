@@ -7,7 +7,7 @@ type PlayerDataEntry = {
 
 const playerData: PlayerDataEntry[] = []
 
-function getData(props: { player: Player }): Record<string, number> {
+function getData(props: { player: Player }): PlayerDataEntry['data'] {
   const userId = tostring(props.player.UserId)
   let entry: PlayerDataEntry | undefined
 
