@@ -1,4 +1,4 @@
-import playerData from '../ServerStorage/playerData.js'
+import PlayerData from '../ServerStorage/PlayerData.js'
 
 const Workspace = game.GetService('Workspace')
 const Players = game.GetService('Players')
@@ -22,9 +22,9 @@ for (const coin of coins) {
         coin.Transparency = 1
         coin.SetAttribute('Enabled', false)
 
-        playerData.updateValue({
+        PlayerData.updateValue({
           player,
-          key: playerData.COIN_KEY_NAME,
+          key: PlayerData.COIN_KEY_NAME,
         })
 
         task.wait(10)
