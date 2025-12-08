@@ -4,7 +4,7 @@ const playerData: Map<string, Record<string, number>> = new Map()
 
 function getData(props: { player: Player }): Record<string, number> {
   const userId = tostring(props.player.UserId)
-  const data = playerData.get(userId) ?? {
+  const data = playerData.get(userId) || {
     ['Coins']: 0,
   }
   playerData.set(userId, data)
@@ -13,16 +13,16 @@ function getData(props: { player: Player }): Record<string, number> {
 
 const PlayerData = {
   COIN_KEY_NAME: 'Coins',
-  getValue(props: { player: Player; key: string }): any {
+  getValue(props: { player: Player; key: string }) {
     return getData({
       player: props.player,
     })[props.key]
   },
-  updateValue(props: { player: Player; key: string }): any {
+  updateValue(props: { player: Player; key: string }) {
     const data = getData({
       player: props.player,
     })
-    const oldValue = data[props.key] || 0
+    const oldValue = data[props.key] ?? 0
     const newValue = oldValue + 1
 
     data[props.key] = newValue

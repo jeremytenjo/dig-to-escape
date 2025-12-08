@@ -13,7 +13,7 @@ for (const coin of coins) {
   part.SetAttribute('Enabled', true)
 
   part.Touched.Connect((otherPart) => {
-    if (coin.GetAttribute('Enabled')) {
+    if (coin.GetAttribute('Enabled') === true) {
       const character = otherPart.Parent
       const player = Players.GetPlayerFromCharacter(character)
 
