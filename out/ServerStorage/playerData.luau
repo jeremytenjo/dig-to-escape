@@ -1,0 +1,60 @@
+-- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard")
+local playerData = {}
+local function getData(props)
+	local userId = tostring(props.player.UserId)
+	local entry
+	for _, item in playerData do
+		if item.userId == userId then
+			entry = item
+			break
+		end
+	end
+	local _result = entry
+	if _result ~= nil then
+		_result = _result.data
+	end
+	local _condition = _result
+	if _condition == nil then
+		_condition = {
+			Coins = 0,
+		}
+	end
+	local data = _condition
+	if not entry then
+		local _arg0 = {
+			userId = userId,
+			data = data,
+		}
+		table.insert(playerData, _arg0)
+	end
+	return data
+end
+local PlayerData = {
+	COIN_KEY_NAME = "Coins",
+	getValue = function(self, props)
+		return getData({
+			player = props.player,
+		})[props.key]
+	end,
+	updateValue = function(self, props)
+		local data = getData({
+			player = props.player,
+		})
+		local _condition = data[props.key]
+		if _condition == nil then
+			_condition = 0
+		end
+		local oldValue = _condition
+		local newValue = oldValue + 1
+		data[props.key] = newValue
+		Leaderboard:setStat({
+			player = props.player,
+			statName = props.key,
+			value = newValue,
+		})
+		return newValue
+	end,
+}
+return PlayerData
