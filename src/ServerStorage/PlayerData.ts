@@ -2,8 +2,8 @@ import Leaderboard from './Leaderboard'
 
 const playerData: Map<string, Record<string, number>> = new Map()
 
-function getData(player: Player): Record<string, number> {
-  const userId = tostring(player.UserId)
+function getData(props: { player: Player }): Record<string, number> {
+  const userId = tostring(props.player.UserId)
   const data = playerData.get(userId) ?? {
     ['Coins']: 0,
   }
@@ -13,19 +13,23 @@ function getData(player: Player): Record<string, number> {
 
 const PlayerData = {
   COIN_KEY_NAME: 'Coins',
-  getValue(player: Player, key: string): any {
-    return getData(player)[key]
+  getValue(props: { player: Player; key: string }): any {
+    return getData({
+      player: props.player,
+    })[props.key]
   },
-  updateValue(player: Player, key: string): any {
-    const data = getData(player)
-    const oldValue = data[key] || 0
+  updateValue(props: { player: Player; key: string }): any {
+    const data = getData({
+      player: props.player,
+    })
+    const oldValue = data[props.key] || 0
     const newValue = oldValue + 1
 
-    data[key] = newValue
+    data[props.key] = newValue
 
     Leaderboard.setStat({
-      player,
-      statName: key,
+      player: props.player,
+      statName: props.key,
       value: newValue,
     })
 
