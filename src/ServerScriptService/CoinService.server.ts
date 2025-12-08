@@ -1,4 +1,3 @@
-// Modules
 import PlayerData from '../ServerStorage/PlayerData'
 
 const Workspace = game.GetService('Workspace')
@@ -10,7 +9,9 @@ const coins = coinsFolder.GetChildren() as BasePart[]
 // Setting up event listeners
 for (const coin of coins) {
   const part = coin
+
   part.SetAttribute('Enabled', true)
+
   part.Touched.Connect((otherPart) => {
     if (coin.GetAttribute('Enabled')) {
       const character = otherPart.Parent
