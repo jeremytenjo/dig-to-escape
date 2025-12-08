@@ -30,15 +30,6 @@
         "$path": "out/ServerStorage"
       }
     },
-    "StarterPlayer": {
-      "$className": "StarterPlayer",
-      "StarterPlayerScripts": {
-        "$className": "StarterPlayerScripts",
-        "TS": {
-          "$path": "out/StarterPlayerScripts"
-        }
-      }
-    },
     "Workspace": {
       "$properties": {
         "FilteringEnabled": true

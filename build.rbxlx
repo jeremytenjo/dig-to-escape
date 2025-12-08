@@ -2433,38 +2433,32 @@ return TS
           <token name="RunContext">0</token>
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
--- Initializing services and variables
+local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
--- Modules
-local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
 local coinsFolder = Workspace:WaitForChild("World"):WaitForChild("Coins")
 local coins = coinsFolder:GetChildren()
-local COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
-local COOLDOWN = 10
--- Defining the event handler
-local function onCoinTouched(otherPart, coin)
-	local _value = coin:GetAttribute("Enabled")
-	if _value ~= 0 and _value == _value and _value ~= "" and _value then
-		local character = otherPart.Parent
-		local player = Players:GetPlayerFromCharacter(character)
-		if player then
-			-- Player touched a coin
-			coin.Transparency = 1
-			coin:SetAttribute("Enabled", false)
-			PlayerData:updateValue(player, COIN_KEY_NAME)
-			task.wait(COOLDOWN)
-			coin.Transparency = 0
-			coin:SetAttribute("Enabled", true)
-		end
-	end
-end
 -- Setting up event listeners
 for _, coin in coins do
 	local part = coin
 	part:SetAttribute("Enabled", true)
 	part.Touched:Connect(function(otherPart)
-		onCoinTouched(otherPart, part)
+		if coin:GetAttribute("Enabled") == true then
+			local character = otherPart.Parent
+			local player = Players:GetPlayerFromCharacter(character)
+			if player then
+				-- Player touched a coin
+				coin.Transparency = 1
+				coin:SetAttribute("Enabled", false)
+				PlayerData:updateValue({
+					player = player,
+					key = PlayerData.COIN_KEY_NAME,
+				})
+				task.wait(10)
+				coin.Transparency = 0
+				coin:SetAttribute("Enabled", true)
+			end
+		end
 	end)
 end
 ]]></string>
@@ -2486,7 +2480,6 @@ end
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local Leaderboard = {
 	setStat = function(self, props)
-		print("player", props.player)
 		local leaderstats = props.player:FindFirstChild("leaderstats")
 		if not leaderstats then
 			leaderstats = Instance.new("Folder")
@@ -2516,8 +2509,8 @@ return Leaderboard
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard")
 local playerData = {}
-local function getData(player)
-	local userId = tostring(player.UserId)
+local function getData(props)
+	local userId = tostring(props.player.UserId)
 	local data = playerData[userId] or {
 		Coins = 0,
 	}
@@ -2526,22 +2519,25 @@ local function getData(player)
 end
 local PlayerData = {
 	COIN_KEY_NAME = "Coins",
-	getValue = function(self, player, key)
-		return getData(player)[key]
+	getValue = function(self, props)
+		return getData({
+			player = props.player,
+		})[props.key]
 	end,
-	updateValue = function(self, player, key)
-		local data = getData(player)
-		local _condition = data[key]
-		if not (_condition ~= 0 and _condition == _condition and _condition) then
+	updateValue = function(self, props)
+		local data = getData({
+			player = props.player,
+		})
+		local _condition = data[props.key]
+		if _condition == nil then
 			_condition = 0
 		end
 		local oldValue = _condition
 		local newValue = oldValue + 1
-		print("INIT player", player)
-		data[key] = newValue
+		data[props.key] = newValue
 		Leaderboard:setStat({
-			player = player,
-			statName = key,
+			player = props.player,
+			statName = props.key,
 			value = newValue,
 		})
 		return newValue
@@ -2559,28 +2555,13 @@ return PlayerData
       <bool name="RespectFilteringEnabled">true</bool>
     </Properties>
   </Item>
-  <Item class="StarterPlayer" referent="23">
-    <Properties>
-      <string name="Name">StarterPlayer</string>
-    </Properties>
-    <Item class="StarterPlayerScripts" referent="24">
-      <Properties>
-        <string name="Name">StarterPlayerScripts</string>
-      </Properties>
-      <Item class="Folder" referent="25">
-        <Properties>
-          <string name="Name">TS</string>
-        </Properties>
-      </Item>
-    </Item>
-  </Item>
-  <Item class="Workspace" referent="26">
+  <Item class="Workspace" referent="23">
     <Properties>
       <string name="Name">Workspace</string>
       <bool name="FilteringEnabled">true</bool>
       <bool name="NeedsPivotMigration">false</bool>
     </Properties>
-    <Item class="Part" referent="27">
+    <Item class="Part" referent="24">
       <Properties>
         <string name="Name">Baseplate</string>
         <bool name="Anchored">true</bool>
