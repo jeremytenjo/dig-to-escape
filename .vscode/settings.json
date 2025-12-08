@@ -13,7 +13,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  "eslint.validate": ["typescript"],
+  "eslint.validate": ["typescript", "typescriptreact", "json"],
   "files.exclude": {
     "**/.DS_Store": true,
     "**/node_modules": true,
@@ -30,5 +30,6 @@
   },
   "eslint.run": "onType",
   "eslint.format.enable": true,
-  "eslint.useFlatConfig": false
+  "eslint.useFlatConfig": false,
+  "typescript.preferences.importModuleSpecifierEnding": "js"
 }
