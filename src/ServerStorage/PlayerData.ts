@@ -21,8 +21,6 @@ const PlayerData = {
     const oldValue = data[key] || 0
     const newValue = oldValue + 1
 
-    print('INIT player', player)
-
     data[key] = newValue
 
     Leaderboard.setStat({

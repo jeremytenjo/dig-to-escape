@@ -5,7 +5,7 @@ const Players = game.GetService('Players')
 // Modules
 import PlayerData from '../ServerStorage/PlayerData'
 
-const coinsFolder = Workspace.WaitForChild('World').WaitForChild('Coins') as Folder
+const coinsFolder = Workspace.WaitForChild('World').WaitForChild('Coins')
 const coins = coinsFolder.GetChildren()
 
 const COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
