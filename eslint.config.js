@@ -46,7 +46,7 @@ export default defineConfig([
     plugins: {
       '@typescript-eslint': tseslint,
       'roblox-ts': robloxTsPlugin,
-      'require-extensions': eslintPluginRequireJsExtension,
+      'require-js-extension': eslintPluginRequireJsExtension,
       import: importPlugin,
     },
     rules: {
@@ -56,6 +56,7 @@ export default defineConfig([
           ...prettierConfig,
         },
       ],
+      'require-js-extension/require-js-extension': 'error',
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/consistent-type-imports': 2,
       '@typescript-eslint/no-explicit-any': 0,
@@ -112,6 +113,7 @@ export default defineConfig([
           ...prettierConfig,
         },
       ],
+      'require-js-extension/require-js-extension': 'error',
       '@typescript-eslint/consistent-type-imports': 2,
       '@typescript-eslint/no-explicit-any': 0,
       '@typescript-eslint/no-namespace': 0,
