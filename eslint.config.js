@@ -4,6 +4,7 @@ import tsparser from '@typescript-eslint/parser'
 import robloxTsPlugin from 'eslint-plugin-roblox-ts'
 import importPlugin from 'eslint-plugin-import'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import eslintPluginRequireJsExtension from 'eslint-plugin-require-js-extension'
 
 import prettierConfig from './devtools/prettier/prettier.config.js'
 
@@ -45,6 +46,7 @@ export default defineConfig([
     plugins: {
       '@typescript-eslint': tseslint,
       'roblox-ts': robloxTsPlugin,
+      'require-extensions': eslintPluginRequireJsExtension,
       import: importPlugin,
     },
     rules: {
