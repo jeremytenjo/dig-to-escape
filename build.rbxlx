@@ -2511,10 +2511,31 @@ local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "L
 local playerData = {}
 local function getData(props)
 	local userId = tostring(props.player.UserId)
-	local data = playerData[userId] or {
-		Coins = 0,
-	}
-	playerData[userId] = data
+	local entry
+	for _, item in playerData do
+		if item.userId == userId then
+			entry = item
+			break
+		end
+	end
+	local _result = entry
+	if _result ~= nil then
+		_result = _result.data
+	end
+	local _condition = _result
+	if _condition == nil then
+		_condition = {
+			Coins = 0,
+		}
+	end
+	local data = _condition
+	if not entry then
+		local _arg0 = {
+			userId = userId,
+			data = data,
+		}
+		table.insert(playerData, _arg0)
+	end
 	return data
 end
 local PlayerData = {
@@ -2555,13 +2576,28 @@ return PlayerData
       <bool name="RespectFilteringEnabled">true</bool>
     </Properties>
   </Item>
-  <Item class="Workspace" referent="23">
+  <Item class="StarterPlayer" referent="23">
+    <Properties>
+      <string name="Name">StarterPlayer</string>
+    </Properties>
+    <Item class="StarterPlayerScripts" referent="24">
+      <Properties>
+        <string name="Name">StarterPlayerScripts</string>
+      </Properties>
+      <Item class="Folder" referent="25">
+        <Properties>
+          <string name="Name">TS</string>
+        </Properties>
+      </Item>
+    </Item>
+  </Item>
+  <Item class="Workspace" referent="26">
     <Properties>
       <string name="Name">Workspace</string>
       <bool name="FilteringEnabled">true</bool>
       <bool name="NeedsPivotMigration">false</bool>
     </Properties>
-    <Item class="Part" referent="24">
+    <Item class="Part" referent="27">
       <Properties>
         <string name="Name">Baseplate</string>
         <bool name="Anchored">true</bool>
