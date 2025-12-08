@@ -2466,7 +2466,7 @@ end
       </Properties>
       <Item class="ModuleScript" referent="19">
         <Properties>
-          <string name="Name">leaderboard</string>
+          <string name="Name">Leaderboard</string>
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local Leaderboard = {
 	setStat = function(self, props)
@@ -2494,7 +2494,7 @@ return Leaderboard
       </Item>
       <Item class="ModuleScript" referent="20">
         <Properties>
-          <string name="Name">playerData</string>
+          <string name="Name">PlayerData</string>
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard")
