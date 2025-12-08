@@ -25,5 +25,6 @@
     "incremental": true,
     "tsBuildInfoFile": "out/tsconfig.tsbuildinfo"
   },
-  "include": ["src", "devtools/codeGenerator/superCodeGen/templates/serverScript.ts"]
+  "include": ["src"],
+  "exclude": ["devtools"]
 }
