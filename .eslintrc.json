@@ -8,7 +8,7 @@
     "project": "./tsconfig.json"
   },
   "ignorePatterns": ["/out"],
-  "plugins": ["@typescript-eslint", "roblox-ts", "prettier"],
+  "plugins": ["@typescript-eslint", "roblox-ts", "prettier", "import"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -17,6 +17,36 @@
   ],
   "rules": {
     "prettier/prettier": "warn",
-    "@typescript-eslint/prefer-nullish-coalescing": "error"
+    "@typescript-eslint/prefer-nullish-coalescing": "error",
+    // typscript
+    "@typescript-eslint/consistent-type-imports": 2,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-namespace": 0,
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/no-unused-vars": 1,
+    // react
+    "no-useless-catch": 1,
+    "no-async-promise-executor": 0,
+    "react/jsx-uses-react": 0,
+    // miscellaneous
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "parent", "sibling", "index"],
+        "newlines-between": "always"
+      }
+    ],
+    "prefer-const": 2,
+    "no-var": 2,
+    "no-const-assign": 1,
+    "no-this-before-super": 1,
+    "no-unreachable": 2,
+    "no-unneeded-ternary": 2,
+    "import/no-anonymous-default-export": 0,
+    "no-debugger": 1,
+    "no-console": 0,
+    "constructor-super": 1,
+    "valid-typeof": 1,
+    "arrow-body-style": ["error", "always"]
   }
 }
