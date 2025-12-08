@@ -1,13 +1,27 @@
 import Leaderboard from './Leaderboard'
 
-const playerData: Map<string, Record<string, number>> = new Map()
+type PlayerDataEntry = {
+  userId: string
+  data: Record<string, number>
+}
+
+const playerData: PlayerDataEntry[] = []
 
 function getData(props: { player: Player }): Record<string, number> {
   const userId = tostring(props.player.UserId)
-  const data = playerData.get(userId) ?? {
+  let entry: PlayerDataEntry | undefined
+  for (const item of playerData) {
+    if (item.userId === userId) {
+      entry = item
+      break
+    }
+  }
+  const data = entry?.data ?? {
     ['Coins']: 0,
   }
-  playerData.set(userId, data)
+  if (!entry) {
+    playerData.push({ userId, data })
+  }
   return data
 }
 
