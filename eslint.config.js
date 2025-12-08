@@ -3,7 +3,6 @@ import tseslint from '@typescript-eslint/eslint-plugin'
 import tsparser from '@typescript-eslint/parser'
 import robloxTsPlugin from 'eslint-plugin-roblox-ts'
 import importPlugin from 'eslint-plugin-import'
-
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 import prettierConfig from './devtools/prettier/prettier.config.js'
