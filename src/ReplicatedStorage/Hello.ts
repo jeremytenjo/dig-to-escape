@@ -1,3 +1,3 @@
-return function()
+export = function () {
   print('Hello, world!')
-end
+}
