@@ -2,7 +2,7 @@ import Leaderboard from './Leaderboard'
 
 type PlayerDataEntry = {
   userId: string
-  data: Record<string, number>
+  data: { [key: string]: number }
 }
 
 const playerData: PlayerDataEntry[] = []
@@ -10,6 +10,7 @@ const playerData: PlayerDataEntry[] = []
 function getData(props: { player: Player }): Record<string, number> {
   const userId = tostring(props.player.UserId)
   let entry: PlayerDataEntry | undefined
+
   for (const item of playerData) {
     if (item.userId === userId) {
       entry = item
@@ -19,9 +20,11 @@ function getData(props: { player: Player }): Record<string, number> {
   const data = entry?.data ?? {
     ['Coins']: 0,
   }
+
   if (!entry) {
     playerData.push({ userId, data })
   }
+
   return data
 }
 
