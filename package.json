@@ -4,7 +4,9 @@
     "dev": "rbxtsc --watch & rojo serve",
     "build": "rbxtsc && rojo build -o build.rbxlx",
     "prettify": "prettier --config ./devtools/prettier/prettier.config.js  --write . ",
-    "lint": "eslint .",
+    "lint": "npm run lint:roblox-ts && npm run lint:node-js",
+    "lint:roblox-ts": "eslint --config ./.eslintrc.json ",
+    "lint:node-js": "eslint --config ./devtools/eslint.config.nodejs.json",
     "lint:types": "tsc --noEmit"
   },
   "devDependencies": {
