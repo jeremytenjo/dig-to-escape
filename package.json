@@ -4,9 +4,7 @@
     "dev": "rbxtsc --watch & rojo serve",
     "build": "rbxtsc && rojo build -o build.rbxlx",
     "prettify": "prettier --config ./devtools/prettier/prettier.config.js  --write . ",
-    "lint": "npm run lint:roblox-ts && npm run lint:node-js",
-    "lint:roblox-ts": "eslint --config ./.eslintrc.json ",
-    "lint:node-js": "eslint --config ./devtools/eslint.config.nodejs.json",
+    "lint": "eslint .",
     "lint:types": "tsc --noEmit"
   },
   "devDependencies": {
@@ -15,7 +13,7 @@
     "@types/node": "18.7.6",
     "@typescript-eslint/eslint-plugin": "8.48.1",
     "@typescript-eslint/parser": "8.48.1",
-    "eslint": "8.57.1",
+    "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-roblox-ts": "1.3.0",

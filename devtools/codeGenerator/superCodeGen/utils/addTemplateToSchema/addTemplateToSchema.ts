@@ -2,6 +2,7 @@ import fs from 'fs/promises'
 import path from 'path'
 
 import changeCase from 'change-case'
+
 import getRelativeImportPath from '../getRelativeImportPath/getRelativeImportPath'
 
 export type AddTemplateToSchemaProps = {
