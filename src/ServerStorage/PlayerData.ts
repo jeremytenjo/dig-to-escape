@@ -4,7 +4,7 @@ const playerData: Map<string, Record<string, number>> = new Map()
 
 function getData(props: { player: Player }): Record<string, number> {
   const userId = tostring(props.player.UserId)
-  const data = playerData.get(userId) || {
+  const data = playerData.get(userId) ?? {
     ['Coins']: 0,
   }
   playerData.set(userId, data)
