@@ -18,6 +18,5 @@
     "baseUrl": "./",
     "types": ["node"],
     "incremental": true
-  },
-  "include": ["./"]
+  }
 }
