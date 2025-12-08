@@ -1,4 +1,5 @@
 {
+  "prettier.configPath": "devtools/prettier/prettier.config.js",
   "superCodeGenerator.prettierConfigFilePath": "devtools/prettier/prettier.config.js",
   "superCodeGenerator.schemaFilePath": "devtools/codeGenerator/superCodeGen/superCodeGen.schema.ts",
   "[typescript]": {
