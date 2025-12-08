@@ -4,13 +4,18 @@ import tsparser from '@typescript-eslint/parser'
 import robloxTsPlugin from 'eslint-plugin-roblox-ts'
 import prettierPlugin from 'eslint-plugin-prettier'
 import importPlugin from 'eslint-plugin-import'
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default defineConfig([
+  eslintPluginPrettierRecommended,
+
+  // Global settings
   {
     ignores: ['/out'],
   },
+
+  // Settings for Roblox TS source files
   {
-    // Settings for Roblox TS source files
     basePath: 'src',
     files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
@@ -27,7 +32,6 @@ export default defineConfig([
       '@typescript-eslint': tseslint,
       'roblox-ts': robloxTsPlugin,
       import: importPlugin,
-      prettier: prettierPlugin,
     },
     rules: {
       'prettier/prettier': 'warn',
@@ -61,8 +65,9 @@ export default defineConfig([
       'arrow-body-style': ['error', 'always'],
     },
   },
+
+  // Settings for Devtools source files
   {
-    // Settings for Devtools source files
     basePath: 'devtools',
     files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
@@ -78,7 +83,6 @@ export default defineConfig([
     plugins: {
       '@typescript-eslint': tseslint,
       import: importPlugin,
-      prettier: prettierPlugin,
     },
     rules: {
       'prettier/prettier': 'warn',
