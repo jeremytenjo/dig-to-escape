@@ -2437,7 +2437,7 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 -- Modules
-local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData").default
+local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
 local coinsFolder = Workspace:WaitForChild("World"):WaitForChild("Coins")
 local coins = coinsFolder:GetChildren()
 local COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
@@ -2484,27 +2484,28 @@ end
         <Properties>
           <string name="Name">Leaderboard</string>
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
-local function setLeaderboardStat(player, statName, value)
-	local leaderstats = player:FindFirstChild("leaderstats")
-	if not leaderstats then
-		leaderstats = Instance.new("Folder")
-		-- 'leaderstats' is a reserved name Roblox recognizes for creating a leaderboard
-		leaderstats.Name = "leaderstats"
-		leaderstats.Parent = player
-	end
-	local stat = leaderstats:FindFirstChild(statName)
-	if not stat then
-		local newStat = Instance.new("IntValue")
-		newStat.Name = statName
-		newStat.Value = 0
-		newStat.Parent = leaderstats
-		stat = newStat
-	end
-	stat.Value = value
-end
-return {
-	setLeaderboardStat = setLeaderboardStat,
+local Leaderboard = {
+	setStat = function(self, props)
+		print("player", props.player)
+		local leaderstats = props.player:FindFirstChild("leaderstats")
+		if not leaderstats then
+			leaderstats = Instance.new("Folder")
+			-- 'leaderstats' is a reserved name Roblox recognizes for creating a leaderboard
+			leaderstats.Name = "leaderstats"
+			leaderstats.Parent = props.player
+		end
+		local stat = leaderstats:FindFirstChild(props.statName)
+		if not stat then
+			local newStat = Instance.new("IntValue")
+			newStat.Name = props.statName
+			newStat.Value = 0
+			newStat.Parent = leaderstats
+			stat = newStat
+		end
+		stat.Value = props.value
+	end,
 }
+return Leaderboard
 ]]></string>
         </Properties>
       </Item>
@@ -2513,47 +2514,40 @@ return {
           <string name="Name">PlayerData</string>
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local setLeaderboardStat = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard").setLeaderboardStat
-local PlayerData = {
-	COIN_KEY_NAME = "Coins",
-	getValue = function(self, player, key)
-		return {}
-	end,
-	updateValue = function(self, player, key)
-		return {}
-	end,
-}
+local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard")
 local playerData = {}
-local DEFAULT_PLAYER_DATA = {
-	[PlayerData.COIN_KEY_NAME] = 0,
-}
 local function getData(player)
 	local userId = tostring(player.UserId)
-	local data = playerData[userId] or DEFAULT_PLAYER_DATA
+	local data = playerData[userId] or {
+		Coins = 0,
+	}
 	playerData[userId] = data
 	return data
 end
-local function getValue(player, key)
-	return getData(player)[key]
-end
-local function updateValue(player, key)
-	local data = getData(player)
-	local _condition = data[key]
-	if not (_condition ~= 0 and _condition == _condition and _condition) then
-		_condition = 0
-	end
-	local oldValue = _condition
-	local newValue = oldValue + 1
-	data[key] = newValue
-	setLeaderboardStat(player, key, newValue)
-	return newValue
-end
-PlayerData.getValue = getValue
-PlayerData.updateValue = updateValue
-local default = PlayerData
-return {
-	default = default,
+local PlayerData = {
+	COIN_KEY_NAME = "Coins",
+	getValue = function(self, player, key)
+		return getData(player)[key]
+	end,
+	updateValue = function(self, player, key)
+		local data = getData(player)
+		local _condition = data[key]
+		if not (_condition ~= 0 and _condition == _condition and _condition) then
+			_condition = 0
+		end
+		local oldValue = _condition
+		local newValue = oldValue + 1
+		print("INIT player", player)
+		data[key] = newValue
+		Leaderboard:setStat({
+			player = player,
+			statName = key,
+			value = newValue,
+		})
+		return newValue
+	end,
 }
+return PlayerData
 ]]></string>
         </Properties>
       </Item>

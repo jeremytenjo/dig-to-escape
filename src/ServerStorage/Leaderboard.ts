@@ -1,5 +1,6 @@
 const Leaderboard = {
   setStat(props: { player: Player; statName: string; value: number }) {
+    print('player', props.player)
     let leaderstats = props.player.FindFirstChild('leaderstats')
 
     if (!leaderstats) {
