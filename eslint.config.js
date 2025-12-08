@@ -104,6 +104,7 @@ export default defineConfig([
     },
     plugins: {
       '@typescript-eslint': tseslint,
+      'require-js-extension': eslintPluginRequireJsExtension,
       import: importPlugin,
     },
     rules: {
