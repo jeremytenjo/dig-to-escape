@@ -1,0 +1,33 @@
+{
+  "superCodeGenerator.prettierConfigFilePath": "devtools/prettier/prettier.config.js",
+  "superCodeGenerator.schemaFilePath": "devtools/codeGenerator/superCodeGen/superCodeGen.schema.ts",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "eslint.validate": ["typescript"],
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/out": false
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.eol": "\n",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "eslint.run": "onType",
+  "eslint.format.enable": true,
+  "eslint.useFlatConfig": false
+}

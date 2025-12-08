@@ -7,7 +7,6 @@ dist/
 *.tsbuildinfo
 
 # IDEs
-.vscode/
 .idea/
 *.swp
 *.swo
