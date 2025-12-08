@@ -1,4 +1,4 @@
-import PlayerData from '../ServerStorage/PlayerData'
+import PlayerData from '../ServerStorage/PlayerData.js'
 
 const Workspace = game.GetService('Workspace')
 const Players = game.GetService('Players')

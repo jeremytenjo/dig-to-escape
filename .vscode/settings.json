@@ -30,6 +30,5 @@
   },
   "eslint.run": "onType",
   "eslint.format.enable": true,
-  "eslint.useFlatConfig": true,
   "typescript.preferences.importModuleSpecifierEnding": "js"
 }

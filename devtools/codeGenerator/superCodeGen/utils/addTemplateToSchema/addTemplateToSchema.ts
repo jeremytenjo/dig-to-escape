@@ -3,7 +3,7 @@ import path from 'path'
 
 import changeCase from 'change-case'
 
-import getRelativeImportPath from '../getRelativeImportPath/getRelativeImportPath'
+import getRelativeImportPath from '../getRelativeImportPath/getRelativeImportPath.js'
 
 export type AddTemplateToSchemaProps = {
   templatePath: string
