@@ -1,7 +1,23 @@
 {
   "name": "dig-to-escape-clone",
   "scripts": {
-    "dev": "rojo serve",
-    "build": "rojo build -o build.rbxlx"
+    "dev": "rbxtsc --watch & rojo serve",
+    "build": "rbxtsc && rojo build -o build.rbxlx",
+    "prettify": "prettier --write .",
+    "lint": "eslint .",
+    "lint:types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@rbxts/compiler-types": "3.0.0-types.0",
+    "@rbxts/types": "1.0.896",
+    "@typescript-eslint/eslint-plugin": "8.48.1",
+    "@typescript-eslint/parser": "8.48.1",
+    "eslint": "8.57.1",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-prettier": "5.5.4",
+    "eslint-plugin-roblox-ts": "1.3.0",
+    "prettier": "3.7.4",
+    "roblox-ts": "3.0.0",
+    "typescript": "5.9.3"
   }
 }

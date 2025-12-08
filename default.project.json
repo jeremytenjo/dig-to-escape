@@ -1,32 +1,44 @@
 {
   "name": "dig-to-escape-clone",
+  "globIgnorePaths": ["**/package.json", "**/tsconfig.json"],
   "tree": {
     "$className": "DataModel",
-
     "ReplicatedStorage": {
-      "Common": {
-        "$path": "src/ReplicatedStorage"
+      "$className": "ReplicatedStorage",
+      "rbxts_include": {
+        "$path": "include",
+        "node_modules": {
+          "$className": "Folder",
+          "@rbxts": {
+            "$path": "node_modules/@rbxts"
+          }
+        }
+      },
+      "TS": {
+        "$path": "out/ReplicatedStorage"
       }
     },
-
     "ServerScriptService": {
-      "Server": {
-        "$path": "src/ServerScriptService"
+      "$className": "ServerScriptService",
+      "TS": {
+        "$path": "out/ServerScriptService"
       }
     },
-
     "ServerStorage": {
-      "$path": "src/ServerStorage"
+      "$className": "ServerStorage",
+      "TS": {
+        "$path": "out/ServerStorage"
+      }
     },
-
     "StarterPlayer": {
+      "$className": "StarterPlayer",
       "StarterPlayerScripts": {
-        "Client": {
-          "$path": "src/StarterPlayerScripts"
+        "$className": "StarterPlayerScripts",
+        "TS": {
+          "$path": "out/StarterPlayerScripts"
         }
       }
     },
-
     "Workspace": {
       "$properties": {
         "FilteringEnabled": true
@@ -49,6 +61,12 @@
         "GlobalShadows": true,
         "Outlines": false,
         "Technology": "Voxel"
+      }
+    },
+    "HttpService": {
+      "$className": "HttpService",
+      "$properties": {
+        "HttpEnabled": true
       }
     },
     "SoundService": {
