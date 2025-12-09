@@ -16,7 +16,6 @@ end)
 mountScreenGuiComponent({
 	component = Button,
 	props = {
-		variant = "buy-jump-power",
 		text = "Buy Jump Power",
 		onClick = onButtonClicked,
 		position = UDim2.new(1, -110, 1, -60),

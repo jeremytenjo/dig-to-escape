@@ -2,15 +2,12 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local React = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "react")
 local ReactRoblox = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "react-roblox")
-local _ui_labs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "ui-labs", "src")
-local CreateReactStory = _ui_labs.CreateReactStory
-local Choose = _ui_labs.Choose
+local CreateReactStory = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "ui-labs", "src").CreateReactStory
 local Button = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "gui", "lib", "Button", "Button").default
 local story = CreateReactStory({
 	react = React,
 	reactRoblox = ReactRoblox,
 	controls = {
-		variant = Choose({ "hello", "world", "button" }),
 		text = "Button Text",
 	},
 }, function(props)

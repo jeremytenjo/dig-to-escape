@@ -18,7 +18,6 @@ async function onButtonClicked() {
 mountScreenGuiComponent({
   component: Button,
   props: {
-    variant: 'buy-jump-power',
     text: 'Buy Jump Power',
     onClick: onButtonClicked,
     // posiion bottom right

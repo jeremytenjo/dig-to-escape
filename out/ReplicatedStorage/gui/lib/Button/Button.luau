@@ -1,28 +1,33 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local React = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "react")
-local Color = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "ColourUtils")
+local sizePx = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "gui", "utils", "sizePx", "sizePx").default
+local hex = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "gui", "utils", "hex", "hex").default
 local function Button(props)
-	local _attributes = {}
-	local _condition = props.text
-	if _condition == nil then
-		_condition = props.variant
-	end
-	_attributes.Text = _condition
-	_attributes.Size = UDim2.new(0, 100, 0, 50)
-	_attributes.BackgroundColor3 = Color.Hex.fromHex("#007FFF")
-	_attributes.TextColor3 = Color.Hex.fromHex("#FFFFFF")
-	_attributes.Position = props.position
-	_attributes.Event = {
-		Activated = function()
-			local _result = props.onClick
-			if _result ~= nil then
-				_result = _result()
-			end
-			return _result
-		end,
-	}
-	return React.createElement("textbutton", _attributes)
+	local size = sizePx({
+		width = 280,
+		height = 80,
+	})
+	return React.createElement("textbutton", {
+		Text = props.text,
+		Size = size,
+		BackgroundColor3 = hex("#00DD00"),
+		TextColor3 = hex("#FFFFFF"),
+		TextSize = 32,
+		Font = Enum.Font.GothamBold,
+		Position = props.position,
+		BorderSizePixel = 4,
+		BorderColor3 = hex("#00AA00"),
+		Event = {
+			Activated = function()
+				local _result = props.onClick
+				if _result ~= nil then
+					_result = _result()
+				end
+				return _result
+			end,
+		},
+	})
 end
 return {
 	default = Button,
