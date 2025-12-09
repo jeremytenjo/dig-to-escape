@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@jeremytenjo/super-code-generator": "4.60.0",
+    "@rbxts/colour-utils": "1.4.1",
     "@rbxts/react": "17.3.7-ts.1",
     "@rbxts/react-roblox": "17.3.7-ts.1",
     "@rbxts/remo": "1.5.3",
