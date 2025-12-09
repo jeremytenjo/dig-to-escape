@@ -9,16 +9,16 @@ local jumpPurchaseGui = getInstance({
 	instancePath = "ReplicatedStorage/Instances/JumpPurchaseGui",
 })
 local jumpButton = jumpPurchaseGui:WaitForChild("JumpButton")
-local function onButtonClicked()
-	local res = increaseJumpPowerRemoteFunction.increaseJumpPowerFromServer:request()
-	res:andThen(function(purchased)
+local onButtonClicked = TS.async(function()
+	TS.try(function()
+		local purchased = TS.await(increaseJumpPowerRemoteFunction.increaseJumpPowerFromServer:request())
 		if not purchased then
 			warn("Not enough coins!")
 		end
-	end):catch(function(err)
+	end, function(err)
 		error(tostring(err))
 	end)
-end
+end)
 jumpButton.Activated:Connect(onButtonClicked)
 -- Add the JumpPurchaseGui to the player's Gui
 jumpPurchaseGui.Parent = playerGui

@@ -11,18 +11,17 @@ const jumpPurchaseGui = getInstance<Frame>({
 })
 const jumpButton = jumpPurchaseGui.WaitForChild('JumpButton') as GuiButton
 
-function onButtonClicked() {
-  const res = increaseJumpPowerRemoteFunction.increaseJumpPowerFromServer.request()
+async function onButtonClicked() {
+  try {
+    const purchased =
+      await increaseJumpPowerRemoteFunction.increaseJumpPowerFromServer.request()
 
-  res
-    .then((purchased) => {
-      if (!purchased) {
-        warn('Not enough coins!')
-      }
-    })
-    .catch((err) => {
-      error(tostring(err))
-    })
+    if (!purchased) {
+      warn('Not enough coins!')
+    }
+  } catch (err) {
+    error(tostring(err))
+  }
 }
 
 jumpButton.Activated.Connect(onButtonClicked)
