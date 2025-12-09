@@ -1,3 +1,4 @@
+// https://github.com/littensy/remo?tab=readme-ov-file
 import type { Server } from '@rbxts/remo'
 import { createRemotes, remote } from '@rbxts/remo'
 import { t } from '@rbxts/t'

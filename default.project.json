@@ -16,6 +16,12 @@
       },
       "TS": {
         "$path": "out/ReplicatedStorage"
+      },
+      "RemoteFunctions": {
+        "$className": "Folder",
+        "IncreaseJumpPowerFunction": {
+          "$className": "RemoteFunction"
+        }
       }
     },
     "ServerScriptService": {

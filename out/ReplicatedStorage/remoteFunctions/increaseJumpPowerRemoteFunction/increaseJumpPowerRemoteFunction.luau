@@ -1,5 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+-- https://github.com/littensy/remo?tab=readme-ov-file
 local _remo = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "remo", "src")
 local createRemotes = _remo.createRemotes
 local remote = _remo.remote
