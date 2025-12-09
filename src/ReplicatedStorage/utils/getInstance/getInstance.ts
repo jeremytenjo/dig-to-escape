@@ -1,18 +1,34 @@
-import { Workspace } from '@rbxts/services'
+import { ReplicatedStorage, Workspace } from '@rbxts/services'
+
+type Roots = 'Workspace' | 'ReplicatedStorage'
 
 export type GetInstanceProps = {
-  instancePath: string
+  instancePath: `${Roots}/${string}`
 }
 
-export default function getInstance<InstanceClass>(props: GetInstanceProps) {
+export default function getInstance<InstanceClass>(
+  props: GetInstanceProps,
+): InstanceClass {
   const pathSegments = props.instancePath.split('/')
-  let currentParent: Instance = Workspace
+  const rootFolder = pathSegments[0] as Roots
+  let currentParent: Instance | undefined =
+    rootFolder === 'ReplicatedStorage'
+      ? ReplicatedStorage
+      : rootFolder === 'Workspace'
+        ? Workspace
+        : undefined
+
+  if (!currentParent) {
+    error(
+      `Invalid root folder: ${rootFolder}. Options are 'Workspace' | 'ReplicatedStorage'`,
+    )
+  }
 
   for (const segment of pathSegments) {
     currentParent = currentParent.WaitForChild(segment)
   }
 
-  const folder = currentParent as InstanceClass
+  const instance = currentParent as InstanceClass
 
-  return folder
+  return instance
 }

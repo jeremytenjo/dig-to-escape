@@ -4,7 +4,7 @@ import PlayerData from '../ServerStorage/PlayerData.js'
 import getInstance from '../ReplicatedStorage/utils/getInstance/getInstance.js'
 
 const coinsFolder = getInstance<Folder>({
-  instancePath: 'World/Coins',
+  instancePath: 'Workspace/World/Coins',
 })
 const coins = coinsFolder.GetChildren() as BasePart[]
 

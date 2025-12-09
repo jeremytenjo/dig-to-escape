@@ -3,7 +3,7 @@ import { Players } from '@rbxts/services'
 import getInstance from '../../ReplicatedStorage/utils/getInstance/getInstance.js'
 
 const hazardsFolder = getInstance<Folder>({
-  instancePath: 'World/Hazards',
+  instancePath: 'Workspace/World/Hazards',
 })
 const hazards = hazardsFolder.GetChildren() as BasePart[]
 

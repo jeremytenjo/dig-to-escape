@@ -1,12 +1,12 @@
-import { Players, ReplicatedStorage } from '@rbxts/services'
+import { Players } from '@rbxts/services'
 
 import Leaderboard from '../../ServerStorage/Leaderboard.js'
 import PlayerData from '../../ServerStorage/PlayerData.js'
+import getInstance from '../../ReplicatedStorage/utils/getInstance/getInstance.js'
 
-const increaseJumpPowerFunction = ReplicatedStorage.WaitForChild('Instances') as Folder
-const jumpPowerRemoteFunction = increaseJumpPowerFunction.WaitForChild(
-  'IncreaseJumpPowerFunction',
-) as RemoteFunction
+const jumpPowerRemoteFunction = getInstance<RemoteFunction>({
+  instancePath: 'ReplicatedStorage/Instances/IncreaseJumpPowerFunction',
+})
 
 const JUMP_KEY_NAME = PlayerData.JUMP_KEY_NAME
 const COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
