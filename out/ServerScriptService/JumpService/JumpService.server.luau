@@ -74,9 +74,9 @@ local function onPurchaseJumpIncrease(player)
 	return true
 end
 local function onCharacterAdded(player)
-	-- Reset player's jump power when the character is added
+	-- Set default jump power when the character is added
 	updateJumpPower(player, function()
-		return 0
+		return 50
 	end)
 end
 -- Initialize any players added before connecting to PlayerAdded event

@@ -79,9 +79,9 @@ function onPurchaseJumpIncrease(player: Player): boolean {
 }
 
 function onCharacterAdded(player: Player): void {
-  // Reset player's jump power when the character is added
+  // Set default jump power when the character is added
   updateJumpPower(player, () => {
-    return 0
+    return 50
   })
 }
 
