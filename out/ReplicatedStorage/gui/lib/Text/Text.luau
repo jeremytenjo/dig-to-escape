@@ -3,7 +3,7 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 local React = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "react")
 local function Text(props)
 	return React.createElement("textbutton", {
-		Text = "hello",
+		Text = props.name,
 	})
 end
 return {

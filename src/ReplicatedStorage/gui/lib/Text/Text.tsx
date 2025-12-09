@@ -5,5 +5,5 @@ export type TextProps = {
 }
 
 export default function Text(props: TextProps) {
-  return <textbutton Text='hello' />
+  return <textbutton Text={props.name} />
 }
