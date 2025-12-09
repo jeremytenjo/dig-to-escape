@@ -1,4 +1,4 @@
-import Leaderboard from './Leaderboard.js'
+import Leaderboard from '../Leaderboard/Leaderboard.js'
 
 type PlayerDataEntry = {
   userId: string

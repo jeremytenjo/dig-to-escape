@@ -1,6 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard")
+local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard", "Leaderboard")
 local playerData = {}
 local function getData(props)
 	local userId = tostring(props.player.UserId)

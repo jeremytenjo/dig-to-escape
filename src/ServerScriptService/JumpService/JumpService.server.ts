@@ -1,7 +1,7 @@
 import { Players } from '@rbxts/services'
 
-import Leaderboard from '../../ServerStorage/Leaderboard.js'
-import PlayerData from '../../ServerStorage/PlayerData.js'
+import Leaderboard from '../../ServerStorage/Leaderboard/Leaderboard.js'
+import PlayerData from '../../ServerStorage/PlayerData/PlayerData.js'
 import getInstance from '../../ReplicatedStorage/utils/getInstance/getInstance.js'
 
 const increaseJumpPowerFunction = getInstance<RemoteFunction>({
