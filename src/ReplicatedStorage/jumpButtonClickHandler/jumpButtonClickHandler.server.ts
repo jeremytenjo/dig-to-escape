@@ -1,19 +1,22 @@
-import { Players, ReplicatedStorage } from '@rbxts/services'
+import { Players } from '@rbxts/services'
+
+import getInstance from '../utils/getInstance/getInstance.js'
 
 export default function jumpButtonClickHandler() {
   const player = Players.LocalPlayer
   const playerGui = player.FindFirstChild('PlayerGui') as PlayerGui
 
-  const instances = ReplicatedStorage.WaitForChild('Instances') as Folder
-  const increaseJumpPowerFunction = instances.WaitForChild(
-    'IncreaseJumpPowerFunction',
-  ) as RemoteFunction
-  const jumpPurchaseGui = instances.WaitForChild('JumpPurchaseGui') as Frame
+  const increaseJumpPowerFunction = getInstance<RemoteFunction>({
+    instancePath: 'ReplicatedStorage/Instances/IncreaseJumpPowerFunction',
+  })
+  const jumpPurchaseGui = getInstance<Frame>({
+    instancePath: 'ReplicatedStorage/Instances/JumpPurchaseGui',
+  })
   const jumpButton = jumpPurchaseGui.WaitForChild('JumpButton') as GuiButton
 
   function onButtonClicked() {
     const [success, purchased] = pcall(() => {
-      return (increaseJumpPowerFunction as RemoteFunction).InvokeServer()
+      return increaseJumpPowerFunction.InvokeServer()
     })
 
     if (!success) {
