@@ -5,6 +5,7 @@ local ReactRoblox = TS.import(script, game:GetService("ReplicatedStorage"), "rbx
 local _ui_labs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "ui-labs", "src")
 local CreateReactStory = _ui_labs.CreateReactStory
 local Choose = _ui_labs.Choose
+local Button = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "gui", "Button", "Button").default
 local story = CreateReactStory({
 	react = React,
 	reactRoblox = ReactRoblox,
@@ -12,8 +13,9 @@ local story = CreateReactStory({
 		variant = Choose({ "hello", "world", "button" }),
 	},
 }, function(props)
-	print("props", props)
-	local component = React.createElement("frame")
+	local component = React.createElement(Button, {
+		variant = props.controls.variant,
+	})
 	return component
 end)
 return story
