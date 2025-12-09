@@ -7,5 +7,6 @@ local LibInstance = getInstance({
 local storybook = {
 	name = "Lib",
 	storyRoots = LibInstance:GetChildren(),
+	groupRoots = true,
 }
 return storybook

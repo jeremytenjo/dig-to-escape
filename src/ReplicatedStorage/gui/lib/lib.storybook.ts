@@ -9,6 +9,7 @@ const LibInstance = getInstance<Folder>({
 const storybook: Storybook = {
   name: 'Lib',
   storyRoots: LibInstance.GetChildren(),
+  groupRoots: true,
 }
 
 export = storybook
