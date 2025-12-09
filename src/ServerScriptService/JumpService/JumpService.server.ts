@@ -92,6 +92,8 @@ function onPlayerRemoved(player: Player): void {
   updateJumpPower(player, 0)
 }
 
-increaseJumpPowerRemoteFunction.increaseJumpPower.onRequest(onPurchaseJumpIncrease)
+increaseJumpPowerRemoteFunction.increaseJumpPowerFromServer.onRequest(
+  onPurchaseJumpIncrease,
+)
 Players.PlayerAdded.Connect(onPlayerAdded)
 Players.PlayerRemoving.Connect(onPlayerRemoved)

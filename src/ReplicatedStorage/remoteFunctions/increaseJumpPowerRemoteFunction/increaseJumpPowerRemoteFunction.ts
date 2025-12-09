@@ -6,5 +6,5 @@ const booleanValidator = t.boolean
 
 export const increaseJumpPowerRemoteFunction = createRemotes({
   // increase jump power on the server
-  increaseJumpPower: remote<Server>().returns<boolean>(booleanValidator),
+  increaseJumpPowerFromServer: remote<Server>().returns<boolean>(booleanValidator),
 })
