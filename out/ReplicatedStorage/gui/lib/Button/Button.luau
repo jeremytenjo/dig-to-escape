@@ -12,6 +12,7 @@ local function Button(props)
 	_attributes.Size = UDim2.new(0, 100, 0, 50)
 	_attributes.BackgroundColor3 = Color.Hex.fromHex("#007FFF")
 	_attributes.TextColor3 = Color.Hex.fromHex("#FFFFFF")
+	_attributes.Position = props.position
 	_attributes.Event = {
 		Activated = function()
 			local _result = props.onClick

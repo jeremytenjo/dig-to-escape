@@ -21,5 +21,7 @@ mountScreenGuiComponent({
     variant: 'buy-jump-power',
     text: 'Buy Jump Power',
     onClick: onButtonClicked,
+    // posiion bottom right
+    position: new UDim2(1, -110, 1, -60),
   },
 })
