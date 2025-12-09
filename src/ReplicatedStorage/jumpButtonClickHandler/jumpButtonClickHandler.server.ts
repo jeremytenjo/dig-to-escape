@@ -12,7 +12,7 @@ const jumpPurchaseGui = getInstance<Frame>({
 const jumpButton = jumpPurchaseGui.WaitForChild('JumpButton') as GuiButton
 
 function onButtonClicked() {
-  const res = increaseJumpPowerRemoteFunction.increaseJumpPower.request()
+  const res = increaseJumpPowerRemoteFunction.increaseJumpPowerFromServer.request()
 
   res
     .then((purchased) => {

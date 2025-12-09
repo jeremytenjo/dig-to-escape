@@ -10,7 +10,7 @@ local jumpPurchaseGui = getInstance({
 })
 local jumpButton = jumpPurchaseGui:WaitForChild("JumpButton")
 local function onButtonClicked()
-	local res = increaseJumpPowerRemoteFunction.increaseJumpPower:request()
+	local res = increaseJumpPowerRemoteFunction.increaseJumpPowerFromServer:request()
 	res:andThen(function(purchased)
 		if not purchased then
 			warn("Not enough coins!")

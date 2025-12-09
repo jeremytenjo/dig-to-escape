@@ -82,6 +82,6 @@ end
 local function onPlayerRemoved(player)
 	updateJumpPower(player, 0)
 end
-increaseJumpPowerRemoteFunction.increaseJumpPower:onRequest(onPurchaseJumpIncrease)
+increaseJumpPowerRemoteFunction.increaseJumpPowerFromServer:onRequest(onPurchaseJumpIncrease)
 Players.PlayerAdded:Connect(onPlayerAdded)
 Players.PlayerRemoving:Connect(onPlayerRemoved)

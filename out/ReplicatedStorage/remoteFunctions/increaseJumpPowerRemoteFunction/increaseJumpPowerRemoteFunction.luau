@@ -6,7 +6,7 @@ local remote = _remo.remote
 local t = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "t", "lib", "ts").t
 local booleanValidator = t.boolean
 local increaseJumpPowerRemoteFunction = createRemotes({
-	increaseJumpPower = remote().returns(booleanValidator),
+	increaseJumpPowerFromServer = remote().returns(booleanValidator),
 })
 return {
 	increaseJumpPowerRemoteFunction = increaseJumpPowerRemoteFunction,
