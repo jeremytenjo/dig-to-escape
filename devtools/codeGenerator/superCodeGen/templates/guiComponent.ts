@@ -21,7 +21,7 @@ export type ${propsName} = {
 }
 
 export default function ${componentName}(props: ${propsName}) {
-  return <textbutton text='hello' />
+  return <textbutton Text='hello' />
 }
 
 `
@@ -38,7 +38,7 @@ export default function ${componentName}(props: ${propsName}) {
 
       return `import React from '@rbxts/react'
 import ReactRoblox from '@rbxts/react-roblox'
-import { CreateReactStory, Choose } from '@rbxts/ui-labs'
+import { CreateReactStory } from '@rbxts/ui-labs'
 
 import ${componentName} from './${componentName}.js'
 
