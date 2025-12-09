@@ -19,7 +19,7 @@
       },
       "RemoteFunctions": {
         "$className": "Folder",
-        "IncreaseJumpPowerFunction": {
+        "increaseJumpPowerRemoteFunction": {
           "$className": "RemoteFunction"
         }
       }
