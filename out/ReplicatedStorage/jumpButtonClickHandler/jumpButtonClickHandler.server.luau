@@ -7,6 +7,8 @@ local increaseJumpPowerRemoteFunction = TS.import(script, game:GetService("Repli
 local Button = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "gui", "Button", "Button").default
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = playerGui
 local onButtonClicked = TS.async(function()
 	TS.try(function()
 		local purchased = TS.await(increaseJumpPowerRemoteFunction.increaseJumpPowerFromServer:request())
@@ -22,5 +24,5 @@ local jumpPurchaseGui = React.createElement(Button, {
 	text = "Buy Jump Power",
 	onClick = onButtonClicked,
 })
-local root = ReactRoblox.createRoot(playerGui)
+local root = ReactRoblox.createRoot(screenGui)
 root:render(jumpPurchaseGui)

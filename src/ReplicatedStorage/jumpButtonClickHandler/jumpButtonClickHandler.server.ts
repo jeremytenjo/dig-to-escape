@@ -8,6 +8,9 @@ import Button from '../gui/Button/Button.js'
 const player = Players.LocalPlayer
 const playerGui = player.WaitForChild('PlayerGui') as PlayerGui
 
+const screenGui = new Instance('ScreenGui')
+screenGui.Parent = playerGui
+
 async function onButtonClicked() {
   try {
     const purchased =
@@ -27,5 +30,5 @@ const jumpPurchaseGui = React.createElement(Button, {
   onClick: onButtonClicked,
 })
 
-const root = ReactRoblox.createRoot(playerGui)
+const root = ReactRoblox.createRoot(screenGui)
 root.render(jumpPurchaseGui)

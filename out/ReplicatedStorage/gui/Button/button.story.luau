@@ -16,7 +16,6 @@ local story = CreateReactStory({
 }, function(props)
 	local _attributes = table.clone(props.controls)
 	setmetatable(_attributes, nil)
-	local component = React.createElement(Button, _attributes)
-	return component
+	return React.createElement(Button, _attributes)
 end)
 return story
