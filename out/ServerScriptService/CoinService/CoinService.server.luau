@@ -2,9 +2,9 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
 local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
-local getFolder = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getFolder", "getFolder").default
-local coinsFolder = getFolder({
-	folderPath = "World/Coins",
+local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
+local coinsFolder = getInstance({
+	instancePath = "Workspace/World/Coins",
 })
 local coins = coinsFolder:GetChildren()
 local function onCoinTouched(coin, otherPart)
