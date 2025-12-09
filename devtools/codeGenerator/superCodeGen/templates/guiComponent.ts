@@ -21,7 +21,7 @@ export type ${propsName} = {
 }
 
 export default function ${componentName}(props: ${propsName}) {
-  return <frame />
+  return <textbutton text='hello' />
 }
 
 `
