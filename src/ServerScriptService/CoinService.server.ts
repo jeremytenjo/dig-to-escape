@@ -1,8 +1,11 @@
-import { Players, Workspace } from '@rbxts/services'
+import { Players } from '@rbxts/services'
 
 import PlayerData from '../ServerStorage/PlayerData.js'
+import getFolder from '../ReplicatedStorage/utils/getFolder/getFolder.js'
 
-const coinsFolder = Workspace.WaitForChild('World').WaitForChild('Coins') as Folder
+const coinsFolder = getFolder({
+  folderPath: 'World/Coins',
+})
 const coins = coinsFolder.GetChildren() as BasePart[]
 
 // Setting up event listeners
