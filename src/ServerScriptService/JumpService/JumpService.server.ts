@@ -103,6 +103,6 @@ function onPlayerRemoved(player: Player): void {
   })
 }
 
-;(increaseJumpPowerFunction as RemoteFunction).OnServerInvoke = onPurchaseJumpIncrease
+increaseJumpPowerFunction.OnServerInvoke = onPurchaseJumpIncrease
 Players.PlayerAdded.Connect(onPlayerAdded)
 Players.PlayerRemoving.Connect(onPlayerRemoved)
