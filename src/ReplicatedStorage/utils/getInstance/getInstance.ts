@@ -11,6 +11,8 @@ export default function getInstance<InstanceClass>(
 ): InstanceClass {
   const pathSegments = props.instancePath.split('/')
   const rootFolder = pathSegments[0] as Roots
+  pathSegments.shift() // Remove the root folder segment
+
   let currentParent: Instance | undefined =
     rootFolder === 'ReplicatedStorage'
       ? ReplicatedStorage

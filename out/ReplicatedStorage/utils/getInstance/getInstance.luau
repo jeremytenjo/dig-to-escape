@@ -6,6 +6,7 @@ local Workspace = _services.Workspace
 local function getInstance(props)
 	local pathSegments = string.split(props.instancePath, "/")
 	local rootFolder = pathSegments[1]
+	table.remove(pathSegments, 1)
 	local currentParent = if rootFolder == "ReplicatedStorage" then ReplicatedStorage elseif rootFolder == "Workspace" then Workspace else nil
 	if not currentParent then
 		error(`Invalid root folder: {rootFolder}. Options are 'Workspace' | 'ReplicatedStorage'`)
