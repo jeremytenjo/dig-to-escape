@@ -12,6 +12,7 @@ local jumpPurchaseGui = getInstance({
 })
 local jumpButton = jumpPurchaseGui:WaitForChild("JumpButton")
 local function onButtonClicked()
+	-- TODO create a way to invoke remove functions listener better
 	local success, purchased = pcall(function()
 		return increaseJumpPowerFunction:InvokeServer()
 	end)

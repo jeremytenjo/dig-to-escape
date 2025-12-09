@@ -14,6 +14,7 @@ const jumpPurchaseGui = getInstance<Frame>({
 const jumpButton = jumpPurchaseGui.WaitForChild('JumpButton') as GuiButton
 
 function onButtonClicked() {
+  // TODO create a way to invoke remove functions listener better
   const [success, purchased] = pcall<[], unknown>(() => {
     return increaseJumpPowerFunction.InvokeServer()
   })
