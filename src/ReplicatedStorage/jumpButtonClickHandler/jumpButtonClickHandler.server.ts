@@ -1,15 +1,6 @@
-import { Players } from '@rbxts/services'
-import React from '@rbxts/react'
-import ReactRoblox from '@rbxts/react-roblox'
-
 import { increaseJumpPowerRemoteFunction } from '../remoteFunctions/increaseJumpPowerRemoteFunction/increaseJumpPowerRemoteFunction.js'
-import Button from '../gui/Button/Button.js'
-
-const player = Players.LocalPlayer
-const playerGui = player.WaitForChild('PlayerGui') as PlayerGui
-
-const screenGui = new Instance('ScreenGui')
-screenGui.Parent = playerGui
+import Button from '../gui/lib/Button/Button.js'
+import mountScreenGuiComponent from '../gui/utils/mountScreenGuiComponent/mountScreenGuiComponent.js'
 
 async function onButtonClicked() {
   try {
@@ -24,11 +15,11 @@ async function onButtonClicked() {
   }
 }
 
-const jumpPurchaseGui = React.createElement(Button, {
-  variant: 'buy-jump-power',
-  text: 'Buy Jump Power',
-  onClick: onButtonClicked,
+mountScreenGuiComponent({
+  component: Button,
+  props: {
+    variant: 'buy-jump-power',
+    text: 'Buy Jump Power',
+    onClick: onButtonClicked,
+  },
 })
-
-const root = ReactRoblox.createRoot(screenGui)
-root.render(jumpPurchaseGui)
