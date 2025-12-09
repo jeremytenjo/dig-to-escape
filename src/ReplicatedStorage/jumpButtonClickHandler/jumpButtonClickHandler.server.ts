@@ -1,28 +1,25 @@
 import { Players } from '@rbxts/services'
 
 import getInstance from '../utils/getInstance/getInstance.js'
+import increaseJumpPowerRemoteFunction from '../remoteFunctions/increaseJumpPowerRemoteFunction/increaseJumpPowerRemoteFunction.js'
 
 const player = Players.LocalPlayer
 const playerGui = player.FindFirstChild('PlayerGui') as PlayerGui
 
-const increaseJumpPowerFunction = getInstance<RemoteFunction>({
-  instancePath: 'ReplicatedStorage/Instances/IncreaseJumpPowerFunction',
-})
 const jumpPurchaseGui = getInstance<Frame>({
   instancePath: 'ReplicatedStorage/Instances/JumpPurchaseGui',
 })
 const jumpButton = jumpPurchaseGui.WaitForChild('JumpButton') as GuiButton
 
 function onButtonClicked() {
-  // TODO create a way to invoke remove functions listener better
-  const [success, purchased] = pcall<[], unknown>(() => {
-    return increaseJumpPowerFunction.InvokeServer()
+  const res = increaseJumpPowerRemoteFunction({
+    invokeType: 'InvokeServer',
   })
 
-  if (!success) {
+  if (!res.success) {
     // purchased will be the error message if success is false
-    error(tostring(purchased))
-  } else if (success && !purchased) {
+    error(tostring(res.purchased))
+  } else if (res.success && !res.purchased) {
     warn('Not enough coins!')
   }
 }
