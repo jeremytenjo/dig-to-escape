@@ -1,12 +1,12 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
-local Players = _services.Players
-local ReplicatedStorage = _services.ReplicatedStorage
+local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
 local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard")
 local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
-local increaseJumpPowerFunction = ReplicatedStorage:WaitForChild("Instances")
-local jumpPowerRemoteFunction = increaseJumpPowerFunction:WaitForChild("IncreaseJumpPowerFunction")
+local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
+local increaseJumpPowerFunction = getInstance({
+	instancePath = "ReplicatedStorage/Instances/IncreaseJumpPowerFunction",
+})
 local JUMP_KEY_NAME = PlayerData.JUMP_KEY_NAME
 local COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
 local JUMP_POWER_INCREMENT = 30
@@ -94,6 +94,6 @@ local function onPlayerRemoved(player)
 		return 0
 	end)
 end
-jumpPowerRemoteFunction.OnServerInvoke = onPurchaseJumpIncrease
+increaseJumpPowerFunction.OnServerInvoke = onPurchaseJumpIncrease
 Players.PlayerAdded:Connect(onPlayerAdded)
 Players.PlayerRemoving:Connect(onPlayerRemoved)

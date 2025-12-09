@@ -15,7 +15,7 @@ export default function jumpButtonClickHandler() {
   const jumpButton = jumpPurchaseGui.WaitForChild('JumpButton') as GuiButton
 
   function onButtonClicked() {
-    const [success, purchased] = pcall(() => {
+    const [success, purchased] = pcall<[], unknown>(() => {
       return increaseJumpPowerFunction.InvokeServer()
     })
 

@@ -1,9 +1,9 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
-local getFolder = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getFolder", "getFolder").default
-local hazardsFolder = getFolder({
-	folderPath = "World/Hazards",
+local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
+local hazardsFolder = getInstance({
+	instancePath = "Workspace/World/Hazards",
 })
 local hazards = hazardsFolder:GetChildren()
 local function onHazardTouched(otherPart)
