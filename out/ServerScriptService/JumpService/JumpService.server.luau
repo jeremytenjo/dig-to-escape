@@ -17,6 +17,12 @@ local function updateJumpPower(player, newJumpPower)
 	local humanoid = character:FindFirstChildWhichIsA("Humanoid")
 	if humanoid then
 		humanoid.JumpPower = newJumpPower
+		-- Update the jump power data
+		PlayerData:setValue({
+			player = player,
+			key = JUMP_KEY_NAME,
+			value = newJumpPower,
+		})
 		-- Update the jump leaderboard
 		Leaderboard:setStat({
 			player = player,
@@ -49,9 +55,10 @@ local function onPurchaseJumpIncrease(player)
 	updateJumpPower(player, oldJumpPower + JUMP_POWER_INCREMENT)
 	-- Update the coin table
 	local newCoinAmount = coinAmount - JUMP_COIN_COST
-	PlayerData:resetValue({
+	PlayerData:setValue({
 		player = player,
 		key = COIN_KEY_NAME,
+		value = newCoinAmount,
 	})
 	-- Update the coin leaderboard
 	Leaderboard:setStat({

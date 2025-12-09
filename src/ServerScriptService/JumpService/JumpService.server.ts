@@ -20,6 +20,13 @@ function updateJumpPower(player: Player, newJumpPower: number): void {
   if (humanoid) {
     ;(humanoid as Humanoid).JumpPower = newJumpPower
 
+    // Update the jump power data
+    PlayerData.setValue({
+      player,
+      key: JUMP_KEY_NAME,
+      value: newJumpPower,
+    })
+
     // Update the jump leaderboard
     Leaderboard.setStat({
       player,
@@ -51,9 +58,11 @@ function onPurchaseJumpIncrease(player: Player): boolean {
 
   // Update the coin table
   const newCoinAmount = coinAmount - JUMP_COIN_COST
-  PlayerData.resetValue({
+
+  PlayerData.setValue({
     player,
     key: COIN_KEY_NAME,
+    value: newCoinAmount,
   })
 
   // Update the coin leaderboard
