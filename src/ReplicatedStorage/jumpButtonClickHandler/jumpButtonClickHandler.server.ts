@@ -1,7 +1,7 @@
 import { Players } from '@rbxts/services'
 
 import getInstance from '../utils/getInstance/getInstance.js'
-import { remotes } from '../remotes.js'
+import { increaseJumpPowerRemoteFunction } from '../remoteFunctions/increaseJumpPowerRemoteFunction/increaseJumpPowerRemoteFunction.js'
 
 const player = Players.LocalPlayer
 const playerGui = player.FindFirstChild('PlayerGui') as PlayerGui
@@ -12,7 +12,7 @@ const jumpPurchaseGui = getInstance<Frame>({
 const jumpButton = jumpPurchaseGui.WaitForChild('JumpButton') as GuiButton
 
 function onButtonClicked() {
-  const res = remotes.increaseJumpPower.request()
+  const res = increaseJumpPowerRemoteFunction.increaseJumpPower.request()
 
   res
     .then((purchased) => {
