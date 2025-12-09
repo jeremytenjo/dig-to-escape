@@ -2,11 +2,7 @@ import { Players } from '@rbxts/services'
 
 import Leaderboard from '../../ServerStorage/Leaderboard/Leaderboard.js'
 import PlayerData from '../../ServerStorage/PlayerData/PlayerData.js'
-import getInstance from '../../ReplicatedStorage/utils/getInstance/getInstance.js'
-
-const increaseJumpPowerFunction = getInstance<RemoteFunction>({
-  instancePath: 'ReplicatedStorage/Instances/IncreaseJumpPowerFunction',
-})
+import { increaseJumpPowerRemoteFunction } from '../../ReplicatedStorage/remoteFunctions/increaseJumpPowerRemoteFunction/increaseJumpPowerRemoteFunction.js'
 
 const JUMP_KEY_NAME = PlayerData.JUMP_KEY_NAME
 const COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
@@ -96,6 +92,6 @@ function onPlayerRemoved(player: Player): void {
   updateJumpPower(player, 0)
 }
 
-increaseJumpPowerFunction.OnServerInvoke = onPurchaseJumpIncrease
+increaseJumpPowerRemoteFunction.increaseJumpPower.onRequest(onPurchaseJumpIncrease)
 Players.PlayerAdded.Connect(onPlayerAdded)
 Players.PlayerRemoving.Connect(onPlayerRemoved)
