@@ -4,7 +4,7 @@ import Leaderboard from '../../ServerStorage/Leaderboard.js'
 import PlayerData from '../../ServerStorage/PlayerData.js'
 import getInstance from '../../ReplicatedStorage/utils/getInstance/getInstance.js'
 
-const jumpPowerRemoteFunction = getInstance<RemoteFunction>({
+const increaseJumpPowerFunction = getInstance<RemoteFunction>({
   instancePath: 'ReplicatedStorage/Instances/IncreaseJumpPowerFunction',
 })
 
@@ -103,6 +103,6 @@ function onPlayerRemoved(player: Player): void {
   })
 }
 
-;(jumpPowerRemoteFunction as RemoteFunction).OnServerInvoke = onPurchaseJumpIncrease
+;(increaseJumpPowerFunction as RemoteFunction).OnServerInvoke = onPurchaseJumpIncrease
 Players.PlayerAdded.Connect(onPlayerAdded)
 Players.PlayerRemoving.Connect(onPlayerRemoved)
