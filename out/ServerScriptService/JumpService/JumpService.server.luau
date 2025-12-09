@@ -11,17 +11,7 @@ local JUMP_KEY_NAME = PlayerData.JUMP_KEY_NAME
 local COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
 local JUMP_POWER_INCREMENT = 30
 local JUMP_COIN_COST = 5
-local function updateJumpPower(player, updateFunction)
-	-- Update the jump power table
-	local _fn = updateFunction
-	local _condition = PlayerData:getValue({
-		player = player,
-		key = JUMP_KEY_NAME,
-	})
-	if _condition == nil then
-		_condition = 0
-	end
-	local newJumpPower = _fn(_condition)
+local function updateJumpPower(player, newJumpPower)
 	-- Update the players jump power
 	local character = (player.Character or { player.CharacterAdded:Wait() })
 	local humanoid = character:FindFirstChildWhichIsA("Humanoid")
@@ -56,9 +46,7 @@ local function onPurchaseJumpIncrease(player)
 		_condition_1 = 0
 	end
 	local oldJumpPower = _condition_1
-	updateJumpPower(player, function()
-		return oldJumpPower + JUMP_POWER_INCREMENT
-	end)
+	updateJumpPower(player, oldJumpPower + JUMP_POWER_INCREMENT)
 	-- Update the coin table
 	local newCoinAmount = coinAmount - JUMP_COIN_COST
 	PlayerData:resetValue({
@@ -75,9 +63,7 @@ local function onPurchaseJumpIncrease(player)
 end
 local function onCharacterAdded(player)
 	-- Set default jump power when the character is added
-	updateJumpPower(player, function()
-		return 50
-	end)
+	updateJumpPower(player, 50)
 end
 -- Initialize any players added before connecting to PlayerAdded event
 for _, player in Players:GetPlayers() do
@@ -90,9 +76,7 @@ local function onPlayerAdded(player)
 	end)
 end
 local function onPlayerRemoved(player)
-	updateJumpPower(player, function()
-		return 0
-	end)
+	updateJumpPower(player, 0)
 end
 increaseJumpPowerFunction.OnServerInvoke = onPurchaseJumpIncrease
 Players.PlayerAdded:Connect(onPlayerAdded)

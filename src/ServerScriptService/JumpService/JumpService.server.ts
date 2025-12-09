@@ -13,18 +13,7 @@ const COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
 const JUMP_POWER_INCREMENT = 30
 const JUMP_COIN_COST = 5
 
-function updateJumpPower(
-  player: Player,
-  updateFunction: (oldJumpPower: number) => number,
-): void {
-  // Update the jump power table
-  const newJumpPower = updateFunction(
-    PlayerData.getValue({
-      player,
-      key: JUMP_KEY_NAME,
-    }) ?? 0,
-  )
-
+function updateJumpPower(player: Player, newJumpPower: number): void {
   // Update the players jump power
   const character = (player.Character ?? player.CharacterAdded.Wait()) as Model
   const humanoid = character.FindFirstChildWhichIsA('Humanoid')
@@ -57,9 +46,8 @@ function onPurchaseJumpIncrease(player: Player): boolean {
       player,
       key: JUMP_KEY_NAME,
     }) ?? 0
-  updateJumpPower(player, () => {
-    return oldJumpPower + JUMP_POWER_INCREMENT
-  })
+
+  updateJumpPower(player, oldJumpPower + JUMP_POWER_INCREMENT)
 
   // Update the coin table
   const newCoinAmount = coinAmount - JUMP_COIN_COST
@@ -80,9 +68,7 @@ function onPurchaseJumpIncrease(player: Player): boolean {
 
 function onCharacterAdded(player: Player): void {
   // Set default jump power when the character is added
-  updateJumpPower(player, () => {
-    return 50
-  })
+  updateJumpPower(player, 50)
 }
 
 // Initialize any players added before connecting to PlayerAdded event
@@ -98,9 +84,7 @@ function onPlayerAdded(player: Player): void {
 }
 
 function onPlayerRemoved(player: Player): void {
-  updateJumpPower(player, () => {
-    return 0
-  })
+  updateJumpPower(player, 0)
 }
 
 increaseJumpPowerFunction.OnServerInvoke = onPurchaseJumpIncrease
