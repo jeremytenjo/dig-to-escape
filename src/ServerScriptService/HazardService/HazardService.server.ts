@@ -5,7 +5,7 @@ import getFolder from '../../ReplicatedStorage/utils/getFolder/getFolder.js'
 const hazardsFolder = getFolder({
   folderPath: 'World/Hazards',
 })
-const hazards = hazardsFolder.GetChildren()
+const hazards = hazardsFolder.GetChildren() as BasePart[]
 
 function onHazardTouched(otherPart: BasePart): void {
   const character = otherPart.Parent
@@ -21,6 +21,6 @@ function onHazardTouched(otherPart: BasePart): void {
 
 for (const hazard of hazards) {
   if (hazard.IsA('BasePart')) {
-    ;(hazard as BasePart).Touched.Connect(onHazardTouched)
+    hazard.Touched.Connect(onHazardTouched)
   }
 }
