@@ -27,12 +27,93 @@
       <Properties>
         <string name="Name">TS</string>
       </Properties>
+      <Item class="Folder" referent="4">
+        <Properties>
+          <string name="Name">jumpButtonClickHandler</string>
+        </Properties>
+        <Item class="Script" referent="5">
+          <Properties>
+            <string name="Name">jumpButtonClickHandler</string>
+            <token name="RunContext">2</token>
+            <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
+local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
+local function jumpButtonClickHandler()
+	local player = Players.LocalPlayer
+	local playerGui = player:FindFirstChild("PlayerGui")
+	local increaseJumpPowerFunction = getInstance({
+		instancePath = "ReplicatedStorage/Instances/IncreaseJumpPowerFunction",
+	})
+	local jumpPurchaseGui = getInstance({
+		instancePath = "ReplicatedStorage/Instances/JumpPurchaseGui",
+	})
+	local jumpButton = jumpPurchaseGui:WaitForChild("JumpButton")
+	local function onButtonClicked()
+		local success, purchased = pcall(function()
+			return increaseJumpPowerFunction:InvokeServer()
+		end)
+		if not success then
+			-- purchased will be the error message if success is false
+			error(tostring(purchased))
+		elseif success and not (purchased ~= 0 and purchased == purchased and purchased ~= "" and purchased) then
+			warn("Not enough coins!")
+		end
+	end
+	jumpButton.Activated:Connect(onButtonClicked)
+	-- Add the JumpPurchaseGui to the player's Gui
+	jumpPurchaseGui.Parent = playerGui
+end
+return {
+	default = jumpButtonClickHandler,
+}
+]]></string>
+          </Properties>
+        </Item>
+      </Item>
+      <Item class="Folder" referent="6">
+        <Properties>
+          <string name="Name">utils</string>
+        </Properties>
+        <Item class="Folder" referent="7">
+          <Properties>
+            <string name="Name">getInstance</string>
+          </Properties>
+          <Item class="ModuleScript" referent="8">
+            <Properties>
+              <string name="Name">getInstance</string>
+              <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
+local ReplicatedStorage = _services.ReplicatedStorage
+local Workspace = _services.Workspace
+local function getInstance(props)
+	local pathSegments = string.split(props.instancePath, "/")
+	local rootFolder = pathSegments[1]
+	local currentParent = if rootFolder == "ReplicatedStorage" then ReplicatedStorage elseif rootFolder == "Workspace" then Workspace else nil
+	if not currentParent then
+		error(`Invalid root folder: {rootFolder}. Options are 'Workspace' | 'ReplicatedStorage'`)
+	end
+	for _, segment in pathSegments do
+		currentParent = currentParent:WaitForChild(segment)
+	end
+	local instance = currentParent
+	return instance
+end
+return {
+	default = getInstance,
+}
+]]></string>
+            </Properties>
+          </Item>
+        </Item>
+      </Item>
     </Item>
-    <Item class="Folder" referent="4">
+    <Item class="Folder" referent="9">
       <Properties>
         <string name="Name">rbxts_include</string>
       </Properties>
-      <Item class="ModuleScript" referent="5">
+      <Item class="ModuleScript" referent="10">
         <Properties>
           <string name="Name">Promise</string>
           <string name="Source"><![CDATA[--[[
@@ -2106,7 +2187,7 @@ return Promise
 ]]></string>
         </Properties>
       </Item>
-      <Item class="ModuleScript" referent="6">
+      <Item class="ModuleScript" referent="11">
         <Properties>
           <string name="Name">RuntimeLib</string>
           <string name="Source"><![CDATA[local Promise = require(script.Parent.Promise)
@@ -2372,33 +2453,46 @@ return TS
 ]]></string>
         </Properties>
       </Item>
-      <Item class="Folder" referent="7">
+      <Item class="Folder" referent="12">
         <Properties>
           <string name="Name">node_modules</string>
         </Properties>
-        <Item class="Folder" referent="8">
+        <Item class="Folder" referent="13">
           <Properties>
             <string name="Name">@rbxts</string>
           </Properties>
-          <Item class="Folder" referent="9">
+          <Item class="Folder" referent="14">
             <Properties>
               <string name="Name">compiler-types</string>
             </Properties>
-            <Item class="Folder" referent="10">
+            <Item class="Folder" referent="15">
               <Properties>
                 <string name="Name">types</string>
               </Properties>
             </Item>
           </Item>
-          <Item class="Folder" referent="11">
+          <Item class="ModuleScript" referent="16">
+            <Properties>
+              <string name="Name">services</string>
+              <string name="Source"><![CDATA[return setmetatable({}, {
+	__index = function(self, serviceName)
+		local service = game:GetService(serviceName)
+		self[serviceName] = service
+		return service
+	end,
+})
+]]></string>
+            </Properties>
+          </Item>
+          <Item class="Folder" referent="17">
             <Properties>
               <string name="Name">types</string>
             </Properties>
-            <Item class="Folder" referent="12">
+            <Item class="Folder" referent="18">
               <Properties>
                 <string name="Name">include</string>
               </Properties>
-              <Item class="Folder" referent="13">
+              <Item class="Folder" referent="19">
                 <Properties>
                   <string name="Name">generated</string>
                 </Properties>
@@ -2409,62 +2503,249 @@ return TS
       </Item>
     </Item>
   </Item>
-  <Item class="ServerScriptService" referent="14">
+  <Item class="ServerScriptService" referent="20">
     <Properties>
       <string name="Name">ServerScriptService</string>
     </Properties>
-    <Item class="Folder" referent="15">
+    <Item class="Folder" referent="21">
       <Properties>
         <string name="Name">TS</string>
       </Properties>
-      <Item class="Script" referent="16">
+      <Item class="Script" referent="22">
         <Properties>
           <string name="Name">CoinService</string>
           <token name="RunContext">0</token>
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
 local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
-local Workspace = game:GetService("Workspace")
-local Players = game:GetService("Players")
-local coinsFolder = Workspace:WaitForChild("World"):WaitForChild("Coins")
+local getFolder = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getFolder", "getFolder").default
+local coinsFolder = getFolder({
+	folderPath = "World/Coins",
+})
 local coins = coinsFolder:GetChildren()
+local function onCoinTouched(coin, otherPart)
+	if coin:GetAttribute("Enabled") == true then
+		local character = otherPart.Parent
+		local player = Players:GetPlayerFromCharacter(character)
+		if player then
+			-- Player touched a coin
+			coin.Transparency = 1
+			coin:SetAttribute("Enabled", false)
+			PlayerData:updateValue({
+				player = player,
+				key = PlayerData.COIN_KEY_NAME,
+			})
+			task.wait(10)
+			coin.Transparency = 0
+			coin:SetAttribute("Enabled", true)
+		end
+	end
+end
 -- Setting up event listeners
 for _, coin in coins do
-	local part = coin
-	part:SetAttribute("Enabled", true)
-	part.Touched:Connect(function(otherPart)
-		if coin:GetAttribute("Enabled") == true then
-			local character = otherPart.Parent
-			local player = Players:GetPlayerFromCharacter(character)
-			if player then
-				-- Player touched a coin
-				coin.Transparency = 1
-				coin:SetAttribute("Enabled", false)
-				PlayerData:updateValue({
+	coin:SetAttribute("Enabled", true)
+	coin.Touched:Connect(function(otherPart)
+		return onCoinTouched(coin, otherPart)
+	end)
+end
+local function onPlayerAdded(player)
+	-- Reset player coins to 0
+	PlayerData:resetValue({
+		player = player,
+		key = PlayerData.COIN_KEY_NAME,
+	})
+	player.CharacterAdded:Connect(function(character)
+		-- WaitForChild would stop the player loop, so below should be done in a separate thread
+		task.spawn(function()
+			-- When a player dies
+			local humanoid = character:WaitForChild("Humanoid")
+			humanoid.Died:Connect(function()
+				-- Reset player coins to 0
+				PlayerData:resetValue({
 					player = player,
 					key = PlayerData.COIN_KEY_NAME,
 				})
-				task.wait(10)
-				coin.Transparency = 0
-				coin:SetAttribute("Enabled", true)
-			end
-		end
+			end)
+		end)
 	end)
 end
+-- Initialize any players added before connecting to PlayerAdded event
+for _, player in Players:GetPlayers() do
+	onPlayerAdded(player)
+end
+local function onPlayerRemoved(player)
+	PlayerData:resetValue({
+		player = player,
+		key = PlayerData.COIN_KEY_NAME,
+	})
+end
+Players.PlayerAdded:Connect(onPlayerAdded)
+Players.PlayerRemoving:Connect(onPlayerRemoved)
 ]]></string>
         </Properties>
       </Item>
+      <Item class="Folder" referent="23">
+        <Properties>
+          <string name="Name">HazardService</string>
+        </Properties>
+        <Item class="Script" referent="24">
+          <Properties>
+            <string name="Name">HazardService</string>
+            <token name="RunContext">0</token>
+            <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
+local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
+local hazardsFolder = getInstance({
+	instancePath = "Workspace/World/Hazards",
+})
+local hazards = hazardsFolder:GetChildren()
+local function onHazardTouched(otherPart)
+	local character = otherPart.Parent
+	local player = Players:GetPlayerFromCharacter(character)
+	if player then
+		local _humanoid = character
+		if _humanoid ~= nil then
+			_humanoid = _humanoid:FindFirstChildWhichIsA("Humanoid")
+		end
+		local humanoid = _humanoid
+		if humanoid and humanoid:IsA("Humanoid") then
+			humanoid.Health = 0
+		end
+	end
+end
+for _, hazard in hazards do
+	if hazard:IsA("BasePart") then
+		hazard.Touched:Connect(onHazardTouched)
+	end
+end
+]]></string>
+          </Properties>
+        </Item>
+      </Item>
+      <Item class="Folder" referent="25">
+        <Properties>
+          <string name="Name">JumpService</string>
+        </Properties>
+        <Item class="Script" referent="26">
+          <Properties>
+            <string name="Name">JumpService</string>
+            <token name="RunContext">0</token>
+            <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
+local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard")
+local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
+local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
+local increaseJumpPowerFunction = getInstance({
+	instancePath = "ReplicatedStorage/Instances/IncreaseJumpPowerFunction",
+})
+local JUMP_KEY_NAME = PlayerData.JUMP_KEY_NAME
+local COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
+local JUMP_POWER_INCREMENT = 30
+local JUMP_COIN_COST = 5
+local function updateJumpPower(player, updateFunction)
+	-- Update the jump power table
+	local _fn = updateFunction
+	local _condition = PlayerData:getValue({
+		player = player,
+		key = JUMP_KEY_NAME,
+	})
+	if _condition == nil then
+		_condition = 0
+	end
+	local newJumpPower = _fn(_condition)
+	-- Update the players jump power
+	local character = (player.Character or { player.CharacterAdded:Wait() })
+	local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+	if humanoid then
+		humanoid.JumpPower = newJumpPower
+		-- Update the jump leaderboard
+		Leaderboard:setStat({
+			player = player,
+			statName = JUMP_KEY_NAME,
+			value = newJumpPower,
+		})
+	end
+end
+local function onPurchaseJumpIncrease(player)
+	local _condition = PlayerData:getValue({
+		player = player,
+		key = COIN_KEY_NAME,
+	})
+	if _condition == nil then
+		_condition = 0
+	end
+	local coinAmount = _condition
+	if coinAmount < JUMP_COIN_COST then
+		return false
+	end
+	-- Increase player's jump power
+	local _condition_1 = PlayerData:getValue({
+		player = player,
+		key = JUMP_KEY_NAME,
+	})
+	if _condition_1 == nil then
+		_condition_1 = 0
+	end
+	local oldJumpPower = _condition_1
+	updateJumpPower(player, function()
+		return oldJumpPower + JUMP_POWER_INCREMENT
+	end)
+	-- Update the coin table
+	local newCoinAmount = coinAmount - JUMP_COIN_COST
+	PlayerData:resetValue({
+		player = player,
+		key = COIN_KEY_NAME,
+	})
+	-- Update the coin leaderboard
+	Leaderboard:setStat({
+		player = player,
+		statName = COIN_KEY_NAME,
+		value = newCoinAmount,
+	})
+	return true
+end
+local function onCharacterAdded(player)
+	-- Reset player's jump power when the character is added
+	updateJumpPower(player, function()
+		return 0
+	end)
+end
+-- Initialize any players added before connecting to PlayerAdded event
+for _, player in Players:GetPlayers() do
+	onCharacterAdded(player)
+end
+-- Normal initialization of players from PlayerAdded event
+local function onPlayerAdded(player)
+	player.CharacterAdded:Connect(function()
+		onCharacterAdded(player)
+	end)
+end
+local function onPlayerRemoved(player)
+	updateJumpPower(player, function()
+		return 0
+	end)
+end
+increaseJumpPowerFunction.OnServerInvoke = onPurchaseJumpIncrease
+Players.PlayerAdded:Connect(onPlayerAdded)
+Players.PlayerRemoving:Connect(onPlayerRemoved)
+]]></string>
+          </Properties>
+        </Item>
+      </Item>
     </Item>
   </Item>
-  <Item class="ServerStorage" referent="17">
+  <Item class="ServerStorage" referent="27">
     <Properties>
       <string name="Name">ServerStorage</string>
     </Properties>
-    <Item class="Folder" referent="18">
+    <Item class="Folder" referent="28">
       <Properties>
         <string name="Name">TS</string>
       </Properties>
-      <Item class="ModuleScript" referent="19">
+      <Item class="ModuleScript" referent="29">
         <Properties>
           <string name="Name">Leaderboard</string>
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
@@ -2492,7 +2773,7 @@ return Leaderboard
 ]]></string>
         </Properties>
       </Item>
-      <Item class="ModuleScript" referent="20">
+      <Item class="ModuleScript" referent="30">
         <Properties>
           <string name="Name">PlayerData</string>
           <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
@@ -2516,6 +2797,7 @@ local function getData(props)
 	if _condition == nil then
 		_condition = {
 			Coins = 0,
+			Jump = 0,
 		}
 	end
 	local data = _condition
@@ -2530,6 +2812,7 @@ local function getData(props)
 end
 local PlayerData = {
 	COIN_KEY_NAME = "Coins",
+	JUMP_KEY_NAME = "Jump",
 	getValue = function(self, props)
 		return getData({
 			player = props.player,
@@ -2553,6 +2836,19 @@ local PlayerData = {
 		})
 		return newValue
 	end,
+	resetValue = function(self, props)
+		local data = getData({
+			player = props.player,
+		})
+		local newValue = 0
+		data[props.key] = newValue
+		Leaderboard:setStat({
+			player = props.player,
+			statName = props.key,
+			value = newValue,
+		})
+		return newValue
+	end,
 }
 return PlayerData
 ]]></string>
@@ -2560,34 +2856,34 @@ return PlayerData
       </Item>
     </Item>
   </Item>
-  <Item class="SoundService" referent="21">
+  <Item class="SoundService" referent="31">
     <Properties>
       <string name="Name">SoundService</string>
       <bool name="RespectFilteringEnabled">true</bool>
     </Properties>
   </Item>
-  <Item class="StarterPlayer" referent="22">
+  <Item class="StarterPlayer" referent="32">
     <Properties>
       <string name="Name">StarterPlayer</string>
     </Properties>
-    <Item class="StarterPlayerScripts" referent="23">
+    <Item class="StarterPlayerScripts" referent="33">
       <Properties>
         <string name="Name">StarterPlayerScripts</string>
       </Properties>
-      <Item class="Folder" referent="24">
+      <Item class="Folder" referent="34">
         <Properties>
           <string name="Name">TS</string>
         </Properties>
       </Item>
     </Item>
   </Item>
-  <Item class="Workspace" referent="25">
+  <Item class="Workspace" referent="35">
     <Properties>
       <string name="Name">Workspace</string>
       <bool name="FilteringEnabled">true</bool>
       <bool name="NeedsPivotMigration">false</bool>
     </Properties>
-    <Item class="Part" referent="26">
+    <Item class="Part" referent="36">
       <Properties>
         <string name="Name">Baseplate</string>
         <bool name="Anchored">true</bool>
