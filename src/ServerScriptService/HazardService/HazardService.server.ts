@@ -1,6 +1,10 @@
-import { Players, Workspace } from '@rbxts/services'
+import { Players } from '@rbxts/services'
 
-const hazardsFolder = Workspace.WaitForChild('World').WaitForChild('Hazards') as Folder
+import getFolder from '../../ReplicatedStorage/utils/getFolder/getFolder.js'
+
+const hazardsFolder = getFolder({
+  folderPath: 'World/Hazards',
+})
 const hazards = hazardsFolder.GetChildren()
 
 function onHazardTouched(otherPart: BasePart): void {
