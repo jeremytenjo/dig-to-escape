@@ -16,10 +16,10 @@ const files: SuperCodeGeneratorFilesSchema = [
   },
 ]
 
-const serverScriptService: SuperCodeGeneratorTemplateSchema = {
-  type: 'Server Script Service',
+const script: SuperCodeGeneratorTemplateSchema = {
+  type: 'Script',
   files,
-  usageInstructions: 'Server side only script',
+  usageInstructions: 'Script Instance',
 }
 
-export default serverScriptService
+export default script

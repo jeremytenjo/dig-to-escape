@@ -27,10 +27,10 @@ export default function ${functionName}(props: ${propsName}) {
   },
 ]
 
-const replicateStorageScript: SuperCodeGeneratorTemplateSchema = {
-  type: 'Replicated Storage Script',
+const moduleScript: SuperCodeGeneratorTemplateSchema = {
+  type: 'Module Script',
   files,
-  usageInstructions: 'Can be used  in both client and server',
+  usageInstructions: 'Can be used in both server and client side scripts',
 }
 
-export default replicateStorageScript
+export default moduleScript
