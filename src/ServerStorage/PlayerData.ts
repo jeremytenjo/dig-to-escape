@@ -53,6 +53,22 @@ const PlayerData = {
 
     return newValue
   },
+  resetValue(props: { player: Player; key: string }) {
+    const data = getData({
+      player: props.player,
+    })
+    const newValue = 0
+
+    data[props.key] = newValue
+
+    Leaderboard.setStat({
+      player: props.player,
+      statName: props.key,
+      value: newValue,
+    })
+
+    return newValue
+  },
 }
 
 export = PlayerData

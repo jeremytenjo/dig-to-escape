@@ -56,5 +56,18 @@ local PlayerData = {
 		})
 		return newValue
 	end,
+	resetValue = function(self, props)
+		local data = getData({
+			player = props.player,
+		})
+		local newValue = 0
+		data[props.key] = newValue
+		Leaderboard:setStat({
+			player = props.player,
+			statName = props.key,
+			value = newValue,
+		})
+		return newValue
+	end,
 }
 return PlayerData

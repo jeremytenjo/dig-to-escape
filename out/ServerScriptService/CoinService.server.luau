@@ -32,3 +32,36 @@ for _, coin in coins do
 		return onCoinTouched(coin, otherPart)
 	end)
 end
+local function onPlayerAdded(player)
+	-- Reset player coins to 0
+	PlayerData:resetValue({
+		player = player,
+		key = PlayerData.COIN_KEY_NAME,
+	})
+	player.CharacterAdded:Connect(function(character)
+		-- WaitForChild would stop the player loop, so below should be done in a separate thread
+		task.spawn(function()
+			-- When a player dies
+			local humanoid = character:WaitForChild("Humanoid")
+			humanoid.Died:Connect(function()
+				-- Reset player coins to 0
+				PlayerData:resetValue({
+					player = player,
+					key = PlayerData.COIN_KEY_NAME,
+				})
+			end)
+		end)
+	end)
+end
+-- Initialize any players added before connecting to PlayerAdded event
+for _, player in Players:GetPlayers() do
+	onPlayerAdded(player)
+end
+local function onPlayerRemoved(player)
+	PlayerData:resetValue({
+		player = player,
+		key = PlayerData.COIN_KEY_NAME,
+	})
+end
+Players.PlayerAdded:Connect(onPlayerAdded)
+Players.PlayerRemoving:Connect(onPlayerRemoved)
