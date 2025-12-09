@@ -19,6 +19,7 @@ local function getData(props)
 	if _condition == nil then
 		_condition = {
 			Coins = 0,
+			Jump = 0,
 		}
 	end
 	local data = _condition
@@ -33,6 +34,7 @@ local function getData(props)
 end
 local PlayerData = {
 	COIN_KEY_NAME = "Coins",
+	JUMP_KEY_NAME = "Jump",
 	getValue = function(self, props)
 		return getData({
 			player = props.player,

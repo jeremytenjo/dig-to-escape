@@ -17,7 +17,7 @@ const files: SuperCodeGeneratorFilesSchema = [
 ]
 
 const serverScript: SuperCodeGeneratorTemplateSchema = {
-  type: 'Server Script',
+  type: 'Server Script Service',
   files,
 }
 
