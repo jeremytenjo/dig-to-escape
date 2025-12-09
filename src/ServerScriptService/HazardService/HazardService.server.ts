@@ -13,8 +13,9 @@ function onHazardTouched(otherPart: BasePart): void {
 
   if (player) {
     const humanoid = character?.FindFirstChildWhichIsA('Humanoid')
+
     if (humanoid && humanoid.IsA('Humanoid')) {
-      ;(humanoid as Humanoid).Health = 0
+      humanoid.Health = 0
     }
   }
 }
