@@ -20,8 +20,8 @@ function onButtonClicked() {
         warn('Not enough coins!')
       }
     })
-    .catch((error) => {
-      error(tostring(error))
+    .catch((err) => {
+      error(tostring(err))
     })
 }
 

@@ -39,47 +39,68 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
 local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
-local function jumpButtonClickHandler()
-	local player = Players.LocalPlayer
-	local playerGui = player:FindFirstChild("PlayerGui")
-	local increaseJumpPowerFunction = getInstance({
-		instancePath = "ReplicatedStorage/Instances/IncreaseJumpPowerFunction",
-	})
-	local jumpPurchaseGui = getInstance({
-		instancePath = "ReplicatedStorage/Instances/JumpPurchaseGui",
-	})
-	local jumpButton = jumpPurchaseGui:WaitForChild("JumpButton")
-	local function onButtonClicked()
-		local success, purchased = pcall(function()
-			return increaseJumpPowerFunction:InvokeServer()
-		end)
-		if not success then
-			-- purchased will be the error message if success is false
-			error(tostring(purchased))
-		elseif success and not (purchased ~= 0 and purchased == purchased and purchased ~= "" and purchased) then
+local increaseJumpPowerRemoteFunction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "remoteFunctions", "increaseJumpPowerRemoteFunction", "increaseJumpPowerRemoteFunction").increaseJumpPowerRemoteFunction
+local player = Players.LocalPlayer
+local playerGui = player:FindFirstChild("PlayerGui")
+local jumpPurchaseGui = getInstance({
+	instancePath = "ReplicatedStorage/Instances/JumpPurchaseGui",
+})
+local jumpButton = jumpPurchaseGui:WaitForChild("JumpButton")
+local function onButtonClicked()
+	local res = increaseJumpPowerRemoteFunction.increaseJumpPower:request()
+	res:andThen(function(purchased)
+		if not purchased then
 			warn("Not enough coins!")
 		end
-	end
-	jumpButton.Activated:Connect(onButtonClicked)
-	-- Add the JumpPurchaseGui to the player's Gui
-	jumpPurchaseGui.Parent = playerGui
+	end):catch(function(err)
+		error(tostring(err))
+	end)
 end
-return {
-	default = jumpButtonClickHandler,
-}
+jumpButton.Activated:Connect(onButtonClicked)
+-- Add the JumpPurchaseGui to the player's Gui
+jumpPurchaseGui.Parent = playerGui
 ]]></string>
           </Properties>
         </Item>
       </Item>
       <Item class="Folder" referent="6">
         <Properties>
-          <string name="Name">utils</string>
+          <string name="Name">remoteFunctions</string>
         </Properties>
         <Item class="Folder" referent="7">
           <Properties>
-            <string name="Name">getInstance</string>
+            <string name="Name">increaseJumpPowerRemoteFunction</string>
           </Properties>
           <Item class="ModuleScript" referent="8">
+            <Properties>
+              <string name="Name">increaseJumpPowerRemoteFunction</string>
+              <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local _remo = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "remo", "src")
+local createRemotes = _remo.createRemotes
+local remote = _remo.remote
+local t = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "t", "lib", "ts").t
+local booleanValidator = t.boolean
+local increaseJumpPowerRemoteFunction = createRemotes({
+	increaseJumpPower = remote().returns(booleanValidator),
+})
+return {
+	increaseJumpPowerRemoteFunction = increaseJumpPowerRemoteFunction,
+}
+]]></string>
+            </Properties>
+          </Item>
+        </Item>
+      </Item>
+      <Item class="Folder" referent="9">
+        <Properties>
+          <string name="Name">utils</string>
+        </Properties>
+        <Item class="Folder" referent="10">
+          <Properties>
+            <string name="Name">getInstance</string>
+          </Properties>
+          <Item class="ModuleScript" referent="11">
             <Properties>
               <string name="Name">getInstance</string>
               <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
@@ -90,6 +111,7 @@ local Workspace = _services.Workspace
 local function getInstance(props)
 	local pathSegments = string.split(props.instancePath, "/")
 	local rootFolder = pathSegments[1]
+	table.remove(pathSegments, 1)
 	local currentParent = if rootFolder == "ReplicatedStorage" then ReplicatedStorage elseif rootFolder == "Workspace" then Workspace else nil
 	if not currentParent then
 		error(`Invalid root folder: {rootFolder}. Options are 'Workspace' | 'ReplicatedStorage'`)
@@ -109,11 +131,11 @@ return {
         </Item>
       </Item>
     </Item>
-    <Item class="Folder" referent="9">
+    <Item class="Folder" referent="12">
       <Properties>
         <string name="Name">rbxts_include</string>
       </Properties>
-      <Item class="ModuleScript" referent="10">
+      <Item class="ModuleScript" referent="13">
         <Properties>
           <string name="Name">Promise</string>
           <string name="Source"><![CDATA[--[[
@@ -2187,7 +2209,7 @@ return Promise
 ]]></string>
         </Properties>
       </Item>
-      <Item class="ModuleScript" referent="11">
+      <Item class="ModuleScript" referent="14">
         <Properties>
           <string name="Name">RuntimeLib</string>
           <string name="Source"><![CDATA[local Promise = require(script.Parent.Promise)
@@ -2453,25 +2475,1492 @@ return TS
 ]]></string>
         </Properties>
       </Item>
-      <Item class="Folder" referent="12">
+      <Item class="Folder" referent="15">
         <Properties>
           <string name="Name">node_modules</string>
         </Properties>
-        <Item class="Folder" referent="13">
+        <Item class="Folder" referent="16">
           <Properties>
             <string name="Name">@rbxts</string>
           </Properties>
-          <Item class="Folder" referent="14">
+          <Item class="Folder" referent="17">
             <Properties>
               <string name="Name">compiler-types</string>
             </Properties>
-            <Item class="Folder" referent="15">
+            <Item class="Folder" referent="18">
               <Properties>
                 <string name="Name">types</string>
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="16">
+          <Item class="Folder" referent="19">
+            <Properties>
+              <string name="Name">remo</string>
+            </Properties>
+            <Item class="ModuleScript" referent="20">
+              <Properties>
+                <string name="Name">src</string>
+                <string name="Source"><![CDATA[local Promise = require(script.Promise)
+local types = require(script.types)
+local createRemotes = require(script.createRemotes)
+local builder = require(script.builder)
+local getSender = require(script.getSender)
+local loggerMiddleware = require(script.middleware.loggerMiddleware)
+local throttleMiddleware = require(script.middleware.throttleMiddleware)
+
+export type Promise<T> = Promise.Promise<T>
+export type PromiseConstructor = Promise.PromiseConstructor
+
+export type Middleware = types.Middleware
+
+export type RemoteBuilder = types.RemoteBuilder
+export type RemoteBuilderMetadata = types.RemoteBuilderMetadata
+export type RemoteBuilders = types.RemoteBuilders
+
+export type Remotes<Map> = types.Remotes<Map>
+export type RemoteMap = types.RemoteMap
+export type RemoteType = "event" | "function"
+
+export type Remote<Args... = ...any> = types.Remote<Args...>
+export type ClientToServer<Args... = ...any> = types.ClientToServer<Args...>
+export type ServerToClient<Args... = ...any> = types.ServerToClient<Args...>
+
+export type AsyncRemote<Args... = ...any, Returns... = ...any> = types.AsyncRemote<Args..., Returns...>
+export type ServerAsync<Args... = ...any, Returns... = ...any> = types.ServerAsync<Args..., Returns...>
+export type ClientAsync<Args... = ...any, Returns... = ...any> = types.ClientAsync<Args..., Returns...>
+
+--- @deprecated 1.2, use `ServerAsync` instead.
+export type ClientToServerAsync<Returns = any, Args... = ...any> = types.ServerAsync<Args..., (Returns)>
+
+--- @deprecated 1.2, use `ClientAsync` instead.
+export type ServerToClientAsync<Returns = any, Args... = ...any> = types.ClientAsync<Args..., (Returns)>
+
+return {
+	remote = builder.remote,
+	namespace = builder.namespace,
+	createRemotes = createRemotes,
+	loggerMiddleware = loggerMiddleware,
+	throttleMiddleware = throttleMiddleware,
+	getSender = getSender,
+}
+]]></string>
+              </Properties>
+              <Item class="ModuleScript" referent="21">
+                <Properties>
+                  <string name="Name">Promise</string>
+                  <string name="Source"><![CDATA[local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local include = script:FindFirstAncestor("rbxts_include")
+	or script:FindFirstAncestor("include")
+	or ReplicatedStorage:FindFirstChild("rbxts_include")
+	or script.Parent.Parent
+
+export type PromiseStatus = "Started" | "Resolved" | "Rejected" | "Cancelled"
+
+export type PromiseConstructor = {
+	Status: {
+		Started: "Started",
+		Resolved: "Resolved",
+		Rejected: "Rejected",
+		Cancelled: "Cancelled",
+	},
+	new: <T...>(
+		resolver: (resolve: (T...) -> (), reject: (any) -> (), onCancel: (abortHandler: () -> ()) -> ()) -> ()
+	) -> Promise<T...>,
+	defer: <T...>(
+		resolver: (resolve: (T...) -> (), reject: (any) -> (), onCancel: (abortHandler: () -> ()) -> ()) -> ()
+	) -> Promise<T...>,
+	resolve: <T>(value: T | Promise<T>, ...any) -> Promise<T>,
+	reject: (value: any) -> Promise<never>,
+	try: <T, A...>(callback: (A...) -> T, A...) -> Promise<T>,
+	all: <T>(promises: { Promise<T> }) -> Promise<{ T }>,
+	fold: <T, U>(
+		promises: { T | Promise<T> },
+		reducer: (U, T, number) -> U | Promise<U>,
+		initialValue: U
+	) -> Promise<U>,
+	some: <T>(promises: { Promise<T> }, count: number) -> Promise<{ T }>,
+	any: <T>(promises: { Promise<T> }) -> Promise<T>,
+	allSettled: (promises: { Promise<any> }) -> Promise<{ PromiseStatus }>,
+	race: <T>(promises: { Promise<T> }) -> Promise<T>,
+	each: <T, U>(list: { T | Promise<T> }, predicate: (T, number) -> U | Promise<U>) -> Promise<{ U }>,
+	is: (value: any) -> boolean,
+	promisify: <R, A...>(fn: (A...) -> R) -> (A...) -> Promise<R>,
+	delay: (seconds: number) -> Promise<number>,
+	fromEvent: <T>(event: RBXScriptSignal<T>, predicate: ((T) -> boolean)?) -> Promise<T>,
+}
+
+export type _Promise = {
+	timeout: (self: _Promise, seconds: number, rejectionValue: unknown) -> _Promise,
+	getStatus: (self: _Promise) -> PromiseStatus,
+	andThen: (self: _Promise, successHandler: (...any) -> any, failureHandler: ((any) -> any)?) -> _Promise,
+	catch: (self: _Promise, failureHandler: (...any) -> any) -> _Promise,
+	tap: (self: _Promise, successHandler: (...any) -> ()) -> _Promise,
+	andThenCall: <T...>(self: _Promise, successHandler: (T...) -> any, T...) -> _Promise,
+	andThenReturn: (self: _Promise, value: any) -> _Promise,
+	cancel: (self: _Promise) -> (),
+	finally: (self: _Promise, callback: (status: PromiseStatus) -> any) -> _Promise,
+	finallyCall: <T...>(self: _Promise, callback: (T...) -> any, T...) -> _Promise,
+	finallyReturn: (self: _Promise, value: any) -> _Promise,
+	awaitStatus: (self: _Promise) -> (PromiseStatus, ...any),
+	await: (self: _Promise) -> (boolean, ...any),
+	expect: (self: _Promise) -> ...any,
+	now: (self: _Promise, rejectionValue: unknown) -> _Promise,
+}
+
+export type Promise<T... = ...any> = {
+	timeout: (self: Promise<T...>, seconds: number, rejectionValue: unknown) -> Promise<T...>,
+	getStatus: (self: Promise<T...>) -> PromiseStatus,
+	andThen: (self: Promise<T...>, successHandler: (T...) -> (), failureHandler: ((...any) -> ())?) -> _Promise,
+	catch: (self: Promise<T...>, failureHandler: (any) -> ()) -> Promise<T...>,
+	tap: (self: Promise<T...>, successHandler: (T...) -> ()) -> Promise<T...>,
+	andThenCall: <U...>(self: Promise<T...>, successHandler: (U...) -> (), U...) -> Promise<T...>,
+	andThenReturn: (self: Promise<T...>, value: any) -> _Promise,
+	cancel: (self: Promise<T...>) -> (),
+	finally: (self: Promise<T...>, callback: (status: PromiseStatus) -> ()) -> _Promise,
+	finallyCall: <U...>(self: Promise<T...>, callback: (U...) -> (), U...) -> _Promise,
+	finallyReturn: (self: Promise<T...>, value: any) -> _Promise,
+	awaitStatus: (self: Promise<T...>) -> (PromiseStatus, T...),
+	await: (self: Promise<T...>) -> (boolean, T...),
+	expect: (self: Promise<T...>) -> T...,
+	now: (self: Promise<T...>, rejectionValue: unknown) -> Promise<T...>,
+}
+
+if include and include:FindFirstChild("Promise") then
+	return require(include.Promise) :: PromiseConstructor
+else
+	error(`Could not find Promise from {script:GetFullName()}`)
+end
+]]></string>
+                </Properties>
+              </Item>
+              <Item class="ModuleScript" referent="22">
+                <Properties>
+                  <string name="Name">builder</string>
+                  <string name="Source"><![CDATA[local types = require(script.Parent.types)
+
+local function remote(...: types.Validator): types.RemoteBuilder
+	local metadata: types.RemoteBuilderMetadata = {
+		parameters = { ... },
+		returns = {},
+		middleware = {},
+		unreliable = false,
+	}
+
+	local self = {
+		type = "event",
+		metadata = metadata,
+	} :: types.RemoteBuilder
+
+	function self.returns(...)
+		self.type = "function"
+		metadata.returns = { ... }
+		return self
+	end
+
+	function self.middleware(...)
+		for index = 1, select("#", ...) do
+			table.insert(metadata.middleware, (select(index, ...)))
+		end
+		return self
+	end
+
+	function self.unreliable()
+		metadata.unreliable = true
+		return self
+	end
+
+	return self
+end
+
+local function namespace(remotes: types.RemoteBuilders): types.RemoteNamespace
+	return {
+		type = "namespace",
+		remotes = remotes,
+	}
+end
+
+return {
+	remote = remote,
+	namespace = namespace,
+}
+]]></string>
+                </Properties>
+              </Item>
+              <Item class="ModuleScript" referent="23">
+                <Properties>
+                  <string name="Name">client</string>
+                  <string name="Source"><![CDATA[local types = require(script.Parent.types)
+local createAsyncRemote = require(script.createAsyncRemote)
+local createRemote = require(script.createRemote)
+
+local function createRemotes(builders: types.RemoteBuilders, namespace: string?): types.RemoteMap
+	local remotes: types.RemoteMap = {}
+	local scope = if namespace then `{namespace}.` else ""
+
+	for name, builder in builders do
+		remotes[name] = if builder.type == "namespace"
+			then createRemotes(builder.remotes, scope .. name)
+			elseif builder.type == "event" then createRemote(scope .. name, builder)
+			elseif builder.type == "function" then createAsyncRemote(scope .. name, builder)
+			else error(`Invalid remote type "{builder.type}"`)
+	end
+
+	return remotes
+end
+
+return {
+	createRemotes = createRemotes,
+}
+]]></string>
+                </Properties>
+                <Item class="ModuleScript" referent="24">
+                  <Properties>
+                    <string name="Name">createAsyncRemote</string>
+                    <string name="Source"><![CDATA[local types = require(script.Parent.Parent.types)
+local compose = require(script.Parent.Parent.utils.compose)
+local instances = require(script.Parent.Parent.utils.instances)
+local unwrap = require(script.Parent.Parent.utils.unwrap)
+local testRemote = require(script.Parent.Parent.utils.testRemote)
+
+local function createAsyncRemote(name: string, builder: types.RemoteBuilder): types.AsyncRemote
+	local test = testRemote.createTestAsyncRemote()
+	local connected = true
+	local handler = function() end :: (...any) -> ()
+
+	local self = {
+		name = name,
+		type = "function",
+		test = test,
+	} :: types.AsyncRemote
+
+	function self:onRequest(callback)
+		assert(connected, `Cannot use destroyed async remote '{name}'`)
+		handler = callback
+	end
+
+	function self:request(...)
+		assert(connected, `Cannot use destroyed async remote '{name}'`)
+
+		local arguments = table.pack(...)
+
+		return instances.promiseRemoteFunction(name):andThen(function(instance)
+			local response = if test:hasRequestHandler()
+				then table.pack(test:_request(table.unpack(arguments, 1, arguments.n))) :: never
+				else table.pack(instance:InvokeServer(table.unpack(arguments, 1, arguments.n)))
+
+			for index, validator in builder.metadata.returns do
+				local value = response[index]
+				assert(validator(value), `Invalid return value #{index} for async remote '{name}': got {value}`)
+			end
+
+			return table.unpack(response, 1, response.n)
+		end, function(error): ()
+			warn(`Failed to invoke async remote '{name}': {error}`)
+		end) :: any
+	end
+
+	function self:destroy()
+		if connected then
+			connected = false
+			handler = function() end :: (...any) -> ()
+		end
+	end
+
+	local invoke = compose(builder.metadata.middleware)(function(...: any): any
+		return unwrap(handler(...))
+	end, self)
+
+	instances.promiseRemoteFunction(name):andThen(function(instance): ()
+		if not connected then
+			return
+		end
+
+		function instance.OnClientInvoke(...)
+			assert(connected, `Async remote '{name}' was invoked after it was destroyed`)
+
+			for index, validator in builder.metadata.parameters do
+				local value = select(index, ...)
+				assert(validator(value), `Invalid parameter #{index} for async remote '{name}': got {value}`)
+			end
+
+			return invoke(...)
+		end
+	end, function(error): ()
+		warn(`Failed to initialize async remote '{name}': {error}`)
+	end)
+
+	setmetatable(self :: {}, {
+		__call = self.request,
+	})
+
+	return self
+end
+
+return createAsyncRemote
+]]></string>
+                  </Properties>
+                </Item>
+                <Item class="ModuleScript" referent="25">
+                  <Properties>
+                    <string name="Name">createRemote</string>
+                    <string name="Source"><![CDATA[local Promise = require(script.Parent.Parent.Promise)
+local types = require(script.Parent.Parent.types)
+
+local compose = require(script.Parent.Parent.utils.compose)
+local instances = require(script.Parent.Parent.utils.instances)
+local testRemote = require(script.Parent.Parent.utils.testRemote)
+
+local function createRemote(name: string, builder: types.RemoteBuilder): types.Remote
+	local connection: RBXScriptConnection?
+	local test = testRemote.createTestRemote()
+	local connected = true
+
+	local listeners: { (...any) -> () } = {}
+	local nextListenerId = 0
+	local queue: { { any } } = {}
+
+	local function noop()
+		error(`Attempted to use a server-only function on the client remote '{name}'`)
+	end
+
+	local self = {
+		name = name,
+		type = "event" :: "event",
+		test = test,
+		fireAll = noop,
+		fireAllExcept = noop,
+		firePlayers = noop,
+	} :: types.Remote
+
+	function self:connect(listener)
+		assert(connected, `Cannot use destroyed remote '{name}'`)
+
+		local id = nextListenerId
+		nextListenerId += 1
+		listeners[id] = listener
+
+		if #queue > 0 then
+			for _, args in queue do
+				task.spawn(listener, table.unpack(args))
+			end
+			table.clear(queue)
+		end
+
+		return function()
+			listeners[id] = nil
+		end
+	end
+
+	function self:promise(predicate, mapper)
+		assert(connected, `Cannot promise destroyed event remote '{name}'`)
+
+		return Promise.new(function(resolve, _, onCancel)
+			local disconnect
+			disconnect = self:connect(function(...)
+				if not predicate or predicate(...) then
+					disconnect()
+					if mapper then
+						resolve(mapper(...))
+					else
+						resolve(...)
+					end
+				end
+			end)
+
+			onCancel(disconnect)
+		end)
+	end
+
+	function self:fire(...)
+		assert(connected, `Cannot use destroyed remote '{name}'`)
+
+		local arguments = table.pack(...)
+
+		instances.promiseRemoteEvent(name):andThen(function(instance)
+			instance:FireServer(table.unpack(arguments, 1, arguments.n))
+			test:_fire(table.unpack(arguments, 1, arguments.n))
+		end, function(error): ()
+			warn(`Failed to fire remote '{name}': {error}`)
+		end)
+	end
+
+	function self:destroy()
+		if not connected then
+			return
+		end
+
+		connected = false
+
+		if connection then
+			connection:Disconnect()
+			connection = nil
+		end
+
+		table.clear(listeners)
+		table.clear(queue)
+	end
+
+	local emit = compose(builder.metadata.middleware)(function(...): ()
+		if next(listeners) then
+			for _, listener in listeners do
+				task.spawn(listener, ...)
+			end
+		else
+			table.insert(queue, table.pack(...))
+		end
+	end, self)
+
+	instances.promiseRemoteEvent(name):andThen(function(instance)
+		if not connected then
+			return
+		end
+
+		connection = instance.OnClientEvent:Connect(function(...)
+			for index, validator in builder.metadata.parameters do
+				local value = select(index, ...)
+				assert(validator(value), `Invalid parameter #{index} for remote '{name}': got {value}`)
+			end
+
+			emit(...)
+		end)
+	end, function(error): ()
+		warn(`Failed to initialize remote '{name}': {error}`)
+	end)
+
+	setmetatable(self :: {}, {
+		__call = self.fire,
+	})
+
+	return self
+end
+
+return createRemote
+]]></string>
+                  </Properties>
+                </Item>
+              </Item>
+              <Item class="ModuleScript" referent="26">
+                <Properties>
+                  <string name="Name">constants</string>
+                  <string name="Source"><![CDATA[local RunService = game:GetService("RunService")
+
+return {
+	IS_EDIT = RunService:IsStudio() and not RunService:IsRunning(),
+	IS_STUDIO = RunService:IsStudio(),
+	IS_CLIENT = RunService:IsClient(),
+	IS_SERVER = RunService:IsServer(),
+	IS_TEST = false,
+}
+]]></string>
+                </Properties>
+              </Item>
+              <Item class="Configuration" referent="27">
+                <Properties>
+                  <string name="Name">container</string>
+                </Properties>
+              </Item>
+              <Item class="ModuleScript" referent="28">
+                <Properties>
+                  <string name="Name">createRemotes</string>
+                  <string name="Source"><![CDATA[local types = require(script.Parent.types)
+local constants = require(script.Parent.constants)
+local client = require(script.Parent.client)
+local server = require(script.Parent.server)
+
+local function deepApplyMiddleware(builders: types.RemoteBuilders, ...: types.Middleware)
+	for _, builder in builders do
+		if builder.type == "namespace" then
+			deepApplyMiddleware(builder.remotes, ...)
+		else
+			builder.middleware(...)
+		end
+	end
+end
+
+local function createRemotes<Map>(builders: types.RemoteBuilders, ...: types.Middleware): types.Remotes<Map>
+	local self = {} :: types.Remotes<Map>
+
+	deepApplyMiddleware(builders, ...)
+
+	local map = if constants.IS_SERVER then server.createRemotes(builders) else client.createRemotes(builders)
+
+	local function recursiveDestroy(values: any)
+		for _, value in values do
+			if type(value) ~= "table" then
+				return
+			end
+
+			if value.destroy then
+				value:destroy()
+			else
+				recursiveDestroy(value)
+			end
+		end
+	end
+
+	function self:destroy()
+		recursiveDestroy(map)
+	end
+
+	for key, value in map do
+		(self :: {})[key] = value
+	end
+
+	return self
+end
+
+return createRemotes
+]]></string>
+                </Properties>
+              </Item>
+              <Item class="ModuleScript" referent="29">
+                <Properties>
+                  <string name="Name">getSender</string>
+                  <string name="Source"><![CDATA[local constants = require(script.Parent.constants)
+
+local function getSender(player: any): Player?
+	if
+		constants.IS_SERVER
+		and (type(player) == "table" or typeof(player) == "Instance")
+		and player.ClassName == "Player"
+	then
+		return player :: Player
+	end
+	return nil
+end
+
+return getSender
+]]></string>
+                </Properties>
+              </Item>
+              <Item class="Folder" referent="30">
+                <Properties>
+                  <string name="Name">middleware</string>
+                </Properties>
+                <Item class="ModuleScript" referent="31">
+                  <Properties>
+                    <string name="Name">loggerMiddleware</string>
+                    <string name="Source"><![CDATA[local types = require(script.Parent.Parent.types)
+local constants = require(script.Parent.Parent.constants)
+
+local SCOPE = constants.IS_SERVER and "client → server" or "server → client"
+
+local function stringify(...)
+	local output = {}
+
+	for index = 1, select("#", ...) do
+		local value = select(index, ...)
+
+		table.insert(output, `{if index > 1 then "\n" else ""}\t{index}.`)
+
+		if type(value) == "string" then
+			table.insert(output, string.format("%q", value))
+		elseif type(value) == "userdata" then
+			table.insert(output, `{typeof(value)}({value})`)
+		else
+			table.insert(output, value)
+		end
+	end
+
+	if #output == 0 then
+		return "\t1. (void)\n"
+	end
+
+	table.insert(output, "\n")
+
+	return table.unpack(output)
+end
+
+local loggerMiddleware: types.Middleware = function(next, remote)
+	return function(...)
+		if remote.type == "event" then
+			print(`\n🟡 ({SCOPE}) {remote.name}\n\n`, stringify(...))
+			return next(...)
+		end
+
+		print(`\n🟣 ({SCOPE} async) {remote.name}\n`)
+		print(`Parameters\n`, stringify(...))
+
+		local results = table.pack(next(...))
+
+		print("Returns\n", stringify(table.unpack(results, 1, results.n)))
+
+		return table.unpack(results, 1, results.n)
+	end
+end
+
+return loggerMiddleware
+]]></string>
+                  </Properties>
+                </Item>
+                <Item class="ModuleScript" referent="32">
+                  <Properties>
+                    <string name="Name">throttleMiddleware</string>
+                    <string name="Source"><![CDATA[local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local Promise = require(script.Parent.Parent.Promise)
+local types = require(script.Parent.Parent.types)
+local constants = require(script.Parent.Parent.constants)
+local getSender = require(script.Parent.Parent.getSender)
+
+local SERVER = "(SERVER)"
+
+export type ThrottleMiddlewareOptions = {
+	throttle: number?,
+	trailing: boolean?,
+	[any]: any,
+} | number
+
+local function timeout<T...>(callback: (T...) -> (), amount: number): () -> ()
+	local timer = 0
+	local connection
+
+	connection = RunService.Heartbeat:Connect(function(deltaTime)
+		timer += deltaTime
+		if timer >= amount then
+			connection:Disconnect()
+			callback()
+		end
+	end)
+
+	return function()
+		connection:Disconnect()
+	end
+end
+
+local function throttleMiddleware(options: ThrottleMiddlewareOptions?): types.Middleware
+	local throttle = 0.1
+	local trailing = false
+
+	if type(options) == "number" then
+		throttle = options
+	elseif type(options) == "table" then
+		throttle = if options.throttle ~= nil then options.throttle else throttle
+		trailing = if options.trailing ~= nil then options.trailing else trailing
+	end
+
+	local eventMiddleware: types.Middleware = function(next, remote)
+		local timeouts: { [string]: () -> () } = {}
+		local cache: { [string]: { [number]: unknown, n: number } } = {}
+
+		return function(...)
+			local sender = getSender(...)
+			local senderId = if sender then sender.Name else SERVER
+			local timeoutId = timeouts[senderId]
+
+			cache[senderId] = table.pack(...)
+
+			if timeoutId then
+				if not constants.IS_TEST and constants.IS_STUDIO then
+					warn(`🔴 throttled remote '{remote.name}' fired by '{senderId}'`)
+				end
+				return
+			end
+
+			timeouts[senderId] = timeout(function()
+				local arguments = cache[senderId]
+				timeouts[senderId] = nil
+				cache[senderId] = nil
+
+				if trailing then
+					next(table.unpack(arguments, 1, arguments.n))
+				end
+			end, throttle)
+
+			return next(...)
+		end
+	end
+
+	local asyncMiddleware: types.Middleware = function(next, remote)
+		local timeouts: { [string]: () -> () } = {}
+		local cache: { [string]: { [number]: unknown, n: number } } = {}
+		local pending: { [string]: boolean } = {}
+		local watching: { [string]: Promise.Promise } = {}
+
+		local function clearCacheOnPlayerDisconnect(sender: Player)
+			if watching[sender.Name] then
+				return
+			end
+
+			watching[sender.Name] = Promise.fromEvent(Players.PlayerRemoving, function(player)
+				return player == sender
+			end):andThen(function()
+				timeouts[sender.Name] = nil
+				cache[sender.Name] = nil
+				pending[sender.Name] = nil
+				watching[sender.Name] = nil
+			end)
+		end
+
+		return function(...)
+			local sender = getSender(...)
+			local senderId = if sender then sender.Name else SERVER
+
+			local timeoutId = timeouts[senderId]
+			local isPending = pending[senderId]
+
+			if sender then
+				clearCacheOnPlayerDisconnect(sender)
+			end
+
+			if timeoutId or isPending then
+				-- async remotes should try to return the previous value before
+				-- rejecting the request
+				local results =
+					assert(cache[senderId], `🔴 throttled remote '{remote.name}' requested by '{senderId}'`)
+				return table.unpack(results, 1, results.n)
+			end
+
+			pending[senderId] = true
+
+			local ok, results = pcall(function(...)
+				return table.pack(next(...))
+			end, ...)
+
+			pending[senderId] = nil
+
+			timeouts[senderId] = timeout(function()
+				timeouts[senderId] = nil
+			end, throttle)
+
+			assert(ok, results)
+
+			cache[senderId] = results
+
+			return table.unpack(results, 1, results.n)
+		end
+	end
+
+	return function(next, remote)
+		if remote.type == "event" then
+			return eventMiddleware(next, remote)
+		elseif remote.type == "function" then
+			return asyncMiddleware(next, remote)
+		else
+			return next
+		end
+	end
+end
+
+return throttleMiddleware
+]]></string>
+                  </Properties>
+                </Item>
+              </Item>
+              <Item class="ModuleScript" referent="33">
+                <Properties>
+                  <string name="Name">server</string>
+                  <string name="Source"><![CDATA[local types = require(script.Parent.types)
+local createAsyncRemote = require(script.createAsyncRemote)
+local createRemote = require(script.createRemote)
+
+local function createRemotes(builders: types.RemoteBuilders, namespace: string?): types.RemoteMap
+	local remotes: types.RemoteMap = {}
+	local scope = if namespace then `{namespace}.` else ""
+
+	for name, builder in builders do
+		remotes[name] = if builder.type == "namespace"
+			then createRemotes(builder.remotes, scope .. name)
+			elseif builder.type == "event" then createRemote(scope .. name, builder)
+			elseif builder.type == "function" then createAsyncRemote(scope .. name, builder)
+			else error(`Invalid remote type "{builder.type}"`)
+	end
+
+	return remotes
+end
+
+return {
+	createRemotes = createRemotes,
+}
+]]></string>
+                </Properties>
+                <Item class="ModuleScript" referent="34">
+                  <Properties>
+                    <string name="Name">createAsyncRemote</string>
+                    <string name="Source"><![CDATA[local Promise = require(script.Parent.Parent.Promise)
+local types = require(script.Parent.Parent.types)
+
+local compose = require(script.Parent.Parent.utils.compose)
+local instances = require(script.Parent.Parent.utils.instances)
+local unwrap = require(script.Parent.Parent.utils.unwrap)
+local testRemote = require(script.Parent.Parent.utils.testRemote)
+
+local function createAsyncRemote(name: string, builder: types.RemoteBuilder): types.AsyncRemote
+	assert(builder.metadata.returns, `Missing return value validator for async remote '{name}'`)
+
+	local instance = instances.createRemoteFunction(name)
+	local test = testRemote.createTestAsyncRemote()
+	local connected = true
+	local handler = function() end :: (...any) -> ()
+
+	local self = {
+		name = name,
+		type = "function" :: "function",
+		test = test,
+	} :: types.AsyncRemote
+
+	function self:onRequest(callback)
+		assert(connected, `Cannot use destroyed async remote '{name}'`)
+		handler = callback
+	end
+
+	function self:request(player, ...)
+		assert(connected, `Cannot use destroyed async remote '{name}'`)
+
+		return Promise.try(function(...)
+			local response = if test:hasRequestHandler()
+				then table.pack(test:_request(player, ...)) :: never
+				else table.pack(instance:InvokeClient(player, ...))
+
+			for index, validator in builder.metadata.returns do
+				local value = response[index]
+				assert(validator(value), `Invalid return value #{index} for async remote '{name}': got {value}`)
+			end
+
+			return table.unpack(response, 1, response.n)
+		end, ...)
+	end
+
+	function self:destroy()
+		if connected then
+			connected = false
+			instance:Destroy()
+		end
+	end
+
+	local invoke = compose(builder.metadata.middleware)(function(...)
+		return unwrap(handler(...))
+	end, self)
+
+	function instance.OnServerInvoke(player: Player, ...)
+		for index, validator in builder.metadata.parameters do
+			local value = select(index, ...)
+			assert(validator(value), `Invalid parameter #{index} for async remote '{name}': got {value}`)
+		end
+
+		return invoke(player, ...)
+	end
+
+	setmetatable(self :: {}, {
+		__call = self.request,
+	})
+
+	return self
+end
+
+return createAsyncRemote
+]]></string>
+                  </Properties>
+                </Item>
+                <Item class="ModuleScript" referent="35">
+                  <Properties>
+                    <string name="Name">createRemote</string>
+                    <string name="Source"><![CDATA[local Players = game:GetService("Players")
+
+local Promise = require(script.Parent.Parent.Promise)
+local types = require(script.Parent.Parent.types)
+
+local compose = require(script.Parent.Parent.utils.compose)
+local instances = require(script.Parent.Parent.utils.instances)
+local testRemote = require(script.Parent.Parent.utils.testRemote)
+
+local function createRemote(name: string, builder: types.RemoteBuilder): types.Remote
+	local instance = instances.createRemoteEvent(name, builder.metadata.unreliable)
+	local test = testRemote.createTestRemote()
+	local connected = true
+
+	local listeners: { (...any) -> () } = {}
+	local nextListenerId = 0
+
+	local self = {
+		name = name,
+		type = "event" :: "event",
+		test = test,
+	} :: types.Remote
+
+	function self:connect(listener)
+		assert(connected, `Cannot connect to destroyed event remote '{name}'`)
+
+		local id = nextListenerId
+		nextListenerId += 1
+		listeners[id] = listener
+
+		return function()
+			listeners[id] = nil
+		end
+	end
+
+	function self:promise(predicate, mapper)
+		assert(connected, `Cannot promise destroyed event remote '{name}'`)
+
+		return Promise.new(function(resolve, _, onCancel)
+			local disconnect
+			disconnect = self:connect(function(...)
+				if not predicate or predicate(...) then
+					disconnect()
+					if mapper then
+						resolve(mapper(...))
+					else
+						resolve(...)
+					end
+				end
+			end)
+
+			onCancel(disconnect)
+		end)
+	end
+
+	function self:fire(player, ...)
+		assert(connected, `Cannot fire destroyed event remote '{name}'`)
+		instance:FireClient(player, ...)
+		test:_fire(player, ...) -- do not risk omitting first argument
+	end
+
+	function self:fireAll(...)
+		assert(connected, `Cannot fire destroyed event remote '{name}'`)
+		instance:FireAllClients(...)
+		test:_fire(...)
+	end
+
+	function self:fireAllExcept(exception, ...)
+		assert(connected, `Cannot fire destroyed event remote '{name}'`)
+		for _, player in Players:GetPlayers() do
+			if player ~= exception then
+				instance:FireClient(player, ...)
+			end
+		end
+		test:_fire(...)
+	end
+
+	function self:firePlayers(players, ...)
+		assert(connected, `Cannot fire destroyed event remote '{name}'`)
+		for _, player in players do
+			instance:FireClient(player, ...)
+		end
+		test:_fire(...)
+	end
+
+	function self:destroy()
+		if not connected then
+			return
+		end
+
+		connected = false
+
+		instance:Destroy()
+		instance = nil :: never
+
+		table.clear(listeners)
+	end
+
+	local emit = compose(builder.metadata.middleware)(function(...): ()
+		for _, listener in listeners do
+			task.spawn(listener, ...)
+		end
+	end, self)
+
+	instance.OnServerEvent:Connect(function(player: Player, ...)
+		for index, validator in builder.metadata.parameters do
+			local value = select(index, ...)
+			assert(validator(value), `Invalid parameter #{index} for event remote '{name}': got {value}`)
+		end
+
+		emit(player, ...)
+	end)
+
+	setmetatable(self :: {}, {
+		__call = self.fire,
+	})
+
+	return self
+end
+
+return createRemote
+]]></string>
+                  </Properties>
+                </Item>
+              </Item>
+              <Item class="ModuleScript" referent="36">
+                <Properties>
+                  <string name="Name">types</string>
+                  <string name="Source"><![CDATA[local Promise = require(script.Parent.Promise)
+
+type Cleanup = () -> ()
+
+type Promise<T...> = Promise.Promise<T...>
+
+export type Validator = any
+
+export type Middleware = (next: (...any) -> ...any, remote: AnyRemote) -> (...any) -> ...any
+
+export type RemoteBuilder = {
+	type: RemoteType,
+	metadata: RemoteBuilderMetadata,
+	returns: (...Validator) -> RemoteBuilder,
+	middleware: (...Middleware) -> RemoteBuilder,
+	unreliable: () -> RemoteBuilder,
+}
+
+export type RemoteBuilderMetadata = {
+	parameters: { Validator },
+	returns: { Validator },
+	middleware: { Middleware },
+	unreliable: boolean,
+}
+
+export type RemoteNamespace = {
+	type: "namespace",
+	remotes: RemoteBuilders,
+}
+
+export type RemoteBuilders = {
+	[string]: RemoteBuilder | RemoteNamespace,
+}
+
+export type RemoteType = "event" | "function"
+
+export type AnyRemote = Remote | AsyncRemote
+
+export type Remotes<Map = RemoteMap> = Map & {
+	destroy: (self: Remotes<Map>) -> (),
+}
+
+export type RemoteMap = {
+	[string]: AnyRemote | RemoteMap,
+}
+
+export type Remote<Args... = ...any> = ClientToServer<Args...> & ServerToClient<Args...>
+
+export type ClientToServer<Args... = ...any> = ((Args...) -> ()) & {
+	name: string,
+	type: "event",
+	test: TestRemote<Args...>,
+	connect: (self: ClientToServer<Args...>, callback: (player: Player, Args...) -> ()) -> Cleanup,
+	promise: (
+		self: ClientToServer<Args...>,
+		predicate: ((player: Player, Args...) -> boolean)?,
+		_mapper: ((player: Player, Args...) -> ...any)?
+	) -> Promise<(Player, Args...)>,
+	fire: (self: ClientToServer<Args...>, Args...) -> (),
+	destroy: (self: ClientToServer<Args...>) -> (),
+}
+
+export type ServerToClient<Args... = ...any> = ((player: Player, Args...) -> ()) & {
+	name: string,
+	type: "event",
+	test: TestRemote<Args...>,
+	connect: (self: ServerToClient<Args...>, callback: (Args...) -> ()) -> Cleanup,
+	promise: (
+		self: ClientToServer<Args...>,
+		predicate: ((Args...) -> boolean)?,
+		_mapper: ((Args...) -> ...any)?
+	) -> Promise<Args...>,
+	fire: (self: ServerToClient<Args...>, player: Player, Args...) -> (),
+	firePlayers: (self: ServerToClient<Args...>, players: { Player }, Args...) -> (),
+	fireAll: (self: ServerToClient<Args...>, Args...) -> (),
+	fireAllExcept: (self: ServerToClient<Args...>, player: Player, Args...) -> (),
+	destroy: (self: ServerToClient<Args...>) -> (),
+}
+
+export type AsyncRemote<Args... = ...any, Returns... = ...any> =
+	ServerAsync<Args..., Returns...>
+	& ClientAsync<Args..., Returns...>
+
+export type ServerAsync<Args... = ...any, Returns... = ...any> = ((Args...) -> Promise<Returns...>) & {
+	name: string,
+	type: "function",
+	test: TestAsyncRemote<Args..., Returns...>,
+	onRequest: (
+		self: ServerAsync<Args..., Returns...>,
+		callback: ((player: Player, Args...) -> Returns...) | (player: Player, Args...) -> Promise<Returns...>
+	) -> (),
+	request: (self: ServerAsync<Args..., Returns...>, Args...) -> Promise<Returns...>,
+	destroy: (self: ServerAsync<Args..., Returns...>) -> (),
+}
+
+export type ClientAsync<Args... = ...any, Returns... = ...any> = ((player: Player, Args...) -> Promise<Returns...>) & {
+	name: string,
+	type: "function",
+	test: TestAsyncRemote<Args..., Returns...>,
+	onRequest: (
+		self: ClientAsync<Args..., Returns...>,
+		callback: ((Args...) -> Returns...) | (Args...) -> Promise<Returns...>
+	) -> (),
+	request: (self: ClientAsync<Args..., Returns...>, Args...) -> Promise<Returns...>,
+	destroy: (self: ClientAsync<Args..., Returns...>) -> (),
+}
+
+export type TestRemote<Args... = ...any> = {
+	_fire: (self: TestRemote<Args...>, Args...) -> (),
+	onFire: (self: TestRemote<Args...>, callback: (Args...) -> ()) -> Cleanup,
+	disconnectAll: (self: TestRemote<Args...>) -> (),
+}
+
+export type TestAsyncRemote<Args... = ...any, Returns... = ...any> = {
+	_request: (self: TestAsyncRemote<Args..., Returns...>, Args...) -> Returns...,
+	handleRequest: (
+		self: TestAsyncRemote<Args..., Returns...>,
+		callback: ((Args...) -> Returns...) | (Args...) -> Promise<Returns...>
+	) -> (),
+	hasRequestHandler: (self: TestAsyncRemote<Args..., Returns...>) -> boolean,
+	disconnectAll: (self: TestAsyncRemote<Args..., Returns...>) -> (),
+}
+
+return nil
+]]></string>
+                </Properties>
+              </Item>
+              <Item class="Folder" referent="37">
+                <Properties>
+                  <string name="Name">utils</string>
+                </Properties>
+                <Item class="ModuleScript" referent="38">
+                  <Properties>
+                    <string name="Name">compose</string>
+                    <string name="Source"><![CDATA[local types = require(script.Parent.Parent.types)
+
+local function compose(middlewares: { types.Middleware }): types.Middleware
+	local length = #middlewares
+
+	if length == 0 then
+		return function(next)
+			return next
+		end
+	elseif length == 1 then
+		return middlewares[1]
+	end
+
+	return function(next, ...)
+		for index = length, 1, -1 do
+			next = middlewares[index](next, ...)
+		end
+
+		return next
+	end
+end
+
+return compose
+]]></string>
+                  </Properties>
+                </Item>
+                <Item class="ModuleScript" referent="39">
+                  <Properties>
+                    <string name="Name">instances</string>
+                    <string name="Source"><![CDATA[local Promise = require(script.Parent.Parent.Promise)
+local constants = require(script.Parent.Parent.constants)
+local mockRemotes = require(script.Parent.mockRemotes)
+
+local container = script.Parent.Parent.container
+
+local function promiseRemoteFunction(name: string): Promise.Promise<RemoteFunction>
+	if container:FindFirstChild(name) then
+		return Promise.resolve(container[name])
+	end
+
+	if constants.IS_EDIT then
+		return Promise.resolve(mockRemotes.createMockRemoteFunction(name))
+	end
+
+	return Promise.fromEvent(container.ChildAdded, function(child)
+		return child:IsA("RemoteFunction") and child.Name == name
+	end)
+end
+
+local function promiseRemoteEvent(name: string): Promise.Promise<RemoteEvent>
+	if container:FindFirstChild(name) then
+		return Promise.resolve(container[name])
+	end
+
+	if constants.IS_EDIT then
+		return Promise.resolve(mockRemotes.createMockRemoteEvent(name))
+	end
+
+	return Promise.fromEvent(container.ChildAdded, function(child)
+		return child:IsA("RemoteEvent") and child.Name == name
+	end)
+end
+
+local function createRemoteFunction(name: string): RemoteFunction
+	if container:FindFirstChild(name) then
+		return container[name]
+	end
+
+	if constants.IS_EDIT then
+		return mockRemotes.createMockRemoteFunction(name)
+	end
+
+	local remoteFunction = Instance.new("RemoteFunction")
+	remoteFunction.Name = name
+	remoteFunction.Parent = container
+
+	return remoteFunction
+end
+
+local function createRemoteEvent(name: string, unreliable: boolean): RemoteEvent
+	if container:FindFirstChild(name) then
+		return container[name]
+	end
+
+	if constants.IS_EDIT then
+		return mockRemotes.createMockRemoteEvent(name)
+	end
+
+	local remoteEvent = Instance.new(if unreliable then "UnreliableRemoteEvent" else "RemoteEvent")
+	remoteEvent.Name = name
+	remoteEvent.Parent = container
+
+	return remoteEvent :: RemoteEvent
+end
+
+return {
+	promiseRemoteFunction = promiseRemoteFunction,
+	promiseRemoteEvent = promiseRemoteEvent,
+	createRemoteFunction = createRemoteFunction,
+	createRemoteEvent = createRemoteEvent,
+}
+]]></string>
+                  </Properties>
+                </Item>
+                <Item class="ModuleScript" referent="40">
+                  <Properties>
+                    <string name="Name">mockRemotes</string>
+                    <string name="Source"><![CDATA[local Players = game:GetService("Players")
+
+local mockRemoteEvents: { [string]: RemoteEvent } = {}
+local mockRemoteFunctions: { [string]: RemoteFunction } = {}
+
+local function createMockRemoteEvent(name: string): RemoteEvent
+	if mockRemoteEvents[name] then
+		return mockRemoteEvents[name]
+	end
+
+	local remoteEvent: RemoteEvent = {
+		Name = name,
+		OnClientEvent = {},
+		OnServerEvent = {},
+	} :: any
+
+	local clientListeners = {}
+	local serverListeners = {}
+
+	function remoteEvent.OnClientEvent:Connect(callback: (any) -> ())
+		clientListeners[callback] = true
+
+		return {
+			Connected = true,
+			Disconnect = function(self: RBXScriptConnection)
+				self.Connected = false
+				clientListeners[callback] = nil
+			end,
+		} :: never
+	end
+
+	function remoteEvent.OnServerEvent:Connect(callback: (any) -> ())
+		serverListeners[callback] = true
+
+		return {
+			Connected = true,
+			Disconnect = function(self: RBXScriptConnection)
+				self.Connected = false
+				serverListeners[callback] = nil
+			end,
+		} :: never
+	end
+
+	function remoteEvent:FireClient(_player: Player, ...)
+		for callback in clientListeners do
+			callback(...)
+		end
+	end
+
+	function remoteEvent:FireAllClients(...)
+		for callback in clientListeners do
+			callback(...)
+		end
+	end
+
+	function remoteEvent:FireServer(...)
+		for callback in serverListeners do
+			callback(Players.LocalPlayer or {}, ...)
+		end
+	end
+
+	function remoteEvent:Destroy(): ()
+		mockRemoteEvents[name] = nil
+		table.clear(clientListeners)
+		table.clear(serverListeners)
+	end
+
+	mockRemoteEvents[name] = remoteEvent
+
+	return remoteEvent
+end
+
+local function createMockRemoteFunction(name: string): RemoteFunction
+	if mockRemoteFunctions[name] then
+		return mockRemoteFunctions[name]
+	end
+
+	local remoteFunction: RemoteFunction = {
+		Name = name,
+		OnClientInvoke = function() end,
+		OnServerInvoke = function() end,
+	} :: any
+
+	function remoteFunction:InvokeClient(_player: Player, ...)
+		return self.OnClientInvoke(...)
+	end
+
+	function remoteFunction:InvokeServer(...)
+		return self.OnServerInvoke(Players.LocalPlayer or {} :: any, ...)
+	end
+
+	function remoteFunction:Destroy(): ()
+		mockRemoteFunctions[name] = nil
+		remoteFunction.OnClientInvoke = function() end
+		remoteFunction.OnServerInvoke = function() end
+	end
+
+	mockRemoteFunctions[name] = remoteFunction
+
+	return remoteFunction
+end
+
+local function getMockRemoteEvent(name: string): RemoteEvent?
+	return mockRemoteEvents[name]
+end
+
+local function getMockRemoteFunction(name: string): RemoteFunction?
+	return mockRemoteFunctions[name]
+end
+
+local function destroyAll()
+	table.clear(mockRemoteEvents)
+	table.clear(mockRemoteFunctions)
+end
+
+return {
+	createMockRemoteEvent = createMockRemoteEvent,
+	createMockRemoteFunction = createMockRemoteFunction,
+	getMockRemoteEvent = getMockRemoteEvent,
+	getMockRemoteFunction = getMockRemoteFunction,
+	destroyAll = destroyAll,
+}
+]]></string>
+                  </Properties>
+                </Item>
+                <Item class="ModuleScript" referent="41">
+                  <Properties>
+                    <string name="Name">testRemote</string>
+                    <string name="Source"><![CDATA[local types = require(script.Parent.Parent.types)
+local getSender = require(script.Parent.Parent.getSender)
+
+local function noop() end
+
+local function createTestRemote(): types.TestRemote
+	local listeners: { (...any) -> () } = {}
+	local nextListenerId = 0
+
+	local function fire(_self, first, ...)
+		local shouldOmitPlayer = getSender(first)
+
+		for _, listener in listeners do
+			if shouldOmitPlayer then
+				listener(...)
+			else
+				listener(first, ...)
+			end
+		end
+	end
+
+	local function onFire(_self, listener)
+		local id = nextListenerId
+		nextListenerId += 1
+		listeners[id] = listener
+
+		return function()
+			listeners[id] = nil
+		end
+	end
+
+	local function disconnectAll(_self)
+		table.clear(listeners)
+	end
+
+	local testRemote: types.TestRemote = {
+		_fire = fire,
+		onFire = onFire,
+		disconnectAll = disconnectAll,
+	}
+
+	return testRemote
+end
+
+local function createTestAsyncRemote(): types.TestAsyncRemote
+	local handler: (...any) -> () = noop
+
+	local function request(_self, first, ...)
+		if getSender(first) then
+			return handler(...)
+		else
+			return handler(first, ...)
+		end
+	end
+
+	local function handleRequest(_self, newHandler)
+		handler = newHandler
+	end
+
+	local function hasRequestHandler()
+		return handler ~= noop
+	end
+
+	local function disconnectAll()
+		handler = noop
+	end
+
+	local testAsyncRemote: types.TestAsyncRemote = {
+		_request = request,
+		handleRequest = handleRequest,
+		hasRequestHandler = hasRequestHandler,
+		disconnectAll = disconnectAll,
+	}
+
+	return testAsyncRemote
+end
+
+return {
+	createTestRemote = createTestRemote,
+	createTestAsyncRemote = createTestAsyncRemote,
+}
+]]></string>
+                  </Properties>
+                </Item>
+                <Item class="ModuleScript" referent="42">
+                  <Properties>
+                    <string name="Name">unwrap</string>
+                    <string name="Source"><![CDATA[local Promise = require(script.Parent.Parent.Promise)
+
+type Promise<T> = Promise.Promise<T>
+
+local function unwrap<T, U...>(promise: T | Promise<T>?, ...: U...): (T, U...)
+	if Promise.is(promise) then
+		return (promise :: Promise<T>):expect()
+	end
+
+	return promise :: T, ...
+end
+
+return unwrap
+]]></string>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+          </Item>
+          <Item class="ModuleScript" referent="43">
             <Properties>
               <string name="Name">services</string>
               <string name="Source"><![CDATA[return setmetatable({}, {
@@ -2484,15 +3973,1372 @@ return TS
 ]]></string>
             </Properties>
           </Item>
-          <Item class="Folder" referent="17">
+          <Item class="Folder" referent="44">
+            <Properties>
+              <string name="Name">t</string>
+            </Properties>
+            <Item class="Folder" referent="45">
+              <Properties>
+                <string name="Name">lib</string>
+              </Properties>
+              <Item class="ModuleScript" referent="46">
+                <Properties>
+                  <string name="Name">ts</string>
+                  <string name="Source"><![CDATA[-- t: a runtime typechecker for Roblox
+
+local t = {}
+
+function t.type(typeName)
+	return function(value)
+		local valueType = type(value)
+		if valueType == typeName then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+function t.typeof(typeName)
+	return function(value)
+		local valueType = typeof(value)
+		if valueType == typeName then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	matches any type except nil
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.any(value)
+	if value ~= nil then
+		return true
+	else
+		return false
+	end
+end
+
+--Lua primitives
+
+--[[**
+	ensures Lua primitive boolean type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.boolean = t.typeof("boolean")
+
+--[[**
+	ensures Lua primitive buffer type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.buffer = t.typeof("buffer")
+
+--[[**
+	ensures Lua primitive thread type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.thread = t.typeof("thread")
+
+--[[**
+	ensures Lua primitive callback type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.callback = t.typeof("function")
+t["function"] = t.callback
+
+--[[**
+	ensures Lua primitive none type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.none = t.typeof("nil")
+t["nil"] = t.none
+
+--[[**
+	ensures Lua primitive string type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.string = t.typeof("string")
+
+--[[**
+	ensures Lua primitive table type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.table = t.typeof("table")
+
+--[[**
+	ensures Lua primitive userdata type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.userdata = t.type("userdata")
+
+--[[**
+	ensures Lua primitive vector type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.vector = t.type("vector")
+
+--[[**
+	ensures value is a number and non-NaN
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.number(value)
+	local valueType = typeof(value)
+	if valueType == "number" then
+		if value == value then
+			return true
+		else
+			return false
+		end
+	else
+		return false
+	end
+end
+
+--[[**
+	ensures value is NaN
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.nan(value)
+	local valueType = typeof(value)
+	if valueType == "number" then
+		if value ~= value then
+			return true
+		else
+			return false
+		end
+	else
+		return false
+	end
+end
+
+-- roblox types
+
+--[[**
+	ensures Roblox Axes type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Axes = t.typeof("Axes")
+
+--[[**
+	ensures Roblox BrickColor type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.BrickColor = t.typeof("BrickColor")
+
+--[[**
+	ensures Roblox CatalogSearchParams type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.CatalogSearchParams = t.typeof("CatalogSearchParams")
+
+--[[**
+	ensures Roblox CFrame type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.CFrame = t.typeof("CFrame")
+
+--[[**
+	ensures Roblox Color3 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Color3 = t.typeof("Color3")
+
+--[[**
+	ensures Roblox ColorSequence type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.ColorSequence = t.typeof("ColorSequence")
+
+--[[**
+	ensures Roblox ColorSequenceKeypoint type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.ColorSequenceKeypoint = t.typeof("ColorSequenceKeypoint")
+
+--[[**
+	ensures Roblox DateTime type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.DateTime = t.typeof("DateTime")
+
+--[[**
+	ensures Roblox DockWidgetPluginGuiInfo type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.DockWidgetPluginGuiInfo = t.typeof("DockWidgetPluginGuiInfo")
+
+--[[**
+	ensures Roblox Enum type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Enum = t.typeof("Enum")
+
+--[[**
+	ensures Roblox EnumItem type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.EnumItem = t.typeof("EnumItem")
+
+--[[**
+	ensures Roblox Enums type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Enums = t.typeof("Enums")
+
+--[[**
+	ensures Roblox Faces type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Faces = t.typeof("Faces")
+
+--[[**
+	ensures Roblox FloatCurveKey type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.FloatCurveKey = t.typeof("FloatCurveKey")
+
+--[[**
+	ensures Roblox Font type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Font = t.typeof("Font")
+
+--[[**
+	ensures Roblox Instance type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Instance = t.typeof("Instance")
+
+--[[**
+	ensures Roblox NumberRange type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.NumberRange = t.typeof("NumberRange")
+
+--[[**
+	ensures Roblox NumberSequence type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.NumberSequence = t.typeof("NumberSequence")
+
+--[[**
+	ensures Roblox NumberSequenceKeypoint type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.NumberSequenceKeypoint = t.typeof("NumberSequenceKeypoint")
+
+--[[**
+	ensures Roblox OverlapParams type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.OverlapParams = t.typeof("OverlapParams")
+
+--[[**
+	ensures Roblox PathWaypoint type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.PathWaypoint = t.typeof("PathWaypoint")
+
+--[[**
+	ensures Roblox PhysicalProperties type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.PhysicalProperties = t.typeof("PhysicalProperties")
+
+--[[**
+	ensures Roblox Random type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Random = t.typeof("Random")
+
+--[[**
+	ensures Roblox Ray type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Ray = t.typeof("Ray")
+
+--[[**
+	ensures Roblox RaycastParams type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RaycastParams = t.typeof("RaycastParams")
+
+--[[**
+	ensures Roblox RaycastResult type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RaycastResult = t.typeof("RaycastResult")
+
+--[[**
+	ensures Roblox RBXScriptConnection type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RBXScriptConnection = t.typeof("RBXScriptConnection")
+
+--[[**
+	ensures Roblox RBXScriptSignal type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RBXScriptSignal = t.typeof("RBXScriptSignal")
+
+--[[**
+	ensures Roblox Rect type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Rect = t.typeof("Rect")
+
+--[[**
+	ensures Roblox Region3 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Region3 = t.typeof("Region3")
+
+--[[**
+	ensures Roblox Region3int16 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Region3int16 = t.typeof("Region3int16")
+
+--[[**
+	ensures Roblox TweenInfo type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.TweenInfo = t.typeof("TweenInfo")
+
+--[[**
+	ensures Roblox UDim type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.UDim = t.typeof("UDim")
+
+--[[**
+	ensures Roblox UDim2 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.UDim2 = t.typeof("UDim2")
+
+--[[**
+	ensures Roblox Vector2 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector2 = t.typeof("Vector2")
+
+--[[**
+	ensures Roblox Vector2int16 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector2int16 = t.typeof("Vector2int16")
+
+--[[**
+	ensures Roblox Vector3 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector3 = t.typeof("Vector3")
+
+--[[**
+	ensures Roblox Vector3int16 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector3int16 = t.typeof("Vector3int16")
+
+--[[**
+	ensures value is any of the given literal values
+
+	@param literals The literals to check against
+
+	@returns A function that will return true if the condition is passed
+**--]]
+function t.literalList(literals)
+	-- optimization for primitive types
+	local set = {}
+	for _, literal in ipairs(literals) do
+		set[literal] = true
+	end
+	return function(value)
+		if set[value] then
+			return true
+		end
+		for _, literal in ipairs(literals) do
+			if literal == value then
+				return true
+			end
+		end
+
+		return false
+	end
+end
+
+--[[**
+	ensures value is a given literal value
+
+	@param literal The literal to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.literal(...)
+	local size = select("#", ...)
+	if size == 1 then
+		local literal = ...
+		return function(value)
+			if value ~= literal then
+				return false
+			end
+
+			return true
+		end
+	else
+		local literals = {}
+		for i = 1, size do
+			local value = select(i, ...)
+			literals[i] = t.literal(value)
+		end
+
+		return t.unionList(literals)
+	end
+end
+
+--[[**
+	DEPRECATED
+	Please use t.literal
+**--]]
+t.exactly = t.literal
+
+--[[**
+	Returns a t.union of each key in the table as a t.literal
+
+	@param keyTable The table to get keys from
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.keyOf(keyTable)
+	local keys = {}
+	local length = 0
+	for key in pairs(keyTable) do
+		length = length + 1
+		keys[length] = key
+	end
+
+	return t.literal(table.unpack(keys, 1, length))
+end
+
+--[[**
+	Returns a t.union of each value in the table as a t.literal
+
+	@param valueTable The table to get values from
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.valueOf(valueTable)
+	local values = {}
+	local length = 0
+	for _, value in pairs(valueTable) do
+		length = length + 1
+		values[length] = value
+	end
+
+	return t.literal(table.unpack(values, 1, length))
+end
+
+--[[**
+	ensures value is an integer
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.integer(value)
+	local success = t.number(value)
+	if not success then
+		return false
+	end
+
+	if value % 1 == 0 then
+		return true
+	else
+		return false
+	end
+end
+
+--[[**
+	ensures value is a number where min <= value
+
+	@param min The minimum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMin(min)
+	return function(value)
+		local success = t.number(value)
+		if not success then
+			return false
+		end
+
+		if value >= min then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where value <= max
+
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMax(max)
+	return function(value)
+		local success = t.number(value)
+		if not success then
+			return false
+		end
+
+		if value <= max then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where min < value
+
+	@param min The minimum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMinExclusive(min)
+	return function(value)
+		local success = t.number(value)
+		if not success then
+			return false
+		end
+
+		if min < value then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where value < max
+
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMaxExclusive(max)
+	return function(value)
+		local success = t.number(value)
+		if not success then
+			return false
+		end
+
+		if value < max then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where value > 0
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+t.numberPositive = t.numberMinExclusive(0)
+
+--[[**
+	ensures value is a number where value < 0
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+t.numberNegative = t.numberMaxExclusive(0)
+
+--[[**
+	ensures value is a number where min <= value <= max
+
+	@param min The minimum to use
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberConstrained(min, max)
+	assert(t.number(min))
+	assert(t.number(max))
+	local minCheck = t.numberMin(min)
+	local maxCheck = t.numberMax(max)
+
+	return function(value)
+		local minSuccess = minCheck(value)
+		if not minSuccess then
+			return false
+		end
+
+		local maxSuccess = maxCheck(value)
+		if not maxSuccess then
+			return false
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is a number where min < value < max
+
+	@param min The minimum to use
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberConstrainedExclusive(min, max)
+	assert(t.number(min))
+	assert(t.number(max))
+	local minCheck = t.numberMinExclusive(min)
+	local maxCheck = t.numberMaxExclusive(max)
+
+	return function(value)
+		local minSuccess = minCheck(value)
+		if not minSuccess then
+			return false
+		end
+
+		local maxSuccess = maxCheck(value)
+		if not maxSuccess then
+			return false
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value matches string pattern
+
+	@param string pattern to check against
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.match(pattern)
+	assert(t.string(pattern))
+	return function(value)
+		local stringSuccess = t.string(value)
+		if not stringSuccess then
+			return false
+		end
+
+		if string.match(value, pattern) == nil then
+			return false
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is either nil or passes check
+
+	@param check The check to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.optional(check)
+	assert(t.callback(check))
+	return function(value)
+		if value == nil then
+			return true
+		end
+
+		local success = check(value)
+		if success then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+--[[**
+	matches given tuple against tuple type definition
+
+	@param ... The type definition for the tuples
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.tuple(...)
+	local checks = { ... }
+	return function(...)
+		local args = { ... }
+		for i, check in ipairs(checks) do
+			local success = check(args[i])
+			if success == false then
+				return false
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures all keys in given table pass check
+
+	@param check The function to use to check the keys
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.keys(check)
+	assert(t.callback(check))
+	return function(value)
+		local tableSuccess = t.table(value)
+		if tableSuccess == false then
+			return false
+		end
+
+		for key in pairs(value) do
+			local success = check(key)
+			if success == false then
+				return false
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures all values in given table pass check
+
+	@param check The function to use to check the values
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.values(check)
+	assert(t.callback(check))
+	return function(value)
+		local tableSuccess = t.table(value)
+		if tableSuccess == false then
+			return false
+		end
+
+		for _, val in pairs(value) do
+			local success = check(val)
+			if success == false then
+				return false
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is a table and all keys pass keyCheck and all values pass valueCheck
+
+	@param keyCheck The function to use to check the keys
+	@param valueCheck The function to use to check the values
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.map(keyCheck, valueCheck)
+	assert(t.callback(keyCheck))
+	assert(t.callback(valueCheck))
+	local keyChecker = t.keys(keyCheck)
+	local valueChecker = t.values(valueCheck)
+
+	return function(value)
+		local keySuccess = keyChecker(value)
+		if not keySuccess then
+			return false
+		end
+
+		local valueSuccess = valueChecker(value)
+		if not valueSuccess then
+			return false
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is a table and all keys pass valueCheck and all values are true
+
+	@param valueCheck The function to use to check the values
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.set(valueCheck)
+	return t.map(valueCheck, t.literal(true))
+end
+
+do
+	local arrayKeysCheck = t.keys(t.integer)
+--[[**
+		ensures value is an array and all values of the array match check
+
+		@param check The check to compare all values with
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.array(check)
+		assert(t.callback(check))
+		local valuesCheck = t.values(check)
+
+		return function(value)
+			local keySuccess = arrayKeysCheck(value)
+			if keySuccess == false then
+				return false
+			end
+
+			-- # is unreliable for sparse arrays
+			-- Count upwards using ipairs to avoid false positives from the behavior of #
+			local arraySize = 0
+
+			for _ in ipairs(value) do
+				arraySize = arraySize + 1
+			end
+
+			for key in pairs(value) do
+				if key < 1 or key > arraySize then
+					return false
+				end
+			end
+
+			local valueSuccess = valuesCheck(value)
+			if not valueSuccess then
+				return false
+			end
+
+			return true
+		end
+	end
+
+--[[**
+		ensures value is an array of a strict makeup and size
+
+		@param check The check to compare all values with
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.strictArray(...)
+		local valueTypes = { ... }
+		assert(t.array(t.callback)(valueTypes))
+
+		return function(value)
+			local keySuccess = arrayKeysCheck(value)
+			if keySuccess == false then
+				return false
+			end
+
+			-- If there's more than the set array size, disallow
+			if #valueTypes < #value then
+				return false
+			end
+
+			for idx, typeFn in pairs(valueTypes) do
+				local typeSuccess = typeFn(value[idx])
+				if not typeSuccess then
+					return false
+				end
+			end
+
+			return true
+		end
+	end
+end
+
+do
+	local callbackArray = t.array(t.callback)
+--[[**
+		creates a union type
+
+		@param checks The checks to union
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.unionList(checks)
+		assert(callbackArray(checks))
+
+		return function(value)
+			for _, check in ipairs(checks) do
+				if check(value) then
+					return true
+				end
+			end
+
+			return false
+		end
+	end
+
+--[[**
+		creates a union type
+
+		@param ... The checks to union
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.union(...)
+		return t.unionList({ ... })
+	end
+
+--[[**
+		Alias for t.union
+	**--]]
+	t.some = t.union
+
+--[[**
+		creates an intersection type
+
+		@param checks The checks to intersect
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.intersectionList(checks)
+		assert(callbackArray(checks))
+
+		return function(value)
+			for _, check in ipairs(checks) do
+				local success = check(value)
+				if not success then
+					return false
+				end
+			end
+
+			return true
+		end
+	end
+
+--[[**
+		creates an intersection type
+
+		@param ... The checks to intersect
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.intersection(...)
+		return t.intersectionList({ ... })
+	end
+
+--[[**
+		Alias for t.intersection
+	**--]]
+	t.every = t.intersection
+end
+
+do
+	local checkInterface = t.map(t.any, t.callback)
+--[[**
+		ensures value matches given interface definition
+
+		@param checkTable The interface definition
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.interface(checkTable)
+		assert(checkInterface(checkTable))
+		return function(value)
+			local tableSuccess = t.table(value)
+			if tableSuccess == false then
+				return false
+			end
+
+			for key, check in pairs(checkTable) do
+				local success = check(value[key])
+				if success == false then
+					return false
+				end
+			end
+
+			return true
+		end
+	end
+
+--[[**
+		ensures value matches given interface definition strictly
+
+		@param checkTable The interface definition
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.strictInterface(checkTable)
+		assert(checkInterface(checkTable))
+		return function(value)
+			local tableSuccess = t.table(value)
+			if tableSuccess == false then
+				return false
+			end
+
+			for key, check in pairs(checkTable) do
+				local success = check(value[key])
+				if success == false then
+					return false
+				end
+			end
+
+			for key in pairs(value) do
+				if not checkTable[key] then
+					return false
+				end
+			end
+
+			return true
+		end
+	end
+end
+
+--[[**
+	ensure value is an Instance and it's ClassName matches the given ClassName
+
+	@param className The class name to check for
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.instanceOf(className, childTable)
+	assert(t.string(className))
+
+	local childrenCheck
+	if childTable ~= nil then
+		childrenCheck = t.children(childTable)
+	end
+
+	return function(value)
+		local instanceSuccess = t.Instance(value)
+		if not instanceSuccess then
+			return false
+		end
+
+		if value.ClassName ~= className then
+			return false
+		end
+
+		if childrenCheck then
+			local childrenSuccess = childrenCheck(value)
+			if not childrenSuccess then
+				return false
+			end
+		end
+
+		return true
+	end
+end
+
+t.instance = t.instanceOf
+
+--[[**
+	ensure value is an Instance and it's ClassName matches the given ClassName by an IsA comparison
+
+	@param className The class name to check for
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.instanceIsA(className, childTable)
+	assert(t.string(className))
+
+	local childrenCheck
+	if childTable ~= nil then
+		childrenCheck = t.children(childTable)
+	end
+
+	return function(value)
+		local instanceSuccess = t.Instance(value)
+		if not instanceSuccess then
+			return false
+		end
+
+		if not value:IsA(className) then
+			return false
+		end
+
+		if childrenCheck then
+			local childrenSuccess = childrenCheck(value)
+			if not childrenSuccess then
+				return false
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is an enum of the correct type
+
+	@param enum The enum to check
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.enum(enum)
+	assert(t.Enum(enum))
+	return function(value)
+		local enumItemSuccess = t.EnumItem(value)
+		if not enumItemSuccess then
+			return false
+		end
+
+		if value.EnumType == enum then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+do
+	local checkWrap = t.tuple(t.callback, t.callback)
+
+--[[**
+		wraps a callback in an assert with checkArgs
+
+		@param callback The function to wrap
+		@param checkArgs The function to use to check arguments in the assert
+
+		@returns A function that first asserts using checkArgs and then calls callback
+	**--]]
+	function t.wrap(callback, checkArgs)
+		assert(checkWrap(callback, checkArgs))
+		return function(...)
+			assert(checkArgs(...))
+			return callback(...)
+		end
+	end
+end
+
+--[[**
+	asserts a given check
+
+	@param check The function to wrap with an assert
+
+	@returns A function that simply wraps the given check in an assert
+**--]]
+function t.strict(check)
+	return function(...)
+		assert(check(...))
+	end
+end
+
+do
+	local checkChildren = t.map(t.string, t.callback)
+
+--[[**
+		Takes a table where keys are child names and values are functions to check the children against.
+		Pass an instance tree into the function.
+		If at least one child passes each check, the overall check passes.
+
+		Warning! If you pass in a tree with more than one child of the same name, this function will always return false
+
+		@param checkTable The table to check against
+
+		@returns A function that checks an instance tree
+	**--]]
+	function t.children(checkTable)
+		assert(checkChildren(checkTable))
+
+		return function(value)
+			local instanceSuccess = t.Instance(value)
+			if not instanceSuccess then
+				return false
+			end
+
+			local childrenByName = {}
+			for _, child in ipairs(value:GetChildren()) do
+				local name = child.Name
+				if checkTable[name] then
+					if childrenByName[name] then
+						return false
+					end
+
+					childrenByName[name] = child
+				end
+			end
+
+			for name, check in pairs(checkTable) do
+				local success = check(childrenByName[name])
+				if not success then
+					return false
+				end
+			end
+
+			return true
+		end
+	end
+end
+
+return { t = t }
+]]></string>
+                </Properties>
+              </Item>
+            </Item>
+          </Item>
+          <Item class="Folder" referent="47">
             <Properties>
               <string name="Name">types</string>
             </Properties>
-            <Item class="Folder" referent="18">
+            <Item class="Folder" referent="48">
               <Properties>
                 <string name="Name">include</string>
               </Properties>
-              <Item class="Folder" referent="19">
+              <Item class="Folder" referent="49">
                 <Properties>
                   <string name="Name">generated</string>
                 </Properties>
@@ -2503,25 +5349,29 @@ return TS
       </Item>
     </Item>
   </Item>
-  <Item class="ServerScriptService" referent="20">
+  <Item class="ServerScriptService" referent="50">
     <Properties>
       <string name="Name">ServerScriptService</string>
     </Properties>
-    <Item class="Folder" referent="21">
+    <Item class="Folder" referent="51">
       <Properties>
         <string name="Name">TS</string>
       </Properties>
-      <Item class="Script" referent="22">
+      <Item class="Folder" referent="52">
         <Properties>
           <string name="Name">CoinService</string>
-          <token name="RunContext">0</token>
-          <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+        </Properties>
+        <Item class="Script" referent="53">
+          <Properties>
+            <string name="Name">CoinService</string>
+            <token name="RunContext">0</token>
+            <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
-local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
-local getFolder = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getFolder", "getFolder").default
-local coinsFolder = getFolder({
-	folderPath = "World/Coins",
+local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData", "PlayerData")
+local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
+local coinsFolder = getInstance({
+	instancePath = "Workspace/World/Coins",
 })
 local coins = coinsFolder:GetChildren()
 local function onCoinTouched(coin, otherPart)
@@ -2583,13 +5433,14 @@ end
 Players.PlayerAdded:Connect(onPlayerAdded)
 Players.PlayerRemoving:Connect(onPlayerRemoved)
 ]]></string>
-        </Properties>
+          </Properties>
+        </Item>
       </Item>
-      <Item class="Folder" referent="23">
+      <Item class="Folder" referent="54">
         <Properties>
           <string name="Name">HazardService</string>
         </Properties>
-        <Item class="Script" referent="24">
+        <Item class="Script" referent="55">
           <Properties>
             <string name="Name">HazardService</string>
             <token name="RunContext">0</token>
@@ -2624,43 +5475,36 @@ end
           </Properties>
         </Item>
       </Item>
-      <Item class="Folder" referent="25">
+      <Item class="Folder" referent="56">
         <Properties>
           <string name="Name">JumpService</string>
         </Properties>
-        <Item class="Script" referent="26">
+        <Item class="Script" referent="57">
           <Properties>
             <string name="Name">JumpService</string>
             <token name="RunContext">0</token>
             <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
-local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard")
-local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
-local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
-local increaseJumpPowerFunction = getInstance({
-	instancePath = "ReplicatedStorage/Instances/IncreaseJumpPowerFunction",
-})
+local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard", "Leaderboard")
+local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData", "PlayerData")
+local increaseJumpPowerRemoteFunction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "remoteFunctions", "increaseJumpPowerRemoteFunction", "increaseJumpPowerRemoteFunction").increaseJumpPowerRemoteFunction
 local JUMP_KEY_NAME = PlayerData.JUMP_KEY_NAME
 local COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
 local JUMP_POWER_INCREMENT = 30
 local JUMP_COIN_COST = 5
-local function updateJumpPower(player, updateFunction)
-	-- Update the jump power table
-	local _fn = updateFunction
-	local _condition = PlayerData:getValue({
-		player = player,
-		key = JUMP_KEY_NAME,
-	})
-	if _condition == nil then
-		_condition = 0
-	end
-	local newJumpPower = _fn(_condition)
+local function updateJumpPower(player, newJumpPower)
 	-- Update the players jump power
 	local character = (player.Character or { player.CharacterAdded:Wait() })
 	local humanoid = character:FindFirstChildWhichIsA("Humanoid")
 	if humanoid then
 		humanoid.JumpPower = newJumpPower
+		-- Update the jump power data
+		PlayerData:setValue({
+			player = player,
+			key = JUMP_KEY_NAME,
+			value = newJumpPower,
+		})
 		-- Update the jump leaderboard
 		Leaderboard:setStat({
 			player = player,
@@ -2690,14 +5534,13 @@ local function onPurchaseJumpIncrease(player)
 		_condition_1 = 0
 	end
 	local oldJumpPower = _condition_1
-	updateJumpPower(player, function()
-		return oldJumpPower + JUMP_POWER_INCREMENT
-	end)
+	updateJumpPower(player, oldJumpPower + JUMP_POWER_INCREMENT)
 	-- Update the coin table
 	local newCoinAmount = coinAmount - JUMP_COIN_COST
-	PlayerData:resetValue({
+	PlayerData:setValue({
 		player = player,
 		key = COIN_KEY_NAME,
+		value = newCoinAmount,
 	})
 	-- Update the coin leaderboard
 	Leaderboard:setStat({
@@ -2708,10 +5551,8 @@ local function onPurchaseJumpIncrease(player)
 	return true
 end
 local function onCharacterAdded(player)
-	-- Reset player's jump power when the character is added
-	updateJumpPower(player, function()
-		return 0
-	end)
+	-- Set default jump power when the character is added
+	updateJumpPower(player, 50)
 end
 -- Initialize any players added before connecting to PlayerAdded event
 for _, player in Players:GetPlayers() do
@@ -2724,31 +5565,43 @@ local function onPlayerAdded(player)
 	end)
 end
 local function onPlayerRemoved(player)
-	updateJumpPower(player, function()
-		return 0
-	end)
+	updateJumpPower(player, 0)
 end
-increaseJumpPowerFunction.OnServerInvoke = onPurchaseJumpIncrease
+increaseJumpPowerRemoteFunction.increaseJumpPower:onRequest(onPurchaseJumpIncrease)
 Players.PlayerAdded:Connect(onPlayerAdded)
 Players.PlayerRemoving:Connect(onPlayerRemoved)
 ]]></string>
           </Properties>
         </Item>
       </Item>
+      <Item class="Folder" referent="58">
+        <Properties>
+          <string name="Name">utils</string>
+        </Properties>
+        <Item class="Folder" referent="59">
+          <Properties>
+            <string name="Name">RemoteFunctionHandler</string>
+          </Properties>
+        </Item>
+      </Item>
     </Item>
   </Item>
-  <Item class="ServerStorage" referent="27">
+  <Item class="ServerStorage" referent="60">
     <Properties>
       <string name="Name">ServerStorage</string>
     </Properties>
-    <Item class="Folder" referent="28">
+    <Item class="Folder" referent="61">
       <Properties>
         <string name="Name">TS</string>
       </Properties>
-      <Item class="ModuleScript" referent="29">
+      <Item class="Folder" referent="62">
         <Properties>
           <string name="Name">Leaderboard</string>
-          <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+        </Properties>
+        <Item class="ModuleScript" referent="63">
+          <Properties>
+            <string name="Name">Leaderboard</string>
+            <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local Leaderboard = {
 	setStat = function(self, props)
 		local leaderstats = props.player:FindFirstChild("leaderstats")
@@ -2771,14 +5624,19 @@ local Leaderboard = {
 }
 return Leaderboard
 ]]></string>
-        </Properties>
+          </Properties>
+        </Item>
       </Item>
-      <Item class="ModuleScript" referent="30">
+      <Item class="Folder" referent="64">
         <Properties>
           <string name="Name">PlayerData</string>
-          <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+        </Properties>
+        <Item class="ModuleScript" referent="65">
+          <Properties>
+            <string name="Name">PlayerData</string>
+            <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard")
+local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard", "Leaderboard")
 local playerData = {}
 local function getData(props)
 	local userId = tostring(props.player.UserId)
@@ -2849,41 +5707,64 @@ local PlayerData = {
 		})
 		return newValue
 	end,
+	setValue = function(self, props)
+		local data = getData({
+			player = props.player,
+		})
+		data[props.key] = props.value
+		Leaderboard:setStat({
+			player = props.player,
+			statName = props.key,
+			value = props.value,
+		})
+		return props.value
+	end,
 }
 return PlayerData
 ]]></string>
+          </Properties>
+        </Item>
+      </Item>
+      <Item class="Folder" referent="66">
+        <Properties>
+          <string name="Name">utils</string>
         </Properties>
+        <Item class="Folder" referent="67">
+          <Properties>
+            <string name="Name">createServerInvokeHandler</string>
+          </Properties>
+        </Item>
       </Item>
     </Item>
   </Item>
-  <Item class="SoundService" referent="31">
+  <Item class="SoundService" referent="68">
     <Properties>
       <string name="Name">SoundService</string>
       <bool name="RespectFilteringEnabled">true</bool>
     </Properties>
   </Item>
-  <Item class="StarterPlayer" referent="32">
+  <Item class="StarterPlayer" referent="69">
     <Properties>
       <string name="Name">StarterPlayer</string>
     </Properties>
-    <Item class="StarterPlayerScripts" referent="33">
+    <Item class="StarterPlayerScripts" referent="70">
       <Properties>
         <string name="Name">StarterPlayerScripts</string>
       </Properties>
-      <Item class="Folder" referent="34">
+      <Item class="Folder" referent="71">
         <Properties>
           <string name="Name">TS</string>
         </Properties>
       </Item>
     </Item>
   </Item>
-  <Item class="Workspace" referent="35">
+  <Item class="Workspace" referent="72">
     <Properties>
       <string name="Name">Workspace</string>
       <bool name="FilteringEnabled">true</bool>
       <bool name="NeedsPivotMigration">false</bool>
     </Properties>
-    <Item class="Part" referent="36">
+    <Item class="Part" referent="73">
       <Properties>
         <string name="Name">Baseplate</string>
         <bool name="Anchored">true</bool>

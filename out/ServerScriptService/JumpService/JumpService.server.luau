@@ -3,10 +3,7 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
 local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard", "Leaderboard")
 local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData", "PlayerData")
-local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
-local increaseJumpPowerFunction = getInstance({
-	instancePath = "ReplicatedStorage/Instances/IncreaseJumpPowerFunction",
-})
+local increaseJumpPowerRemoteFunction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "remoteFunctions", "increaseJumpPowerRemoteFunction", "increaseJumpPowerRemoteFunction").increaseJumpPowerRemoteFunction
 local JUMP_KEY_NAME = PlayerData.JUMP_KEY_NAME
 local COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
 local JUMP_POWER_INCREMENT = 30
@@ -85,6 +82,6 @@ end
 local function onPlayerRemoved(player)
 	updateJumpPower(player, 0)
 end
-increaseJumpPowerFunction.OnServerInvoke = onPurchaseJumpIncrease
+increaseJumpPowerRemoteFunction.increaseJumpPower:onRequest(onPurchaseJumpIncrease)
 Players.PlayerAdded:Connect(onPlayerAdded)
 Players.PlayerRemoving:Connect(onPlayerRemoved)
