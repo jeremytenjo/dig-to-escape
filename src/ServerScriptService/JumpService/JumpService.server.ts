@@ -96,7 +96,6 @@ function onPlayerRemoved(player: Player): void {
   updateJumpPower(player, 0)
 }
 
-// TODO create a way to handle remove functions listener better
 increaseJumpPowerFunction.OnServerInvoke = onPurchaseJumpIncrease
 Players.PlayerAdded.Connect(onPlayerAdded)
 Players.PlayerRemoving.Connect(onPlayerRemoved)

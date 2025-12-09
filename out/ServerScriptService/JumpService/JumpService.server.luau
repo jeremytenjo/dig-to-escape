@@ -85,7 +85,6 @@ end
 local function onPlayerRemoved(player)
 	updateJumpPower(player, 0)
 end
--- TODO create a way to handle remove functions listener better
 increaseJumpPowerFunction.OnServerInvoke = onPurchaseJumpIncrease
 Players.PlayerAdded:Connect(onPlayerAdded)
 Players.PlayerRemoving:Connect(onPlayerRemoved)
