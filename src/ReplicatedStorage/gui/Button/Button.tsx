@@ -3,7 +3,7 @@ import Color from '@rbxts/colour-utils'
 
 export type ButtonProps = {
   variant: string
-  text?: string
+  text: string
   onClick?: () => void
 }
 

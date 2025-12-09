@@ -11,11 +11,12 @@ local story = CreateReactStory({
 	reactRoblox = ReactRoblox,
 	controls = {
 		variant = Choose({ "hello", "world", "button" }),
+		text = "Button",
 	},
 }, function(props)
-	local component = React.createElement(Button, {
-		variant = props.controls.variant,
-	})
+	local _attributes = table.clone(props.controls)
+	setmetatable(_attributes, nil)
+	local component = React.createElement(Button, _attributes)
 	return component
 end)
 return story

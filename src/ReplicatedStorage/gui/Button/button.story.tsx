@@ -10,10 +10,12 @@ const story = CreateReactStory(
     reactRoblox: ReactRoblox,
     controls: {
       variant: Choose(['hello', 'world', 'button']),
+      text: 'Button Text',
     },
   },
   (props) => {
-    const component = <Button variant={props.controls.variant} />
+    const component = <Button {...props.controls} />
+
     return component
   },
 )
