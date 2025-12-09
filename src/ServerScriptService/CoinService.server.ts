@@ -1,10 +1,10 @@
 import { Players } from '@rbxts/services'
 
 import PlayerData from '../ServerStorage/PlayerData.js'
-import getFolder from '../ReplicatedStorage/utils/getFolder/getFolder.js'
+import getInstance from '../ReplicatedStorage/utils/getInstance/getInstance.js'
 
-const coinsFolder = getFolder({
-  folderPath: 'World/Coins',
+const coinsFolder = getInstance<Folder>({
+  instancePath: 'World/Coins',
 })
 const coins = coinsFolder.GetChildren() as BasePart[]
 
