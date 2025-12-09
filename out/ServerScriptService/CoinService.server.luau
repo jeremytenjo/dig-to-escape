@@ -1,8 +1,9 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
+local Players = _services.Players
+local Workspace = _services.Workspace
 local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData")
-local Workspace = game:GetService("Workspace")
-local Players = game:GetService("Players")
 local coinsFolder = Workspace:WaitForChild("World"):WaitForChild("Coins")
 local coins = coinsFolder:GetChildren()
 -- Setting up event listeners

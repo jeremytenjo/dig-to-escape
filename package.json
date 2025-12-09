@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@jeremytenjo/super-code-generator": "4.60.0",
+    "@rbxts/services": "1.6.0",
     "change-case": "4.1.2",
     "eslint-plugin-import": "2.32.0"
   }

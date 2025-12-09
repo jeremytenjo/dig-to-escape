@@ -1,7 +1,6 @@
-import PlayerData from '../ServerStorage/PlayerData.js'
+import { Players, Workspace } from '@rbxts/services'
 
-const Workspace = game.GetService('Workspace')
-const Players = game.GetService('Players')
+import PlayerData from '../ServerStorage/PlayerData.js'
 
 const coinsFolder = Workspace.WaitForChild('World').WaitForChild('Coins') as Folder
 const coins = coinsFolder.GetChildren() as BasePart[]
