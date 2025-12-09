@@ -14,9 +14,7 @@ const story = CreateReactStory(
     },
   },
   (props) => {
-    const component = <Button {...props.controls} />
-
-    return component
+    return <Button {...props.controls} />
   },
 )
 

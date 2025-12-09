@@ -11,7 +11,7 @@ local story = CreateReactStory({
 	reactRoblox = ReactRoblox,
 	controls = {
 		variant = Choose({ "hello", "world", "button" }),
-		text = "Button",
+		text = "Button Text",
 	},
 }, function(props)
 	local _attributes = table.clone(props.controls)
