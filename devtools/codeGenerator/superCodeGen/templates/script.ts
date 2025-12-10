@@ -6,7 +6,7 @@ import type {
 const files: SuperCodeGeneratorFilesSchema = [
   {
     path: (p) => {
-      const fileName = `${p.namePascalCase}`
+      const fileName = `${p.nameCamelCase}`
 
       return `${fileName}.server.ts`
     },
