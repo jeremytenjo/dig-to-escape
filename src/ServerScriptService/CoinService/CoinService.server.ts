@@ -20,7 +20,7 @@ function onCoinTouched(coin: BasePart, otherPart: Instance): void {
 
       playerData.updateValue({
         player,
-        key: playerData.COIN_KEY_NAME,
+        key: 'Coins',
       })
 
       task.wait(10)
@@ -42,7 +42,7 @@ function onPlayerAdded(player: Player): void {
   // Reset player coins to 0
   playerData.resetValue({
     player,
-    key: playerData.COIN_KEY_NAME,
+    key: 'Coins',
   })
 
   player.CharacterAdded.Connect((character) => {
@@ -54,7 +54,7 @@ function onPlayerAdded(player: Player): void {
         // Reset player coins to 0
         playerData.resetValue({
           player,
-          key: playerData.COIN_KEY_NAME,
+          key: 'Coins',
         })
       })
     })
@@ -69,7 +69,7 @@ for (const player of Players.GetPlayers()) {
 function onPlayerRemoved(player: Player): void {
   playerData.resetValue({
     player,
-    key: playerData.COIN_KEY_NAME,
+    key: 'Coins',
   })
 }
 

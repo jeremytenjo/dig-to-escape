@@ -1,8 +1,10 @@
 import leaderboard from '../leaderboard/leaderboard.js'
 
+type PlayerDataKey = 'Coins' | 'Jump'
+
 type PlayerDataEntry = {
   userId: string
-  data: { [key: string]: number }
+  data: { [K in PlayerDataKey]: number }
 }
 
 const playerDataEntries: PlayerDataEntry[] = []
@@ -31,14 +33,12 @@ function getData(props: { player: Player }): PlayerDataEntry['data'] {
 }
 
 const playerData = {
-  COIN_KEY_NAME: 'Coins',
-  JUMP_KEY_NAME: 'Jump',
-  getValue(props: { player: Player; key: string }) {
+  getValue(props: { player: Player; key: PlayerDataKey }) {
     return getData({
       player: props.player,
     })[props.key]
   },
-  updateValue(props: { player: Player; key: string }) {
+  updateValue(props: { player: Player; key: PlayerDataKey }) {
     const data = getData({
       player: props.player,
     })
@@ -55,7 +55,7 @@ const playerData = {
 
     return newValue
   },
-  resetValue(props: { player: Player; key: string }) {
+  resetValue(props: { player: Player; key: PlayerDataKey }) {
     const data = getData({
       player: props.player,
     })
@@ -71,7 +71,7 @@ const playerData = {
 
     return newValue
   },
-  setValue(props: { player: Player; key: string; value: number }) {
+  setValue(props: { player: Player; key: PlayerDataKey; value: number }) {
     const data = getData({
       player: props.player,
     })

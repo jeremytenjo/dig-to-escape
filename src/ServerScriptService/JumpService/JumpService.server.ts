@@ -4,8 +4,6 @@ import leaderboard from '../../ServerStorage/leaderboard/leaderboard.js'
 import playerData from '../../ServerStorage/playerData/playerData.js'
 import { increaseJumpPowerRemoteFunction } from '../../ReplicatedStorage/remoteFunctions/increaseJumpPowerRemoteFunction/increaseJumpPowerRemoteFunction.js'
 
-const JUMP_KEY_NAME = playerData.JUMP_KEY_NAME
-const COIN_KEY_NAME = playerData.COIN_KEY_NAME
 const JUMP_POWER_INCREMENT = 30
 const JUMP_COIN_COST = 5
 
@@ -19,14 +17,14 @@ function updateJumpPower(player: Player, newJumpPower: number): void {
     // Update the jump power data
     playerData.setValue({
       player,
-      key: JUMP_KEY_NAME,
+      key: 'Jump',
       value: newJumpPower,
     })
 
     // Update the jump leaderboard
     leaderboard.setStat({
       player,
-      statName: JUMP_KEY_NAME,
+      statName: 'Jump',
       value: newJumpPower,
     })
   }
@@ -36,7 +34,7 @@ function onPurchaseJumpIncrease(player: Player): boolean {
   const coinAmount =
     playerData.getValue({
       player,
-      key: COIN_KEY_NAME,
+      key: 'Coins',
     }) ?? 0
 
   if (coinAmount < JUMP_COIN_COST) {
@@ -47,7 +45,7 @@ function onPurchaseJumpIncrease(player: Player): boolean {
   const oldJumpPower =
     playerData.getValue({
       player,
-      key: JUMP_KEY_NAME,
+      key: 'Jump',
     }) ?? 0
 
   updateJumpPower(player, oldJumpPower + JUMP_POWER_INCREMENT)
@@ -57,14 +55,14 @@ function onPurchaseJumpIncrease(player: Player): boolean {
 
   playerData.setValue({
     player,
-    key: COIN_KEY_NAME,
+    key: 'Coins',
     value: newCoinAmount,
   })
 
   // Update the coin leaderboard
   leaderboard.setStat({
     player,
-    statName: COIN_KEY_NAME,
+    statName: 'Coins',
     value: newCoinAmount,
   })
 

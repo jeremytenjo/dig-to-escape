@@ -33,8 +33,6 @@ local function getData(props)
 	return data
 end
 local playerData = {
-	COIN_KEY_NAME = "Coins",
-	JUMP_KEY_NAME = "Jump",
 	getValue = function(self, props)
 		return getData({
 			player = props.player,

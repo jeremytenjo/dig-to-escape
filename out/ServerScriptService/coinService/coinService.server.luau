@@ -17,7 +17,7 @@ local function onCoinTouched(coin, otherPart)
 			coin:SetAttribute("Enabled", false)
 			playerData:updateValue({
 				player = player,
-				key = playerData.COIN_KEY_NAME,
+				key = "Coins",
 			})
 			task.wait(10)
 			coin.Transparency = 0
@@ -36,7 +36,7 @@ local function onPlayerAdded(player)
 	-- Reset player coins to 0
 	playerData:resetValue({
 		player = player,
-		key = playerData.COIN_KEY_NAME,
+		key = "Coins",
 	})
 	player.CharacterAdded:Connect(function(character)
 		-- WaitForChild would stop the player loop, so below should be done in a separate thread
@@ -47,7 +47,7 @@ local function onPlayerAdded(player)
 				-- Reset player coins to 0
 				playerData:resetValue({
 					player = player,
-					key = playerData.COIN_KEY_NAME,
+					key = "Coins",
 				})
 			end)
 		end)
@@ -60,7 +60,7 @@ end
 local function onPlayerRemoved(player)
 	playerData:resetValue({
 		player = player,
-		key = playerData.COIN_KEY_NAME,
+		key = "Coins",
 	})
 end
 Players.PlayerAdded:Connect(onPlayerAdded)

@@ -4,8 +4,6 @@ local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_i
 local leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "leaderboard", "leaderboard")
 local playerData = TS.import(script, game:GetService("ServerStorage"), "TS", "playerData", "playerData")
 local increaseJumpPowerRemoteFunction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "remoteFunctions", "increaseJumpPowerRemoteFunction", "increaseJumpPowerRemoteFunction").increaseJumpPowerRemoteFunction
-local JUMP_KEY_NAME = playerData.JUMP_KEY_NAME
-local COIN_KEY_NAME = playerData.COIN_KEY_NAME
 local JUMP_POWER_INCREMENT = 30
 local JUMP_COIN_COST = 5
 local function updateJumpPower(player, newJumpPower)
@@ -17,13 +15,13 @@ local function updateJumpPower(player, newJumpPower)
 		-- Update the jump power data
 		playerData:setValue({
 			player = player,
-			key = JUMP_KEY_NAME,
+			key = "Jump",
 			value = newJumpPower,
 		})
 		-- Update the jump leaderboard
 		leaderboard:setStat({
 			player = player,
-			statName = JUMP_KEY_NAME,
+			statName = "Jump",
 			value = newJumpPower,
 		})
 	end
@@ -31,7 +29,7 @@ end
 local function onPurchaseJumpIncrease(player)
 	local _condition = playerData:getValue({
 		player = player,
-		key = COIN_KEY_NAME,
+		key = "Coins",
 	})
 	if _condition == nil then
 		_condition = 0
@@ -43,7 +41,7 @@ local function onPurchaseJumpIncrease(player)
 	-- Increase player's jump power
 	local _condition_1 = playerData:getValue({
 		player = player,
-		key = JUMP_KEY_NAME,
+		key = "Jump",
 	})
 	if _condition_1 == nil then
 		_condition_1 = 0
@@ -54,13 +52,13 @@ local function onPurchaseJumpIncrease(player)
 	local newCoinAmount = coinAmount - JUMP_COIN_COST
 	playerData:setValue({
 		player = player,
-		key = COIN_KEY_NAME,
+		key = "Coins",
 		value = newCoinAmount,
 	})
 	-- Update the coin leaderboard
 	leaderboard:setStat({
 		player = player,
-		statName = COIN_KEY_NAME,
+		statName = "Coins",
 		value = newCoinAmount,
 	})
 	return true
