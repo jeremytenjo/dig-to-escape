@@ -21,8 +21,8 @@ function getData(props: { player: Player }): PlayerDataEntry['data'] {
   }
 
   const data = entry?.data ?? {
-    ['Coins']: 0,
-    ['Jump']: 0,
+    Coins: 0,
+    Jump: 0,
   }
 
   if (!entry) {
