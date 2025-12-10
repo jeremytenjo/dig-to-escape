@@ -1,11 +1,14 @@
 import leaderboard from '../leaderboard/leaderboard.js'
 
-type PlayerDataKey = 'Coins' | 'Jump'
-
 type PlayerDataEntry = {
   userId: string
-  data: { [K in PlayerDataKey]: number }
+  data: {
+    Coins: number
+    Jump: number
+  }
 }
+
+type PlayerDataKey = keyof PlayerDataEntry['data']
 
 const playerDataEntries: PlayerDataEntry[] = []
 
