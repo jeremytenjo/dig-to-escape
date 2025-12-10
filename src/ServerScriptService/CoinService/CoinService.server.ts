@@ -1,6 +1,6 @@
 import { Players } from '@rbxts/services'
 
-import PlayerData from '../../ServerStorage/PlayerData/PlayerData.js'
+import playerData from '../../ServerStorage/playerData/playerData.js'
 import getInstance from '../../ReplicatedStorage/utils/getInstance/getInstance.js'
 
 const coinsFolder = getInstance<Folder>({
@@ -18,9 +18,9 @@ function onCoinTouched(coin: BasePart, otherPart: Instance): void {
       coin.Transparency = 1
       coin.SetAttribute('Enabled', false)
 
-      PlayerData.updateValue({
+      playerData.updateValue({
         player,
-        key: PlayerData.COIN_KEY_NAME,
+        key: playerData.COIN_KEY_NAME,
       })
 
       task.wait(10)
@@ -40,9 +40,9 @@ for (const coin of coins) {
 
 function onPlayerAdded(player: Player): void {
   // Reset player coins to 0
-  PlayerData.resetValue({
+  playerData.resetValue({
     player,
-    key: PlayerData.COIN_KEY_NAME,
+    key: playerData.COIN_KEY_NAME,
   })
 
   player.CharacterAdded.Connect((character) => {
@@ -52,9 +52,9 @@ function onPlayerAdded(player: Player): void {
       const humanoid = character.WaitForChild('Humanoid') as Humanoid
       humanoid.Died.Connect(() => {
         // Reset player coins to 0
-        PlayerData.resetValue({
+        playerData.resetValue({
           player,
-          key: PlayerData.COIN_KEY_NAME,
+          key: playerData.COIN_KEY_NAME,
         })
       })
     })
@@ -67,9 +67,9 @@ for (const player of Players.GetPlayers()) {
 }
 
 function onPlayerRemoved(player: Player): void {
-  PlayerData.resetValue({
+  playerData.resetValue({
     player,
-    key: PlayerData.COIN_KEY_NAME,
+    key: playerData.COIN_KEY_NAME,
   })
 }
 

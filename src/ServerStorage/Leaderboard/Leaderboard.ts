@@ -1,4 +1,4 @@
-const Leaderboard = {
+const leaderboard = {
   setStat(props: { player: Player; statName: string; value: number }) {
     let leaderstats = props.player.FindFirstChild('leaderstats')
 
@@ -24,4 +24,4 @@ const Leaderboard = {
   },
 }
 
-export = Leaderboard
+export = leaderboard

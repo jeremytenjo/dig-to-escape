@@ -1,11 +1,11 @@
 import { Players } from '@rbxts/services'
 
-import Leaderboard from '../../ServerStorage/Leaderboard/Leaderboard.js'
-import PlayerData from '../../ServerStorage/PlayerData/PlayerData.js'
+import leaderboard from '../../ServerStorage/leaderboard/leaderboard.js'
+import playerData from '../../ServerStorage/playerData/playerData.js'
 import { increaseJumpPowerRemoteFunction } from '../../ReplicatedStorage/remoteFunctions/increaseJumpPowerRemoteFunction/increaseJumpPowerRemoteFunction.js'
 
-const JUMP_KEY_NAME = PlayerData.JUMP_KEY_NAME
-const COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
+const JUMP_KEY_NAME = playerData.JUMP_KEY_NAME
+const COIN_KEY_NAME = playerData.COIN_KEY_NAME
 const JUMP_POWER_INCREMENT = 30
 const JUMP_COIN_COST = 5
 
@@ -17,14 +17,14 @@ function updateJumpPower(player: Player, newJumpPower: number): void {
     ;(humanoid as Humanoid).JumpPower = newJumpPower
 
     // Update the jump power data
-    PlayerData.setValue({
+    playerData.setValue({
       player,
       key: JUMP_KEY_NAME,
       value: newJumpPower,
     })
 
     // Update the jump leaderboard
-    Leaderboard.setStat({
+    leaderboard.setStat({
       player,
       statName: JUMP_KEY_NAME,
       value: newJumpPower,
@@ -34,7 +34,7 @@ function updateJumpPower(player: Player, newJumpPower: number): void {
 
 function onPurchaseJumpIncrease(player: Player): boolean {
   const coinAmount =
-    PlayerData.getValue({
+    playerData.getValue({
       player,
       key: COIN_KEY_NAME,
     }) ?? 0
@@ -45,7 +45,7 @@ function onPurchaseJumpIncrease(player: Player): boolean {
 
   // Increase player's jump power
   const oldJumpPower =
-    PlayerData.getValue({
+    playerData.getValue({
       player,
       key: JUMP_KEY_NAME,
     }) ?? 0
@@ -55,14 +55,14 @@ function onPurchaseJumpIncrease(player: Player): boolean {
   // Update the coin table
   const newCoinAmount = coinAmount - JUMP_COIN_COST
 
-  PlayerData.setValue({
+  playerData.setValue({
     player,
     key: COIN_KEY_NAME,
     value: newCoinAmount,
   })
 
   // Update the coin leaderboard
-  Leaderboard.setStat({
+  leaderboard.setStat({
     player,
     statName: COIN_KEY_NAME,
     value: newCoinAmount,

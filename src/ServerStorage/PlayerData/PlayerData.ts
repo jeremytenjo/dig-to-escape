@@ -1,17 +1,17 @@
-import Leaderboard from '../Leaderboard/Leaderboard.js'
+import leaderboard from '../leaderboard/leaderboard.js'
 
 type PlayerDataEntry = {
   userId: string
   data: { [key: string]: number }
 }
 
-const playerData: PlayerDataEntry[] = []
+const playerDataEntries: PlayerDataEntry[] = []
 
 function getData(props: { player: Player }): PlayerDataEntry['data'] {
   const userId = tostring(props.player.UserId)
   let entry: PlayerDataEntry | undefined
 
-  for (const item of playerData) {
+  for (const item of playerDataEntries) {
     if (item.userId === userId) {
       entry = item
       break
@@ -24,13 +24,13 @@ function getData(props: { player: Player }): PlayerDataEntry['data'] {
   }
 
   if (!entry) {
-    playerData.push({ userId, data })
+    playerDataEntries.push({ userId, data })
   }
 
   return data
 }
 
-const PlayerData = {
+const playerData = {
   COIN_KEY_NAME: 'Coins',
   JUMP_KEY_NAME: 'Jump',
   getValue(props: { player: Player; key: string }) {
@@ -47,7 +47,7 @@ const PlayerData = {
 
     data[props.key] = newValue
 
-    Leaderboard.setStat({
+    leaderboard.setStat({
       player: props.player,
       statName: props.key,
       value: newValue,
@@ -63,7 +63,7 @@ const PlayerData = {
 
     data[props.key] = newValue
 
-    Leaderboard.setStat({
+    leaderboard.setStat({
       player: props.player,
       statName: props.key,
       value: newValue,
@@ -78,7 +78,7 @@ const PlayerData = {
 
     data[props.key] = props.value
 
-    Leaderboard.setStat({
+    leaderboard.setStat({
       player: props.player,
       statName: props.key,
       value: props.value,
@@ -88,4 +88,4 @@ const PlayerData = {
   },
 }
 
-export = PlayerData
+export = playerData

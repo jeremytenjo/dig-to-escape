@@ -55,28 +55,34 @@
                 <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local React = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "react")
-local Color = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "ColourUtils")
+local sizePx = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "gui", "utils", "sizePx", "sizePx").default
+local hex = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "gui", "utils", "hex", "hex").default
 local function Button(props)
-	local _attributes = {}
-	local _condition = props.text
-	if _condition == nil then
-		_condition = props.variant
-	end
-	_attributes.Text = _condition
-	_attributes.Size = UDim2.new(0, 100, 0, 50)
-	_attributes.BackgroundColor3 = Color.Hex.fromHex("#007FFF")
-	_attributes.TextColor3 = Color.Hex.fromHex("#FFFFFF")
-	_attributes.Position = props.position
-	_attributes.Event = {
-		Activated = function()
-			local _result = props.onClick
-			if _result ~= nil then
-				_result = _result()
-			end
-			return _result
-		end,
-	}
-	return React.createElement("textbutton", _attributes)
+	local size = sizePx({
+		width = 280,
+		height = 80,
+	})
+	return React.createElement("textbutton", {
+		Text = props.text,
+		Size = size,
+		BackgroundColor3 = hex("#00DD00"),
+		TextColor3 = hex("#FFFFFF"),
+		TextSize = 32,
+		Font = Enum.Font.GothamBold,
+		Position = props.position,
+		AnchorPoint = props.anchorPoint,
+		BorderSizePixel = 4,
+		BorderColor3 = hex("#00AA00"),
+		Event = {
+			Activated = function()
+				local _result = props.onClick
+				if _result ~= nil then
+					_result = _result()
+				end
+				return _result
+			end,
+		},
+	})
 end
 return {
 	default = Button,
@@ -91,15 +97,12 @@ return {
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local React = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "react")
 local ReactRoblox = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "react-roblox")
-local _ui_labs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "ui-labs", "src")
-local CreateReactStory = _ui_labs.CreateReactStory
-local Choose = _ui_labs.Choose
+local CreateReactStory = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "ui-labs", "src").CreateReactStory
 local Button = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "gui", "lib", "Button", "Button").default
 local story = CreateReactStory({
 	react = React,
 	reactRoblox = ReactRoblox,
 	controls = {
-		variant = Choose({ "hello", "world", "button" }),
 		text = "Button Text",
 	},
 }, function(props)
@@ -114,9 +117,14 @@ return story
           </Item>
           <Item class="Folder" referent="11">
             <Properties>
+              <string name="Name">JumpPowerBoostAnimation</string>
+            </Properties>
+          </Item>
+          <Item class="Folder" referent="12">
+            <Properties>
               <string name="Name">Text</string>
             </Properties>
-            <Item class="ModuleScript" referent="12">
+            <Item class="ModuleScript" referent="13">
               <Properties>
                 <string name="Name">Text</string>
                 <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
@@ -133,7 +141,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="13">
+            <Item class="ModuleScript" referent="14">
               <Properties>
                 <string name="Name">Text.story</string>
                 <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
@@ -158,7 +166,7 @@ return story
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="14">
+          <Item class="ModuleScript" referent="15">
             <Properties>
               <string name="Name">lib.storybook</string>
               <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
@@ -170,21 +178,42 @@ local LibInstance = getInstance({
 local storybook = {
 	name = "Lib",
 	storyRoots = LibInstance:GetChildren(),
+	groupRoots = true,
 }
 return storybook
 ]]></string>
             </Properties>
           </Item>
         </Item>
-        <Item class="Folder" referent="15">
+        <Item class="Folder" referent="16">
           <Properties>
             <string name="Name">utils</string>
           </Properties>
-          <Item class="Folder" referent="16">
+          <Item class="Folder" referent="17">
+            <Properties>
+              <string name="Name">hex</string>
+            </Properties>
+            <Item class="ModuleScript" referent="18">
+              <Properties>
+                <string name="Name">hex</string>
+                <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Color = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "ColourUtils")
+local function hex(color)
+	return Color.Hex.fromHex(color)
+end
+return {
+	default = hex,
+}
+]]></string>
+              </Properties>
+            </Item>
+          </Item>
+          <Item class="Folder" referent="19">
             <Properties>
               <string name="Name">mountScreenGuiComponent</string>
             </Properties>
-            <Item class="ModuleScript" referent="17">
+            <Item class="ModuleScript" referent="20">
               <Properties>
                 <string name="Name">mountScreenGuiComponent</string>
                 <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
@@ -208,13 +237,31 @@ return {
               </Properties>
             </Item>
           </Item>
+          <Item class="Folder" referent="21">
+            <Properties>
+              <string name="Name">sizePx</string>
+            </Properties>
+            <Item class="ModuleScript" referent="22">
+              <Properties>
+                <string name="Name">sizePx</string>
+                <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
+local function sizePx(props)
+	return UDim2.new(0, props.width, 0, props.height)
+end
+return {
+	default = sizePx,
+}
+]]></string>
+              </Properties>
+            </Item>
+          </Item>
         </Item>
       </Item>
-      <Item class="Folder" referent="18">
+      <Item class="Folder" referent="23">
         <Properties>
           <string name="Name">jumpButtonClickHandler</string>
         </Properties>
-        <Item class="Script" referent="19">
+        <Item class="Script" referent="24">
           <Properties>
             <string name="Name">jumpButtonClickHandler</string>
             <token name="RunContext">2</token>
@@ -236,25 +283,25 @@ end)
 mountScreenGuiComponent({
 	component = Button,
 	props = {
-		variant = "buy-jump-power",
 		text = "Buy Jump Power",
 		onClick = onButtonClicked,
-		position = UDim2.new(1, -110, 1, -60),
+		position = UDim2.new(1, 0, 1, 0),
+		anchorPoint = Vector2.new(1, 1),
 	},
 })
 ]]></string>
           </Properties>
         </Item>
       </Item>
-      <Item class="Folder" referent="20">
+      <Item class="Folder" referent="25">
         <Properties>
           <string name="Name">remoteFunctions</string>
         </Properties>
-        <Item class="Folder" referent="21">
+        <Item class="Folder" referent="26">
           <Properties>
             <string name="Name">increaseJumpPowerRemoteFunction</string>
           </Properties>
-          <Item class="ModuleScript" referent="22">
+          <Item class="ModuleScript" referent="27">
             <Properties>
               <string name="Name">increaseJumpPowerRemoteFunction</string>
               <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
@@ -276,15 +323,15 @@ return {
           </Item>
         </Item>
       </Item>
-      <Item class="Folder" referent="23">
+      <Item class="Folder" referent="28">
         <Properties>
           <string name="Name">utils</string>
         </Properties>
-        <Item class="Folder" referent="24">
+        <Item class="Folder" referent="29">
           <Properties>
             <string name="Name">getInstance</string>
           </Properties>
-          <Item class="ModuleScript" referent="25">
+          <Item class="ModuleScript" referent="30">
             <Properties>
               <string name="Name">getInstance</string>
               <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
@@ -315,11 +362,11 @@ return {
         </Item>
       </Item>
     </Item>
-    <Item class="Folder" referent="26">
+    <Item class="Folder" referent="31">
       <Properties>
         <string name="Name">rbxts_include</string>
       </Properties>
-      <Item class="ModuleScript" referent="27">
+      <Item class="ModuleScript" referent="32">
         <Properties>
           <string name="Name">Promise</string>
           <string name="Source"><![CDATA[--[[
@@ -2393,7 +2440,7 @@ return Promise
 ]]></string>
         </Properties>
       </Item>
-      <Item class="ModuleScript" referent="28">
+      <Item class="ModuleScript" referent="33">
         <Properties>
           <string name="Name">RuntimeLib</string>
           <string name="Source"><![CDATA[local Promise = require(script.Parent.Promise)
@@ -2659,15 +2706,15 @@ return TS
 ]]></string>
         </Properties>
       </Item>
-      <Item class="Folder" referent="29">
+      <Item class="Folder" referent="34">
         <Properties>
           <string name="Name">node_modules</string>
         </Properties>
-        <Item class="Folder" referent="30">
+        <Item class="Folder" referent="35">
           <Properties>
             <string name="Name">@rbxts</string>
           </Properties>
-          <Item class="ModuleScript" referent="31">
+          <Item class="ModuleScript" referent="36">
             <Properties>
               <string name="Name">ColourUtils</string>
               <string name="Source"><![CDATA[local deprecateWarnOnce = require(script.Util.DeprecateWarnOnce)
@@ -2727,7 +2774,7 @@ module.GetContrastRatio = deprecateWarnOnce(GetContrastRatioCompat)(
 return module
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="32">
+            <Item class="ModuleScript" referent="37">
               <Properties>
                 <string name="Name">APCA</string>
                 <string name="Source"><![CDATA[--[=[
@@ -2738,7 +2785,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="33">
+              <Item class="ModuleScript" referent="38">
                 <Properties>
                   <string name="Name">Const</string>
                   <string name="Source"><![CDATA[return {
@@ -2766,7 +2813,7 @@ return {
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="34">
+              <Item class="ModuleScript" referent="39">
                 <Properties>
                   <string name="Name">GetContrastRatio</string>
                   <string name="Source"><![CDATA[--[[
@@ -2854,7 +2901,7 @@ return GetContrastRatio
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="35">
+            <Item class="ModuleScript" referent="40">
               <Properties>
                 <string name="Name">Blend</string>
                 <string name="Source"><![CDATA[--[=[
@@ -2870,7 +2917,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="36">
+              <Item class="ModuleScript" referent="41">
                 <Properties>
                   <string name="Name">Burn</string>
                   <string name="Source"><![CDATA[local PrepFilter = require(script.Parent._Filter)
@@ -2896,7 +2943,7 @@ end)
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="37">
+              <Item class="ModuleScript" referent="42">
                 <Properties>
                   <string name="Name">Dodge</string>
                   <string name="Source"><![CDATA[local PrepFilter = require(script.Parent._Filter)
@@ -2922,7 +2969,7 @@ end)
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="38">
+              <Item class="ModuleScript" referent="43">
                 <Properties>
                   <string name="Name">Multiply</string>
                   <string name="Source"><![CDATA[local PrepFilter = require(script.Parent._Filter)
@@ -2941,7 +2988,7 @@ end)
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="39">
+              <Item class="ModuleScript" referent="44">
                 <Properties>
                   <string name="Name">Overlay</string>
                   <string name="Source"><![CDATA[local PrepFilter = require(script.Parent._Filter)
@@ -2963,7 +3010,7 @@ end)
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="40">
+              <Item class="ModuleScript" referent="45">
                 <Properties>
                   <string name="Name">Screen</string>
                   <string name="Source"><![CDATA[local PrepFilter = require(script.Parent._Filter)
@@ -2983,7 +3030,7 @@ end)
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="41">
+              <Item class="ModuleScript" referent="46">
                 <Properties>
                   <string name="Name">Transparency</string>
                   <string name="Source"><![CDATA[--[=[
@@ -3009,7 +3056,7 @@ return applyTransparency
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="42">
+              <Item class="ModuleScript" referent="47">
                 <Properties>
                   <string name="Name">_Filter</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -3035,7 +3082,7 @@ end
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="43">
+            <Item class="ModuleScript" referent="48">
               <Properties>
                 <string name="Name">Blind</string>
                 <string name="Source"><![CDATA[--[=[
@@ -3047,7 +3094,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="44">
+              <Item class="ModuleScript" referent="49">
                 <Properties>
                   <string name="Name">Enum</string>
                   <string name="Source"><![CDATA[--[=[
@@ -3137,7 +3184,7 @@ return Enums
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="45">
+              <Item class="ModuleScript" referent="50">
                 <Properties>
                   <string name="Name">Simulate</string>
                   <string name="Source"><![CDATA[--[[
@@ -3299,7 +3346,7 @@ end
 return SimulateBlinder
 ]]></string>
                 </Properties>
-                <Item class="ModuleScript" referent="46">
+                <Item class="ModuleScript" referent="51">
                   <Properties>
                     <string name="Name">Configs</string>
                     <string name="Source"><![CDATA[local Enums = require(script.Parent.Parent.Enum)
@@ -3385,7 +3432,7 @@ return {
                 </Item>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="47">
+            <Item class="ModuleScript" referent="52">
               <Properties>
                 <string name="Name">Darken</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -3410,7 +3457,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="48">
+            <Item class="ModuleScript" referent="53">
               <Properties>
                 <string name="Name">Desaturate</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -3435,7 +3482,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="49">
+            <Item class="ModuleScript" referent="54">
               <Properties>
                 <string name="Name">Emphasize</string>
                 <string name="Source"><![CDATA[local Darken = require(script.Parent.Darken)
@@ -3458,7 +3505,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="50">
+            <Item class="ModuleScript" referent="55">
               <Properties>
                 <string name="Name">GetContrastRatioCompat</string>
                 <string name="Source"><![CDATA[local getContrastRatio = require(script.Parent.APCA.GetContrastRatio)
@@ -3482,7 +3529,7 @@ return getContrastRatioCompat
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="51">
+            <Item class="ModuleScript" referent="56">
               <Properties>
                 <string name="Name">GetLuminance</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -3514,7 +3561,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="52">
+            <Item class="ModuleScript" referent="57">
               <Properties>
                 <string name="Name">GetPerceivedBrightness</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -3542,7 +3589,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="53">
+            <Item class="ModuleScript" referent="58">
               <Properties>
                 <string name="Name">HSL</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -3665,7 +3712,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="54">
+            <Item class="ModuleScript" referent="59">
               <Properties>
                 <string name="Name">Hex</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -3795,7 +3842,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="55">
+            <Item class="ModuleScript" referent="60">
               <Properties>
                 <string name="Name">Int</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -3851,7 +3898,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="56">
+            <Item class="ModuleScript" referent="61">
               <Properties>
                 <string name="Name">Invert</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -3875,7 +3922,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="57">
+            <Item class="ModuleScript" referent="62">
               <Properties>
                 <string name="Name">LAB</string>
                 <string name="Source"><![CDATA[local CONST = require(script.Constants)
@@ -3892,7 +3939,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="58">
+              <Item class="ModuleScript" referent="63">
                 <Properties>
                   <string name="Name">Constants</string>
                   <string name="Source"><![CDATA[--[=[
@@ -3923,7 +3970,7 @@ return {
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="59">
+              <Item class="ModuleScript" referent="64">
                 <Properties>
                   <string name="Name">FromLAB</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -3972,7 +4019,7 @@ return FromLAB
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="60">
+              <Item class="ModuleScript" referent="65">
                 <Properties>
                   <string name="Name">Lerp</string>
                   <string name="Source"><![CDATA[--!strict
@@ -4009,7 +4056,7 @@ return lerp
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="61">
+              <Item class="ModuleScript" referent="66">
                 <Properties>
                   <string name="Name">ToLAB</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -4068,7 +4115,7 @@ return ToLAB
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="62">
+            <Item class="ModuleScript" referent="67">
               <Properties>
                 <string name="Name">LCH</string>
                 <string name="Source"><![CDATA[local CONST = require(script.Constants)
@@ -4084,7 +4131,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="63">
+              <Item class="ModuleScript" referent="68">
                 <Properties>
                   <string name="Name">Constants</string>
                   <string name="Source"><![CDATA[export type LCH = {
@@ -4101,7 +4148,7 @@ return {
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="64">
+              <Item class="ModuleScript" referent="69">
                 <Properties>
                   <string name="Name">FromLCH</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -4149,7 +4196,7 @@ return FromLCH
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="65">
+              <Item class="ModuleScript" referent="70">
                 <Properties>
                   <string name="Name">ToLCH</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -4195,7 +4242,7 @@ return ToLCH
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="66">
+            <Item class="ModuleScript" referent="71">
               <Properties>
                 <string name="Name">Lighten</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -4220,7 +4267,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="67">
+            <Item class="ModuleScript" referent="72">
               <Properties>
                 <string name="Name">Palette</string>
                 <string name="Source"><![CDATA[--[=[
@@ -4239,7 +4286,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="68">
+              <Item class="ModuleScript" referent="73">
                 <Properties>
                   <string name="Name">Analogous</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -4268,7 +4315,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="69">
+              <Item class="ModuleScript" referent="74">
                 <Properties>
                   <string name="Name">Complementary</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -4296,7 +4343,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="70">
+              <Item class="ModuleScript" referent="75">
                 <Properties>
                   <string name="Name">Monochromatic</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -4344,7 +4391,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="71">
+              <Item class="ModuleScript" referent="76">
                 <Properties>
                   <string name="Name">Nearest</string>
                   <string name="Source"><![CDATA[--!strict
@@ -4392,7 +4439,7 @@ return nearest
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="72">
+              <Item class="ModuleScript" referent="77">
                 <Properties>
                   <string name="Name">SplitComplementary</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -4421,7 +4468,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="73">
+              <Item class="ModuleScript" referent="78">
                 <Properties>
                   <string name="Name">Tailwind</string>
                   <string name="Source"><![CDATA[local Array = require(script.Parent.Parent.Util.Array)
@@ -4517,7 +4564,7 @@ return Tailwind
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="74">
+              <Item class="ModuleScript" referent="79">
                 <Properties>
                   <string name="Name">Tetradic</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -4547,7 +4594,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="75">
+              <Item class="ModuleScript" referent="80">
                 <Properties>
                   <string name="Name">Triadic</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -4576,7 +4623,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="76">
+              <Item class="ModuleScript" referent="81">
                 <Properties>
                   <string name="Name">Vibrant</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -4659,7 +4706,7 @@ end
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="77">
+            <Item class="ModuleScript" referent="82">
               <Properties>
                 <string name="Name">Rotate</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -4690,7 +4737,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="78">
+            <Item class="ModuleScript" referent="83">
               <Properties>
                 <string name="Name">Saturate</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -4720,7 +4767,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="79">
+            <Item class="ModuleScript" referent="84">
               <Properties>
                 <string name="Name">Util</string>
                 <string name="Source"><![CDATA[return {
@@ -4734,7 +4781,7 @@ end
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="80">
+              <Item class="ModuleScript" referent="85">
                 <Properties>
                   <string name="Name">Array</string>
                   <string name="Source"><![CDATA[local push = table.insert
@@ -4778,7 +4825,7 @@ return {
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="81">
+              <Item class="ModuleScript" referent="86">
                 <Properties>
                   <string name="Name">Assert</string>
                   <string name="Source"><![CDATA[local Assert = {}
@@ -4849,7 +4896,7 @@ return Assert
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="82">
+              <Item class="ModuleScript" referent="87">
                 <Properties>
                   <string name="Name">BasicallyIdentical</string>
                   <string name="Source"><![CDATA[local fmt = string.format
@@ -4905,7 +4952,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="83">
+              <Item class="ModuleScript" referent="88">
                 <Properties>
                   <string name="Name">ClampColor</string>
                   <string name="Source"><![CDATA[local clamp = math.clamp
@@ -4920,7 +4967,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="84">
+              <Item class="ModuleScript" referent="89">
                 <Properties>
                   <string name="Name">DeprecateWarnOnce</string>
                   <string name="Source"><![CDATA[local function deprecateWarnOnce(method)
@@ -4944,7 +4991,7 @@ return deprecateWarnOnce
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="85">
+              <Item class="ModuleScript" referent="90">
                 <Properties>
                   <string name="Name">Schema</string>
                   <string name="Source"><![CDATA[local function Loose(schema: table, input: table?): table
@@ -4986,7 +5033,7 @@ return {
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="86">
+              <Item class="ModuleScript" referent="91">
                 <Properties>
                   <string name="Name">Types</string>
                   <string name="Source"><![CDATA[export type Dictionary<K, V> = { [K]: V }
@@ -4996,7 +5043,7 @@ return nil
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="87">
+              <Item class="ModuleScript" referent="92">
                 <Properties>
                   <string name="Name">isNaN</string>
                   <string name="Source"><![CDATA[return function(value: number): boolean
@@ -5006,7 +5053,7 @@ end
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="88">
+            <Item class="ModuleScript" referent="93">
               <Properties>
                 <string name="Name">WCAG</string>
                 <string name="Source"><![CDATA[--[=[
@@ -5018,7 +5065,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="89">
+              <Item class="ModuleScript" referent="94">
                 <Properties>
                   <string name="Name">GetContrastRatio</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -5049,7 +5096,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="90">
+              <Item class="ModuleScript" referent="95">
                 <Properties>
                   <string name="Name">GetContrastingColor</string>
                   <string name="Source"><![CDATA[local Assert = require(script.Parent.Parent.Util.Assert)
@@ -5093,7 +5140,7 @@ end
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="91">
+            <Item class="ModuleScript" referent="96">
               <Properties>
                 <string name="Name">isDark</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -5116,7 +5163,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="92">
+            <Item class="ModuleScript" referent="97">
               <Properties>
                 <string name="Name">isLight</string>
                 <string name="Source"><![CDATA[local Assert = require(script.Parent.Util.Assert)
@@ -5140,17 +5187,17 @@ end
               </Properties>
             </Item>
           </Item>
-          <Item class="Folder" referent="93">
+          <Item class="Folder" referent="98">
             <Properties>
               <string name="Name">compiler-types</string>
             </Properties>
-            <Item class="Folder" referent="94">
+            <Item class="Folder" referent="99">
               <Properties>
                 <string name="Name">types</string>
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="95">
+          <Item class="ModuleScript" referent="100">
             <Properties>
               <string name="Name">react</string>
               <string name="Source"><![CDATA[local React: { [string]: any } = require(script.Parent.Parent:WaitForChild("@rbxts-js").React)
@@ -5232,7 +5279,7 @@ end
 return exports
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="96">
+            <Item class="ModuleScript" referent="101">
               <Properties>
                 <string name="Name">tags</string>
                 <string name="Source"><![CDATA[local classNames = {
@@ -5553,18 +5600,18 @@ return tags
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="97">
+          <Item class="ModuleScript" referent="102">
             <Properties>
               <string name="Name">react-roblox</string>
               <string name="Source"><![CDATA[return require(script.Parent.Parent:WaitForChild("@rbxts-js").ReactRoblox)
 ]]></string>
             </Properties>
           </Item>
-          <Item class="Folder" referent="98">
+          <Item class="Folder" referent="103">
             <Properties>
               <string name="Name">remo</string>
             </Properties>
-            <Item class="ModuleScript" referent="99">
+            <Item class="ModuleScript" referent="104">
               <Properties>
                 <string name="Name">src</string>
                 <string name="Source"><![CDATA[local Promise = require(script.Promise)
@@ -5612,7 +5659,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="100">
+              <Item class="ModuleScript" referent="105">
                 <Properties>
                   <string name="Name">Promise</string>
                   <string name="Source"><![CDATA[local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -5701,7 +5748,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="101">
+              <Item class="ModuleScript" referent="106">
                 <Properties>
                   <string name="Name">builder</string>
                   <string name="Source"><![CDATA[local types = require(script.Parent.types)
@@ -5754,7 +5801,7 @@ return {
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="102">
+              <Item class="ModuleScript" referent="107">
                 <Properties>
                   <string name="Name">client</string>
                   <string name="Source"><![CDATA[local types = require(script.Parent.types)
@@ -5781,7 +5828,7 @@ return {
 }
 ]]></string>
                 </Properties>
-                <Item class="ModuleScript" referent="103">
+                <Item class="ModuleScript" referent="108">
                   <Properties>
                     <string name="Name">createAsyncRemote</string>
                     <string name="Source"><![CDATA[local types = require(script.Parent.Parent.types)
@@ -5868,7 +5915,7 @@ return createAsyncRemote
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="104">
+                <Item class="ModuleScript" referent="109">
                   <Properties>
                     <string name="Name">createRemote</string>
                     <string name="Source"><![CDATA[local Promise = require(script.Parent.Parent.Promise)
@@ -6007,7 +6054,7 @@ return createRemote
                   </Properties>
                 </Item>
               </Item>
-              <Item class="ModuleScript" referent="105">
+              <Item class="ModuleScript" referent="110">
                 <Properties>
                   <string name="Name">constants</string>
                   <string name="Source"><![CDATA[local RunService = game:GetService("RunService")
@@ -6022,12 +6069,12 @@ return {
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="Configuration" referent="106">
+              <Item class="Configuration" referent="111">
                 <Properties>
                   <string name="Name">container</string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="107">
+              <Item class="ModuleScript" referent="112">
                 <Properties>
                   <string name="Name">createRemotes</string>
                   <string name="Source"><![CDATA[local types = require(script.Parent.types)
@@ -6081,7 +6128,7 @@ return createRemotes
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="108">
+              <Item class="ModuleScript" referent="113">
                 <Properties>
                   <string name="Name">getSender</string>
                   <string name="Source"><![CDATA[local constants = require(script.Parent.constants)
@@ -6101,11 +6148,11 @@ return getSender
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="Folder" referent="109">
+              <Item class="Folder" referent="114">
                 <Properties>
                   <string name="Name">middleware</string>
                 </Properties>
-                <Item class="ModuleScript" referent="110">
+                <Item class="ModuleScript" referent="115">
                   <Properties>
                     <string name="Name">loggerMiddleware</string>
                     <string name="Source"><![CDATA[local types = require(script.Parent.Parent.types)
@@ -6161,7 +6208,7 @@ return loggerMiddleware
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="111">
+                <Item class="ModuleScript" referent="116">
                   <Properties>
                     <string name="Name">throttleMiddleware</string>
                     <string name="Source"><![CDATA[local Players = game:GetService("Players")
@@ -6316,7 +6363,7 @@ return throttleMiddleware
                   </Properties>
                 </Item>
               </Item>
-              <Item class="ModuleScript" referent="112">
+              <Item class="ModuleScript" referent="117">
                 <Properties>
                   <string name="Name">server</string>
                   <string name="Source"><![CDATA[local types = require(script.Parent.types)
@@ -6343,7 +6390,7 @@ return {
 }
 ]]></string>
                 </Properties>
-                <Item class="ModuleScript" referent="113">
+                <Item class="ModuleScript" referent="118">
                   <Properties>
                     <string name="Name">createAsyncRemote</string>
                     <string name="Source"><![CDATA[local Promise = require(script.Parent.Parent.Promise)
@@ -6421,7 +6468,7 @@ return createAsyncRemote
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="114">
+                <Item class="ModuleScript" referent="119">
                   <Properties>
                     <string name="Name">createRemote</string>
                     <string name="Source"><![CDATA[local Players = game:GetService("Players")
@@ -6549,7 +6596,7 @@ return createRemote
                   </Properties>
                 </Item>
               </Item>
-              <Item class="ModuleScript" referent="115">
+              <Item class="ModuleScript" referent="120">
                 <Properties>
                   <string name="Name">types</string>
                   <string name="Source"><![CDATA[local Promise = require(script.Parent.Promise)
@@ -6679,11 +6726,11 @@ return nil
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="Folder" referent="116">
+              <Item class="Folder" referent="121">
                 <Properties>
                   <string name="Name">utils</string>
                 </Properties>
-                <Item class="ModuleScript" referent="117">
+                <Item class="ModuleScript" referent="122">
                   <Properties>
                     <string name="Name">compose</string>
                     <string name="Source"><![CDATA[local types = require(script.Parent.Parent.types)
@@ -6712,7 +6759,7 @@ return compose
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="118">
+                <Item class="ModuleScript" referent="123">
                   <Properties>
                     <string name="Name">instances</string>
                     <string name="Source"><![CDATA[local Promise = require(script.Parent.Parent.Promise)
@@ -6790,7 +6837,7 @@ return {
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="119">
+                <Item class="ModuleScript" referent="124">
                   <Properties>
                     <string name="Name">mockRemotes</string>
                     <string name="Source"><![CDATA[local Players = game:GetService("Players")
@@ -6918,7 +6965,7 @@ return {
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="120">
+                <Item class="ModuleScript" referent="125">
                   <Properties>
                     <string name="Name">testRemote</string>
                     <string name="Source"><![CDATA[local types = require(script.Parent.Parent.types)
@@ -7005,7 +7052,7 @@ return {
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="121">
+                <Item class="ModuleScript" referent="126">
                   <Properties>
                     <string name="Name">unwrap</string>
                     <string name="Source"><![CDATA[local Promise = require(script.Parent.Parent.Promise)
@@ -7027,7 +7074,7 @@ return unwrap
               </Item>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="122">
+          <Item class="ModuleScript" referent="127">
             <Properties>
               <string name="Name">services</string>
               <string name="Source"><![CDATA[return setmetatable({}, {
@@ -7040,15 +7087,15 @@ return unwrap
 ]]></string>
             </Properties>
           </Item>
-          <Item class="Folder" referent="123">
+          <Item class="Folder" referent="128">
             <Properties>
               <string name="Name">t</string>
             </Properties>
-            <Item class="Folder" referent="124">
+            <Item class="Folder" referent="129">
               <Properties>
                 <string name="Name">lib</string>
               </Properties>
-              <Item class="ModuleScript" referent="125">
+              <Item class="ModuleScript" referent="130">
                 <Properties>
                   <string name="Name">ts</string>
                   <string name="Source"><![CDATA[-- t: a runtime typechecker for Roblox
@@ -8397,26 +8444,26 @@ return { t = t }
               </Item>
             </Item>
           </Item>
-          <Item class="Folder" referent="126">
+          <Item class="Folder" referent="131">
             <Properties>
               <string name="Name">types</string>
             </Properties>
-            <Item class="Folder" referent="127">
+            <Item class="Folder" referent="132">
               <Properties>
                 <string name="Name">include</string>
               </Properties>
-              <Item class="Folder" referent="128">
+              <Item class="Folder" referent="133">
                 <Properties>
                   <string name="Name">generated</string>
                 </Properties>
               </Item>
             </Item>
           </Item>
-          <Item class="Folder" referent="129">
+          <Item class="Folder" referent="134">
             <Properties>
               <string name="Name">ui-labs</string>
             </Properties>
-            <Item class="ModuleScript" referent="130">
+            <Item class="ModuleScript" referent="135">
               <Properties>
                 <string name="Name">src</string>
                 <string name="Source"><![CDATA[local PrimitiveControls = require(script.Controls.PrimitiveControls)
@@ -8485,16 +8532,16 @@ local UILabs = {
 return UILabs
 ]]></string>
               </Properties>
-              <Item class="Folder" referent="131">
+              <Item class="Folder" referent="136">
                 <Properties>
                   <string name="Name">ControlTypings</string>
                 </Properties>
               </Item>
-              <Item class="Folder" referent="132">
+              <Item class="Folder" referent="137">
                 <Properties>
                   <string name="Name">Controls</string>
                 </Properties>
-                <Item class="ModuleScript" referent="133">
+                <Item class="ModuleScript" referent="138">
                   <Properties>
                     <string name="Name">AdvancedControls</string>
                     <string name="Source"><![CDATA[type RecordList<T> = { [string]: T }
@@ -8566,7 +8613,7 @@ return Controls
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="134">
+                <Item class="ModuleScript" referent="139">
                   <Properties>
                     <string name="Name">ControlConversion</string>
                     <string name="Source"><![CDATA[local Primitive = require(script.Parent.PrimitiveControls).Primitive
@@ -8608,7 +8655,7 @@ return ControlConversion
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="135">
+                <Item class="ModuleScript" referent="140">
                   <Properties>
                     <string name="Name">ControlUtils</string>
                     <string name="Source"><![CDATA[local ControlConversion = require(script.Parent.ControlConversion)
@@ -8632,7 +8679,7 @@ return ControlUtils
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="136">
+                <Item class="ModuleScript" referent="141">
                   <Properties>
                     <string name="Name">DatatypeControls</string>
                     <string name="Source"><![CDATA[local Utils = require(script.Parent.Utils)
@@ -8675,7 +8722,7 @@ return Datatypes
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="137">
+                <Item class="ModuleScript" referent="142">
                   <Properties>
                     <string name="Name">PrimitiveControls</string>
                     <string name="Source"><![CDATA[type Filter = (input: string, oldInput: string) -> string
@@ -8724,7 +8771,7 @@ return Controls
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="138">
+                <Item class="ModuleScript" referent="143">
                   <Properties>
                     <string name="Name">Utils</string>
                     <string name="Source"><![CDATA[local Utils = {}
@@ -8747,7 +8794,7 @@ return Utils
                   </Properties>
                 </Item>
               </Item>
-              <Item class="ModuleScript" referent="139">
+              <Item class="ModuleScript" referent="144">
                 <Properties>
                   <string name="Name">Environment</string>
                   <string name="Source"><![CDATA[local UserInputService = game:GetService("UserInputService")
@@ -8825,12 +8872,12 @@ return Environment
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="Folder" referent="140">
+              <Item class="Folder" referent="145">
                 <Properties>
                   <string name="Name">Libraries</string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="141">
+              <Item class="ModuleScript" referent="146">
                 <Properties>
                   <string name="Name">StoryCreators</string>
                   <string name="Source"><![CDATA[local Creators = {}
@@ -8916,7 +8963,7 @@ return Creators
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="142">
+              <Item class="ModuleScript" referent="147">
                 <Properties>
                   <string name="Name">Types</string>
                   <string name="Source"><![CDATA[export type Storybook = {
@@ -9034,12 +9081,12 @@ return nil
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="Folder" referent="143">
+              <Item class="Folder" referent="148">
                 <Properties>
                   <string name="Name">Typing</string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="144">
+              <Item class="ModuleScript" referent="149">
                 <Properties>
                   <string name="Name">Utils</string>
                   <string name="Source"><![CDATA[local Utils = {}
@@ -9095,7 +9142,7 @@ return Utils
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="145">
+              <Item class="ModuleScript" referent="150">
                 <Properties>
                   <string name="Name">Version</string>
                   <string name="Source">return "2.4.2"</string>
@@ -9104,11 +9151,11 @@ return Utils
             </Item>
           </Item>
         </Item>
-        <Item class="Folder" referent="146">
+        <Item class="Folder" referent="151">
           <Properties>
             <string name="Name">@rbxts-js</string>
           </Properties>
-          <Item class="ModuleScript" referent="147">
+          <Item class="ModuleScript" referent="152">
             <Properties>
               <string name="Name">Boolean</string>
               <string name="Source"><![CDATA[--!strict
@@ -9117,7 +9164,7 @@ return {
 }
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="148">
+            <Item class="ModuleScript" referent="153">
               <Properties>
                 <string name="Name">toJSBoolean</string>
                 <string name="Source"><![CDATA[--!strict
@@ -9132,7 +9179,7 @@ end
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="149">
+          <Item class="ModuleScript" referent="154">
             <Properties>
               <string name="Name">Collections</string>
               <string name="Source"><![CDATA[--!strict
@@ -9165,7 +9212,7 @@ return {
 }
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="150">
+            <Item class="ModuleScript" referent="155">
               <Properties>
                 <string name="Name">Array</string>
                 <string name="Source"><![CDATA[--!strict
@@ -9200,7 +9247,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="151">
+              <Item class="ModuleScript" referent="156">
                 <Properties>
                   <string name="Name">concat</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9261,7 +9308,7 @@ return concat
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="152">
+              <Item class="ModuleScript" referent="157">
                 <Properties>
                   <string name="Name">every</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9311,7 +9358,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="153">
+              <Item class="ModuleScript" referent="158">
                 <Properties>
                   <string name="Name">filter</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9367,7 +9414,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="154">
+              <Item class="ModuleScript" referent="159">
                 <Properties>
                   <string name="Name">find</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9389,7 +9436,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="155">
+              <Item class="ModuleScript" referent="160">
                 <Properties>
                   <string name="Name">findIndex</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9411,7 +9458,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="156">
+              <Item class="ModuleScript" referent="161">
                 <Properties>
                   <string name="Name">flat</string>
                   <string name="Source"><![CDATA[local __DEV__ = _G.__DEV__
@@ -9451,7 +9498,7 @@ return flat
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="157">
+              <Item class="ModuleScript" referent="162">
                 <Properties>
                   <string name="Name">flatMap</string>
                   <string name="Source"><![CDATA[local __DEV__ = _G.__DEV__
@@ -9484,7 +9531,7 @@ return flatMap
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="158">
+              <Item class="ModuleScript" referent="163">
                 <Properties>
                   <string name="Name">forEach</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9531,7 +9578,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="159">
+              <Item class="ModuleScript" referent="164">
                 <Properties>
                   <string name="Name">from</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9585,7 +9632,7 @@ return function<T, U>(
 end
 ]]></string>
                 </Properties>
-                <Item class="ModuleScript" referent="160">
+                <Item class="ModuleScript" referent="165">
                   <Properties>
                     <string name="Name">fromArray</string>
                     <string name="Source"><![CDATA[--!strict
@@ -9625,7 +9672,7 @@ end
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="161">
+                <Item class="ModuleScript" referent="166">
                   <Properties>
                     <string name="Name">fromMap</string>
                     <string name="Source"><![CDATA[--!strict
@@ -9667,7 +9714,7 @@ end
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="162">
+                <Item class="ModuleScript" referent="167">
                   <Properties>
                     <string name="Name">fromSet</string>
                     <string name="Source"><![CDATA[--!strict
@@ -9706,7 +9753,7 @@ end
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="163">
+                <Item class="ModuleScript" referent="168">
                   <Properties>
                     <string name="Name">fromString</string>
                     <string name="Source"><![CDATA[--!strict
@@ -9749,7 +9796,7 @@ end
                   </Properties>
                 </Item>
               </Item>
-              <Item class="ModuleScript" referent="164">
+              <Item class="ModuleScript" referent="169">
                 <Properties>
                   <string name="Name">includes</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9765,7 +9812,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="165">
+              <Item class="ModuleScript" referent="170">
                 <Properties>
                   <string name="Name">indexOf</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9802,7 +9849,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="166">
+              <Item class="ModuleScript" referent="171">
                 <Properties>
                   <string name="Name">isArray</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9839,7 +9886,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="167">
+              <Item class="ModuleScript" referent="172">
                 <Properties>
                   <string name="Name">join</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9863,7 +9910,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="168">
+              <Item class="ModuleScript" referent="173">
                 <Properties>
                   <string name="Name">map</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9914,7 +9961,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="169">
+              <Item class="ModuleScript" referent="174">
                 <Properties>
                   <string name="Name">reduce</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9962,7 +10009,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="170">
+              <Item class="ModuleScript" referent="175">
                 <Properties>
                   <string name="Name">reverse</string>
                   <string name="Source"><![CDATA[--!strict
@@ -9985,7 +10032,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="171">
+              <Item class="ModuleScript" referent="176">
                 <Properties>
                   <string name="Name">shift</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10012,7 +10059,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="172">
+              <Item class="ModuleScript" referent="177">
                 <Properties>
                   <string name="Name">slice</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10063,7 +10110,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="173">
+              <Item class="ModuleScript" referent="178">
                 <Properties>
                   <string name="Name">some</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10103,7 +10150,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="174">
+              <Item class="ModuleScript" referent="179">
                 <Properties>
                   <string name="Name">sort</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10143,7 +10190,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="175">
+              <Item class="ModuleScript" referent="180">
                 <Properties>
                   <string name="Name">splice</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10199,7 +10246,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="176">
+              <Item class="ModuleScript" referent="181">
                 <Properties>
                   <string name="Name">unshift</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10231,7 +10278,7 @@ end
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="177">
+            <Item class="ModuleScript" referent="182">
               <Properties>
                 <string name="Name">Map</string>
                 <string name="Source"><![CDATA[local Packages = script.Parent.Parent
@@ -10251,7 +10298,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="178">
+              <Item class="ModuleScript" referent="183">
                 <Properties>
                   <string name="Name">Map</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10444,7 +10491,7 @@ return Map
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="179">
+              <Item class="ModuleScript" referent="184">
                 <Properties>
                   <string name="Name">coerceToMap</string>
                   <string name="Source"><![CDATA[local MapModule = script.Parent
@@ -10468,7 +10515,7 @@ return coerceToMap
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="180">
+              <Item class="ModuleScript" referent="185">
                 <Properties>
                   <string name="Name">coerceToTable</string>
                   <string name="Source"><![CDATA[local MapModule = script.Parent
@@ -10500,7 +10547,7 @@ return coerceToTable
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="181">
+            <Item class="ModuleScript" referent="186">
               <Properties>
                 <string name="Name">Object</string>
                 <string name="Source"><![CDATA[--!strict
@@ -10521,7 +10568,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="182">
+              <Item class="ModuleScript" referent="187">
                 <Properties>
                   <string name="Name">None</string>
                   <string name="Source"><![CDATA[--!nonstrict
@@ -10537,7 +10584,7 @@ return None
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="183">
+              <Item class="ModuleScript" referent="188">
                 <Properties>
                   <string name="Name">assign</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10606,7 +10653,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="184">
+              <Item class="ModuleScript" referent="189">
                 <Properties>
                   <string name="Name">entries</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10640,7 +10687,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="185">
+              <Item class="ModuleScript" referent="190">
                 <Properties>
                   <string name="Name">freeze</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10658,7 +10705,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="186">
+              <Item class="ModuleScript" referent="191">
                 <Properties>
                   <string name="Name">is</string>
                   <string name="Source"><![CDATA[-- Implements Javascript's `Object.is` as defined below
@@ -10673,7 +10720,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="187">
+              <Item class="ModuleScript" referent="192">
                 <Properties>
                   <string name="Name">isFrozen</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10694,7 +10741,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="188">
+              <Item class="ModuleScript" referent="193">
                 <Properties>
                   <string name="Name">keys</string>
                   <string name="Source"><![CDATA[local Object = script.Parent
@@ -10738,7 +10785,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="189">
+              <Item class="ModuleScript" referent="194">
                 <Properties>
                   <string name="Name">preventExtensions</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10771,7 +10818,7 @@ return preventExtensions
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="190">
+              <Item class="ModuleScript" referent="195">
                 <Properties>
                   <string name="Name">seal</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10789,7 +10836,7 @@ end
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="191">
+              <Item class="ModuleScript" referent="196">
                 <Properties>
                   <string name="Name">values</string>
                   <string name="Source"><![CDATA[--!strict
@@ -10827,7 +10874,7 @@ end
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="192">
+            <Item class="ModuleScript" referent="197">
               <Properties>
                 <string name="Name">Set</string>
                 <string name="Source"><![CDATA[--!nonstrict
@@ -10982,7 +11029,7 @@ return Set
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="193">
+            <Item class="ModuleScript" referent="198">
               <Properties>
                 <string name="Name">WeakMap</string>
                 <string name="Source"><![CDATA[--!strict
@@ -11029,7 +11076,7 @@ return WeakMap :: WeakMap<any, any> & WeakMap_Statics
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="194">
+            <Item class="ModuleScript" referent="199">
               <Properties>
                 <string name="Name">inspect</string>
                 <string name="Source"><![CDATA[-- derived from these upstream sources:
@@ -11266,7 +11313,7 @@ return inspect
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="195">
+          <Item class="ModuleScript" referent="200">
             <Properties>
               <string name="Name">Console</string>
               <string name="Source"><![CDATA[--!strict
@@ -11275,7 +11322,7 @@ local makeConsoleImpl = require(script.makeConsoleImpl)
 return makeConsoleImpl()
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="196">
+            <Item class="ModuleScript" referent="201">
               <Properties>
                 <string name="Name">makeConsoleImpl</string>
                 <string name="Source"><![CDATA[--!strict
@@ -11380,7 +11427,7 @@ end
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="197">
+          <Item class="ModuleScript" referent="202">
             <Properties>
               <string name="Name">ES7Types</string>
               <string name="Source"><![CDATA[--!strict
@@ -11454,7 +11501,7 @@ return {}
 ]]></string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="198">
+          <Item class="ModuleScript" referent="203">
             <Properties>
               <string name="Name">InstanceOf</string>
               <string name="Source"><![CDATA[local instanceof = require(script.instanceof)
@@ -11462,7 +11509,7 @@ return {}
 return instanceof
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="199">
+            <Item class="ModuleScript" referent="204">
               <Properties>
                 <string name="Name">instanceof</string>
                 <string name="Source"><![CDATA[--!strict
@@ -11515,7 +11562,7 @@ return instanceof
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="200">
+          <Item class="ModuleScript" referent="205">
             <Properties>
               <string name="Name">LuauPolyfill</string>
               <string name="Source"><![CDATA[--!strict
@@ -11580,7 +11627,7 @@ return {
 }
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="201">
+            <Item class="ModuleScript" referent="206">
               <Properties>
                 <string name="Name">AssertionError</string>
                 <string name="Source"><![CDATA[local AssertionErrorModule = require(script["AssertionError.global"])
@@ -11590,7 +11637,7 @@ export type AssertionError = AssertionErrorModule.AssertionError
 return AssertionErrorModule.AssertionError
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="202">
+              <Item class="ModuleScript" referent="207">
                 <Properties>
                   <string name="Name">AssertionError.global</string>
                   <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/nodejs/node/blob/v18.1.0/lib/internal/assert/assertion_error.js
@@ -12179,7 +12226,7 @@ return { AssertionError = AssertionError }
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="203">
+            <Item class="ModuleScript" referent="208">
               <Properties>
                 <string name="Name">Error</string>
                 <string name="Source"><![CDATA[local Error = require(script["Error.global"])
@@ -12187,7 +12234,7 @@ export type Error = Error.Error
 return Error
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="204">
+              <Item class="ModuleScript" referent="209">
                 <Properties>
                   <string name="Name">Error.global</string>
                   <string name="Source"><![CDATA[local LuauPolyfill = script.Parent.Parent
@@ -12280,7 +12327,7 @@ return setmetatable(Error, {
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="205">
+            <Item class="ModuleScript" referent="210">
               <Properties>
                 <string name="Name">Promise</string>
                 <string name="Source"><![CDATA[-- this maps onto community promise libraries which won't support Luau, so we inline
@@ -12319,7 +12366,7 @@ return {}
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="206">
+            <Item class="ModuleScript" referent="211">
               <Properties>
                 <string name="Name">encodeURIComponent</string>
                 <string name="Source"><![CDATA[-- reference documentation: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
@@ -12369,7 +12416,7 @@ return encodeURIComponent
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="207">
+            <Item class="ModuleScript" referent="212">
               <Properties>
                 <string name="Name">extends</string>
                 <string name="Source"><![CDATA[--!nonstrict
@@ -12425,7 +12472,7 @@ end
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="208">
+          <Item class="ModuleScript" referent="213">
             <Properties>
               <string name="Name">Math</string>
               <string name="Source"><![CDATA[--!strict
@@ -12434,7 +12481,7 @@ return {
 }
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="209">
+            <Item class="ModuleScript" referent="214">
               <Properties>
                 <string name="Name">clz32</string>
                 <string name="Source"><![CDATA[return bit32.countlz
@@ -12442,7 +12489,7 @@ return {
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="210">
+          <Item class="ModuleScript" referent="215">
             <Properties>
               <string name="Name">Number</string>
               <string name="Source"><![CDATA[--!strict
@@ -12458,7 +12505,7 @@ return {
 }
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="211">
+            <Item class="ModuleScript" referent="216">
               <Properties>
                 <string name="Name">MAX_SAFE_INTEGER</string>
                 <string name="Source"><![CDATA[--!strict
@@ -12467,7 +12514,7 @@ return 9007199254740991
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="212">
+            <Item class="ModuleScript" referent="217">
               <Properties>
                 <string name="Name">MIN_SAFE_INTEGER</string>
                 <string name="Source"><![CDATA[--!strict
@@ -12476,7 +12523,7 @@ return -9007199254740991
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="213">
+            <Item class="ModuleScript" referent="218">
               <Properties>
                 <string name="Name">isFinite</string>
                 <string name="Source"><![CDATA[--!strict
@@ -12486,7 +12533,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="214">
+            <Item class="ModuleScript" referent="219">
               <Properties>
                 <string name="Name">isInteger</string>
                 <string name="Source"><![CDATA[--!strict
@@ -12497,7 +12544,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="215">
+            <Item class="ModuleScript" referent="220">
               <Properties>
                 <string name="Name">isNaN</string>
                 <string name="Source"><![CDATA[--!strict
@@ -12508,7 +12555,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="216">
+            <Item class="ModuleScript" referent="221">
               <Properties>
                 <string name="Name">isSafeInteger</string>
                 <string name="Source"><![CDATA[--!strict
@@ -12522,7 +12569,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="217">
+            <Item class="ModuleScript" referent="222">
               <Properties>
                 <string name="Name">toExponential</string>
                 <string name="Source"><![CDATA[--!strict
@@ -12563,7 +12610,7 @@ end
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="218">
+          <Item class="ModuleScript" referent="223">
             <Properties>
               <string name="Name">React</string>
               <string name="Source"><![CDATA[--!strict
@@ -12651,7 +12698,7 @@ export type React_Node = SharedModule.React_Node
 return React
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="219">
+            <Item class="ModuleScript" referent="224">
               <Properties>
                 <string name="Name">None.roblox</string>
                 <string name="Source"><![CDATA[--!strict
@@ -12681,7 +12728,7 @@ return LuauPolyfill.Object.None
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="220">
+            <Item class="ModuleScript" referent="225">
               <Properties>
                 <string name="Name">React</string>
                 <string name="Source"><![CDATA[--!strict
@@ -12859,7 +12906,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="221">
+            <Item class="ModuleScript" referent="226">
               <Properties>
                 <string name="Name">ReactBaseClasses</string>
                 <string name="Source"><![CDATA[--!strict
@@ -13304,7 +13351,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="222">
+            <Item class="ModuleScript" referent="227">
               <Properties>
                 <string name="Name">ReactBinding.roblox</string>
                 <string name="Source"><![CDATA[--!strict
@@ -13543,7 +13590,7 @@ return BindingInternalApi
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="223">
+            <Item class="ModuleScript" referent="228">
               <Properties>
                 <string name="Name">ReactChildren</string>
                 <string name="Source"><![CDATA[--!strict
@@ -13909,7 +13956,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="224">
+            <Item class="ModuleScript" referent="229">
               <Properties>
                 <string name="Name">ReactContext</string>
                 <string name="Source"><![CDATA[--!strict
@@ -14041,7 +14088,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="225">
+            <Item class="ModuleScript" referent="230">
               <Properties>
                 <string name="Name">ReactCreateRef</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react/src/ReactCreateRef.js
@@ -14117,7 +14164,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="226">
+            <Item class="ModuleScript" referent="231">
               <Properties>
                 <string name="Name">ReactElement</string>
                 <string name="Source"><![CDATA[--!strict
@@ -14851,7 +14898,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="227">
+            <Item class="ModuleScript" referent="232">
               <Properties>
                 <string name="Name">ReactElementValidator</string>
                 <string name="Source"><![CDATA[--!strict
@@ -15509,7 +15556,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="228">
+            <Item class="ModuleScript" referent="233">
               <Properties>
                 <string name="Name">ReactForwardRef</string>
                 <string name="Source"><![CDATA[--!strict
@@ -15634,7 +15681,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="229">
+            <Item class="ModuleScript" referent="234">
               <Properties>
                 <string name="Name">ReactHooks</string>
                 <string name="Source"><![CDATA[--!strict
@@ -15964,7 +16011,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="230">
+            <Item class="ModuleScript" referent="235">
               <Properties>
                 <string name="Name">ReactLazy</string>
                 <string name="Source"><![CDATA[--!nonstrict
@@ -16165,7 +16212,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="231">
+            <Item class="ModuleScript" referent="236">
               <Properties>
                 <string name="Name">ReactMemo</string>
                 <string name="Source"><![CDATA[--!strict
@@ -16311,7 +16358,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="232">
+            <Item class="ModuleScript" referent="237">
               <Properties>
                 <string name="Name">ReactMutableSource</string>
                 <string name="Source"><![CDATA[--!strict
@@ -16354,7 +16401,7 @@ return createMutableSource
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="233">
+            <Item class="ModuleScript" referent="238">
               <Properties>
                 <string name="Name">ReactNoopUpdateQueue</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/0cf22a56a18790ef34c71bef14f64695c0498619/packages/react/src/ReactNoopUpdateQueue.js
@@ -16465,7 +16512,7 @@ return ReactNoopUpdateQueue
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="234">
+            <Item class="ModuleScript" referent="239">
               <Properties>
                 <string name="Name">createSignal.roblox</string>
                 <string name="Source"><![CDATA[--!strict
@@ -16563,7 +16610,7 @@ return createSignal
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="235">
+          <Item class="ModuleScript" referent="240">
             <Properties>
               <string name="Name">ReactGlobals</string>
               <string name="Source"><![CDATA[local ReactGlobals = require(script["ReactGlobals.global"])
@@ -16571,7 +16618,7 @@ return createSignal
 return ReactGlobals
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="236">
+            <Item class="ModuleScript" referent="241">
               <Properties>
                 <string name="Name">ReactGlobals.global</string>
                 <string name="Source"><![CDATA[-- NOTE: No upstream
@@ -16677,7 +16724,7 @@ return ReactGlobals
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="237">
+          <Item class="ModuleScript" referent="242">
             <Properties>
               <string name="Name">ReactReconciler</string>
               <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/43363e2795393a00fd77312a16d6b80e626c29de/packages/react-reconciler/src/index.js
@@ -16730,7 +16777,7 @@ end
 return initialize
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="238">
+            <Item class="ModuleScript" referent="243">
               <Properties>
                 <string name="Name">DebugTracing</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/43363e2795393a00fd77312a16d6b80e626c29de/packages/react-reconciler/src/DebugTracing.js
@@ -17022,7 +17069,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="239">
+            <Item class="ModuleScript" referent="244">
               <Properties>
                 <string name="Name">MaxInts</string>
                 <string name="Source"><![CDATA[--!strict
@@ -17043,7 +17090,7 @@ return { MAX_SIGNED_31_BIT_INT = 1073741823 }
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="240">
+            <Item class="ModuleScript" referent="245">
               <Properties>
                 <string name="Name">ReactCapturedValue</string>
                 <string name="Source"><![CDATA[--!strict
@@ -17085,7 +17132,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="241">
+            <Item class="ModuleScript" referent="246">
               <Properties>
                 <string name="Name">ReactChildFiber.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -18773,7 +18820,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="242">
+            <Item class="ModuleScript" referent="247">
               <Properties>
                 <string name="Name">ReactCurrentFiber</string>
                 <string name="Source"><![CDATA[--!strict
@@ -18876,7 +18923,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="243">
+            <Item class="ModuleScript" referent="248">
               <Properties>
                 <string name="Name">ReactFiber.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -19904,7 +19951,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="244">
+            <Item class="ModuleScript" referent="249">
               <Properties>
                 <string name="Name">ReactFiberBeginWork.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -23548,7 +23595,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="245">
+            <Item class="ModuleScript" referent="250">
               <Properties>
                 <string name="Name">ReactFiberClassComponent.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -24987,7 +25034,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="246">
+            <Item class="ModuleScript" referent="251">
               <Properties>
                 <string name="Name">ReactFiberCommitWork.new</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/7f08e908b10a58cda902611378ec053003d371ed/packages/react-reconciler/src/ReactFiberCommitWork.new.js
@@ -27333,7 +27380,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="247">
+            <Item class="ModuleScript" referent="252">
               <Properties>
                 <string name="Name">ReactFiberCompleteWork.new</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/87c023b1c1b00d6776b7031f6e105913ead355da/packages/react-reconciler/src/ReactFiberCompleteWork.new.js
@@ -28956,7 +29003,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="248">
+            <Item class="ModuleScript" referent="253">
               <Properties>
                 <string name="Name">ReactFiberComponentStack</string>
                 <string name="Source"><![CDATA[--!strict
@@ -29067,7 +29114,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="249">
+            <Item class="ModuleScript" referent="254">
               <Properties>
                 <string name="Name">ReactFiberContext.new</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/a724a3b578dce77d427bef313102a4d0e978d9b4/packages/react-reconciler/src/ReactFiberContext.new.js
@@ -29473,7 +29520,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="250">
+            <Item class="ModuleScript" referent="255">
               <Properties>
                 <string name="Name">ReactFiberDevToolsHook.new</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberDevToolsHook.new.js
@@ -29649,7 +29696,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="251">
+            <Item class="ModuleScript" referent="256">
               <Properties>
                 <string name="Name">ReactFiberErrorDialog</string>
                 <string name="Source"><![CDATA[--!strict
@@ -29677,7 +29724,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="252">
+            <Item class="ModuleScript" referent="257">
               <Properties>
                 <string name="Name">ReactFiberErrorLogger</string>
                 <string name="Source"><![CDATA[--!strict
@@ -29816,7 +29863,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="253">
+            <Item class="ModuleScript" referent="258">
               <Properties>
                 <string name="Name">ReactFiberFlags</string>
                 <string name="Source"><![CDATA[--!strict
@@ -29921,7 +29968,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="254">
+            <Item class="ModuleScript" referent="259">
               <Properties>
                 <string name="Name">ReactFiberHooks.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -33215,7 +33262,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="255">
+            <Item class="ModuleScript" referent="260">
               <Properties>
                 <string name="Name">ReactFiberHostConfig</string>
                 <string name="Source"><![CDATA[--!strict
@@ -33269,7 +33316,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="256">
+            <Item class="ModuleScript" referent="261">
               <Properties>
                 <string name="Name">ReactFiberHostContext.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -33401,7 +33448,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="257">
+            <Item class="ModuleScript" referent="262">
               <Properties>
                 <string name="Name">ReactFiberHotReloading.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -33923,7 +33970,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="258">
+            <Item class="ModuleScript" referent="263">
               <Properties>
                 <string name="Name">ReactFiberHydrationContext.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -34451,7 +34498,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="259">
+            <Item class="ModuleScript" referent="264">
               <Properties>
                 <string name="Name">ReactFiberLane</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/6f62abb58ae46d9c88525635f1790487285666e6/packages/react-reconciler/src/ReactFiberLane.js
@@ -35426,7 +35473,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="260">
+            <Item class="ModuleScript" referent="265">
               <Properties>
                 <string name="Name">ReactFiberLazyComponent.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -35465,7 +35512,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="261">
+            <Item class="ModuleScript" referent="266">
               <Properties>
                 <string name="Name">ReactFiberNewContext.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -35905,7 +35952,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="262">
+            <Item class="ModuleScript" referent="267">
               <Properties>
                 <string name="Name">ReactFiberOffscreenComponent</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/1faf9e3dd5d6492f3607d5c721055819e4106bc6/packages/react-reconciler/src/ReactFiberOffscreenComponent.js
@@ -35950,7 +35997,7 @@ return {}
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="263">
+            <Item class="ModuleScript" referent="268">
               <Properties>
                 <string name="Name">ReactFiberReconciler</string>
                 <string name="Source"><![CDATA[--!strict
@@ -35969,7 +36016,7 @@ return require(script.Parent["ReactFiberReconciler.new"])
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="264">
+            <Item class="ModuleScript" referent="269">
               <Properties>
                 <string name="Name">ReactFiberReconciler.new</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/50d9451f320a9aaf94304209193562cc385567d8/packages/react-reconciler/src/ReactFiberReconciler.new.js
@@ -36819,7 +36866,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="265">
+            <Item class="ModuleScript" referent="270">
               <Properties>
                 <string name="Name">ReactFiberRoot.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -36952,7 +36999,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="266">
+            <Item class="ModuleScript" referent="271">
               <Properties>
                 <string name="Name">ReactFiberSchedulerPriorities.roblox</string>
                 <string name="Source"><![CDATA[--!strict
@@ -36990,7 +37037,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="267">
+            <Item class="ModuleScript" referent="272">
               <Properties>
                 <string name="Name">ReactFiberStack.new</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/17f582e0453b808860be59ed3437c6a426ae52de/packages/react-reconciler/src/ReactFiberStack.new.js
@@ -37116,7 +37163,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="268">
+            <Item class="ModuleScript" referent="273">
               <Properties>
                 <string name="Name">ReactFiberSuspenseComponent.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -37285,7 +37332,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="269">
+            <Item class="ModuleScript" referent="274">
               <Properties>
                 <string name="Name">ReactFiberSuspenseContext.new</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/17f582e0453b808860be59ed3437c6a426ae52de/packages/react-reconciler/src/ReactFiberSuspenseContext.new.js
@@ -37388,7 +37435,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="270">
+            <Item class="ModuleScript" referent="275">
               <Properties>
                 <string name="Name">ReactFiberThrow.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -37884,7 +37931,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="271">
+            <Item class="ModuleScript" referent="276">
               <Properties>
                 <string name="Name">ReactFiberTransition</string>
                 <string name="Source"><![CDATA[--!strict
@@ -37913,7 +37960,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="272">
+            <Item class="ModuleScript" referent="277">
               <Properties>
                 <string name="Name">ReactFiberTreeReflection</string>
                 <string name="Source"><![CDATA[--!nonstrict
@@ -38302,7 +38349,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="273">
+            <Item class="ModuleScript" referent="278">
               <Properties>
                 <string name="Name">ReactFiberUnwindWork.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -38500,7 +38547,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="274">
+            <Item class="ModuleScript" referent="279">
               <Properties>
                 <string name="Name">ReactFiberWorkInProgress</string>
                 <string name="Source"><![CDATA[--!strict
@@ -38544,7 +38591,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="275">
+            <Item class="ModuleScript" referent="280">
               <Properties>
                 <string name="Name">ReactFiberWorkLoop.new</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactFiberWorkLoop.new.js
@@ -42680,7 +42727,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="276">
+            <Item class="ModuleScript" referent="281">
               <Properties>
                 <string name="Name">ReactHookEffectTags</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactHookEffectTags.js
@@ -42713,7 +42760,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="277">
+            <Item class="ModuleScript" referent="282">
               <Properties>
                 <string name="Name">ReactInternalTypes</string>
                 <string name="Source"><![CDATA[--!strict
@@ -43084,7 +43131,7 @@ return {}
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="278">
+            <Item class="ModuleScript" referent="283">
               <Properties>
                 <string name="Name">ReactMutableSource.new</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/142d4f1c00c66f3d728177082dbc027fd6335115/packages/react-reconciler/src/ReactMutableSource.new.js
@@ -43212,7 +43259,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="279">
+            <Item class="ModuleScript" referent="284">
               <Properties>
                 <string name="Name">ReactPortal</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/142d4f1c00c66f3d728177082dbc027fd6335115/packages/react-reconciler/src/ReactPortal.js
@@ -43259,7 +43306,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="280">
+            <Item class="ModuleScript" referent="285">
               <Properties>
                 <string name="Name">ReactProfilerTimer.new</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/142d4f1c00c66f3d728177082dbc027fd6335115/packages/react-reconciler/src/ReactProfilerTimer.new.js
@@ -43444,7 +43491,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="281">
+            <Item class="ModuleScript" referent="286">
               <Properties>
                 <string name="Name">ReactRootTags</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/c5d2fc7127654e43de59fff865b74765a103c4a5/packages/react-reconciler/src/ReactRootTags.js
@@ -43468,7 +43515,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="282">
+            <Item class="ModuleScript" referent="287">
               <Properties>
                 <string name="Name">ReactStrictModeWarnings.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -43864,7 +43911,7 @@ return ReactStrictModeWarnings
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="283">
+            <Item class="ModuleScript" referent="288">
               <Properties>
                 <string name="Name">ReactTestSelectors</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/3cde22a84e246fc5361f038bf0c23405b2572c22/packages/react-reconciler/src/ReactTestSelectors.js
@@ -44447,7 +44494,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="284">
+            <Item class="ModuleScript" referent="289">
               <Properties>
                 <string name="Name">ReactTypeOfMode</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/22dc2e42bdc00d87fc19c5e75fc7c0b3fdcdc572/packages/react-reconciler/src/ReactTypeOfMode.js
@@ -44476,7 +44523,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="285">
+            <Item class="ModuleScript" referent="290">
               <Properties>
                 <string name="Name">ReactUpdateQueue.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -45223,7 +45270,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="286">
+            <Item class="ModuleScript" referent="291">
               <Properties>
                 <string name="Name">ReactWorkTags</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactWorkTags.js
@@ -45269,7 +45316,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="287">
+            <Item class="ModuleScript" referent="292">
               <Properties>
                 <string name="Name">RobloxReactProfiling</string>
                 <string name="Source"><![CDATA[--[[
@@ -45509,7 +45556,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="288">
+            <Item class="ModuleScript" referent="293">
               <Properties>
                 <string name="Name">SchedulerWithReactIntegration.new</string>
                 <string name="Source"><![CDATA[--!strict
@@ -45874,7 +45921,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="289">
+            <Item class="ModuleScript" referent="294">
               <Properties>
                 <string name="Name">SchedulingProfiler</string>
                 <string name="Source"><![CDATA[--!strict
@@ -46142,11 +46189,11 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="Folder" referent="290">
+            <Item class="Folder" referent="295">
               <Properties>
                 <string name="Name">forks</string>
               </Properties>
-              <Item class="ModuleScript" referent="291">
+              <Item class="ModuleScript" referent="296">
                 <Properties>
                   <string name="Name">ReactFiberHostConfig.test</string>
                   <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-reconciler/src/forks/ReactFiberHostConfig.test.js
@@ -46167,7 +46214,7 @@ return require(Packages.Dev.ReactTestRenderer)
               </Item>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="292">
+          <Item class="ModuleScript" referent="297">
             <Properties>
               <string name="Name">ReactRoblox</string>
               <string name="Source"><![CDATA[--!strict
@@ -46186,7 +46233,7 @@ export type RootType = HostTypes.RootType
 return require(script.client.ReactRoblox)
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="293">
+            <Item class="ModuleScript" referent="298">
               <Properties>
                 <string name="Name">ReactReconciler.roblox</string>
                 <string name="Source"><![CDATA[--!strict
@@ -46202,11 +46249,11 @@ return initializeReconciler(ReactRobloxHostConfig)
 ]]></string>
               </Properties>
             </Item>
-            <Item class="Folder" referent="294">
+            <Item class="Folder" referent="299">
               <Properties>
                 <string name="Name">client</string>
               </Properties>
-              <Item class="ModuleScript" referent="295">
+              <Item class="ModuleScript" referent="300">
                 <Properties>
                   <string name="Name">ReactRoblox</string>
                   <string name="Source"><![CDATA[--!strict
@@ -46543,7 +46590,7 @@ return exports
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="296">
+              <Item class="ModuleScript" referent="301">
                 <Properties>
                   <string name="Name">ReactRobloxComponent</string>
                   <string name="Source"><![CDATA[--!strict
@@ -46795,7 +46842,7 @@ return exports
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="297">
+              <Item class="ModuleScript" referent="302">
                 <Properties>
                   <string name="Name">ReactRobloxComponentTree</string>
                   <string name="Source"><![CDATA[--!strict
@@ -47101,7 +47148,7 @@ return exports
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="298">
+              <Item class="ModuleScript" referent="303">
                 <Properties>
                   <string name="Name">ReactRobloxHostConfig</string>
                   <string name="Source"><![CDATA[--!strict
@@ -48478,7 +48525,7 @@ return exports
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="299">
+              <Item class="ModuleScript" referent="304">
                 <Properties>
                   <string name="Name">ReactRobloxHostTypes.roblox</string>
                   <string name="Source"><![CDATA[--!strict
@@ -48580,7 +48627,7 @@ return {}
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="300">
+              <Item class="ModuleScript" referent="305">
                 <Properties>
                   <string name="Name">ReactRobloxRoot</string>
                   <string name="Source"><![CDATA[--!strict
@@ -48860,11 +48907,11 @@ return exports
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="Folder" referent="301">
+              <Item class="Folder" referent="306">
                 <Properties>
                   <string name="Name">roblox</string>
                 </Properties>
-                <Item class="ModuleScript" referent="302">
+                <Item class="ModuleScript" referent="307">
                   <Properties>
                     <string name="Name">RobloxComponentProps</string>
                     <string name="Source"><![CDATA[--[[
@@ -49247,7 +49294,7 @@ return {
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="303">
+                <Item class="ModuleScript" referent="308">
                   <Properties>
                     <string name="Name">SingleEventManager</string>
                     <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/Roblox/roact/blob/b2ba9cf4c219c2654e6572219a68d0bf1b541418/src/SingleEventManager.lua
@@ -49428,7 +49475,7 @@ return SingleEventManager
 ]]></string>
                   </Properties>
                 </Item>
-                <Item class="ModuleScript" referent="304">
+                <Item class="ModuleScript" referent="309">
                   <Properties>
                     <string name="Name">getDefaultInstanceProperty</string>
                     <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/Roblox/roact/blob/b2ba9cf4c219c2654e6572219a68d0bf1b541418/src/getDefaultInstanceProperty.lua
@@ -49510,7 +49557,7 @@ return getDefaultInstanceProperty
               </Item>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="305">
+          <Item class="ModuleScript" referent="310">
             <Properties>
               <string name="Name">Promise</string>
               <string name="Source"><![CDATA[--[[
@@ -51633,7 +51680,7 @@ return Promise
 ]]></string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="306">
+          <Item class="ModuleScript" referent="311">
             <Properties>
               <string name="Name">SafeFlags</string>
               <string name="Source"><![CDATA[local safeFlags = {
@@ -51680,7 +51727,7 @@ return {
 ]]></string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="307">
+          <Item class="ModuleScript" referent="312">
             <Properties>
               <string name="Name">Scheduler</string>
               <string name="Source"><![CDATA[--!strict
@@ -51769,7 +51816,7 @@ end
 return exports
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="308">
+            <Item class="ModuleScript" referent="313">
               <Properties>
                 <string name="Name">NoYield</string>
                 <string name="Source"><![CDATA[-- ROBLOX note: no upstream
@@ -51825,7 +51872,7 @@ return NoYield
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="309">
+            <Item class="ModuleScript" referent="314">
               <Properties>
                 <string name="Name">Scheduler</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/9abc2785cb070148d64fae81e523246b90b92016/packages/scheduler/src/Scheduler.js
@@ -52437,7 +52484,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="310">
+            <Item class="ModuleScript" referent="315">
               <Properties>
                 <string name="Name">SchedulerFeatureFlags</string>
                 <string name="Source"><![CDATA[--!strict
@@ -52458,7 +52505,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="311">
+            <Item class="ModuleScript" referent="316">
               <Properties>
                 <string name="Name">SchedulerHostConfig</string>
                 <string name="Source"><![CDATA[--!strict
@@ -52479,7 +52526,7 @@ return require(script.Parent.forks["SchedulerHostConfig.default"])
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="312">
+            <Item class="ModuleScript" referent="317">
               <Properties>
                 <string name="Name">SchedulerMinHeap</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/e706721490e50d0bd6af2cd933dbf857fd8b61ed/packages/scheduler/src/SchedulerMinHeap.js
@@ -52591,7 +52638,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="313">
+            <Item class="ModuleScript" referent="318">
               <Properties>
                 <string name="Name">SchedulerPriorities</string>
                 <string name="Source"><![CDATA[--!strict
@@ -52619,7 +52666,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="314">
+            <Item class="ModuleScript" referent="319">
               <Properties>
                 <string name="Name">SchedulerProfiling</string>
                 <string name="Source"><![CDATA[--!strict
@@ -52786,7 +52833,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="315">
+            <Item class="ModuleScript" referent="320">
               <Properties>
                 <string name="Name">Tracing</string>
                 <string name="Source"><![CDATA[--!strict
@@ -53132,7 +53179,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="316">
+            <Item class="ModuleScript" referent="321">
               <Properties>
                 <string name="Name">TracingSubscriptions</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/9abc2785cb070148d64fae81e523246b90b92016/packages/scheduler/src/TracingSubscriptions.js
@@ -53328,11 +53375,11 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="Folder" referent="317">
+            <Item class="Folder" referent="322">
               <Properties>
                 <string name="Name">forks</string>
               </Properties>
-              <Item class="ModuleScript" referent="318">
+              <Item class="ModuleScript" referent="323">
                 <Properties>
                   <string name="Name">SchedulerHostConfig.default</string>
                   <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/5474a83e258b497584bed9df95de1d554bc53f89/packages/scheduler/src/forks/SchedulerHostConfig.default.js
@@ -53698,7 +53745,7 @@ return {
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="319">
+              <Item class="ModuleScript" referent="324">
                 <Properties>
                   <string name="Name">SchedulerHostConfig.mock</string>
                   <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/5474a83e258b497584bed9df95de1d554bc53f89/packages/scheduler/src/forks/SchedulerHostConfig.mock.js
@@ -53980,7 +54027,7 @@ return exports
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="320">
+            <Item class="ModuleScript" referent="325">
               <Properties>
                 <string name="Name">unstable_mock</string>
                 <string name="Source"><![CDATA[--!strict
@@ -54028,7 +54075,7 @@ return exports
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="321">
+          <Item class="ModuleScript" referent="326">
             <Properties>
               <string name="Name">Shared</string>
               <string name="Source"><![CDATA[--!strict
@@ -54174,7 +54221,7 @@ return {
 }
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="322">
+            <Item class="ModuleScript" referent="327">
               <Properties>
                 <string name="Name">ConsolePatchingDev.roblox</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/55cb0b7eeb0e539d89858b8ed69beabf7fe2fb46/packages/shared/checkPropTypes.js
@@ -54270,7 +54317,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="323">
+            <Item class="ModuleScript" referent="328">
               <Properties>
                 <string name="Name">ErrorHandling.roblox</string>
                 <string name="Source"><![CDATA[--!strict
@@ -54494,7 +54541,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="324">
+            <Item class="ModuleScript" referent="329">
               <Properties>
                 <string name="Name">ExecutionEnvironment</string>
                 <string name="Source"><![CDATA[--!strict
@@ -54519,11 +54566,11 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="Folder" referent="325">
+            <Item class="Folder" referent="330">
               <Properties>
                 <string name="Name">PropMarkers</string>
               </Properties>
-              <Item class="ModuleScript" referent="326">
+              <Item class="ModuleScript" referent="331">
                 <Properties>
                   <string name="Name">Change</string>
                   <string name="Source"><![CDATA[--[[
@@ -54581,7 +54628,7 @@ return Change
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="327">
+              <Item class="ModuleScript" referent="332">
                 <Properties>
                   <string name="Name">Event</string>
                   <string name="Source"><![CDATA[--[[
@@ -54642,7 +54689,7 @@ return Event
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="328">
+              <Item class="ModuleScript" referent="333">
                 <Properties>
                   <string name="Name">Tag</string>
                   <string name="Source"><![CDATA[--[[
@@ -54671,7 +54718,7 @@ return Tag
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="329">
+            <Item class="ModuleScript" referent="334">
               <Properties>
                 <string name="Name">ReactComponentStackFrame</string>
                 <string name="Source"><![CDATA[--!strict
@@ -55156,7 +55203,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="330">
+            <Item class="ModuleScript" referent="335">
               <Properties>
                 <string name="Name">ReactElementType</string>
                 <string name="Source"><![CDATA[--!strict
@@ -55211,7 +55258,7 @@ return {}
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="331">
+            <Item class="ModuleScript" referent="336">
               <Properties>
                 <string name="Name">ReactErrorUtils</string>
                 <string name="Source"><![CDATA[--!strict
@@ -55328,7 +55375,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="332">
+            <Item class="ModuleScript" referent="337">
               <Properties>
                 <string name="Name">ReactFeatureFlags</string>
                 <string name="Source"><![CDATA[--!strict
@@ -55476,7 +55523,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="333">
+            <Item class="ModuleScript" referent="338">
               <Properties>
                 <string name="Name">ReactFiberHostConfig</string>
                 <string name="Source"><![CDATA[--[[
@@ -55520,7 +55567,7 @@ return {
 }
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="334">
+              <Item class="ModuleScript" referent="339">
                 <Properties>
                   <string name="Name">WithNoHydration</string>
                   <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/c5d2fc7127654e43de59fff865b74765a103c4a5/packages/react-reconciler/src/ReactFiberHostConfigWithNoHydration.js
@@ -55581,7 +55628,7 @@ return {
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="335">
+              <Item class="ModuleScript" referent="340">
                 <Properties>
                   <string name="Name">WithNoPersistence</string>
                   <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/c5d2fc7127654e43de59fff865b74765a103c4a5/packages/react-reconciler/src/ReactFiberHostConfigWithNoPersistence.js
@@ -55623,7 +55670,7 @@ return {
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="336">
+              <Item class="ModuleScript" referent="341">
                 <Properties>
                   <string name="Name">WithNoTestSelectors</string>
                   <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/3cde22a84e246fc5361f038bf0c23405b2572c22/packages/react-reconciler/src/ReactFiberHostConfigWithNoTestSelectors.js
@@ -55665,7 +55712,7 @@ return {
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="337">
+            <Item class="ModuleScript" referent="342">
               <Properties>
                 <string name="Name">ReactInstanceMap</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/2ba43edc2675380a0f2222f351475bf9d750c6a9/packages/shared/ReactInstanceMap.js
@@ -55805,7 +55852,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="338">
+            <Item class="ModuleScript" referent="343">
               <Properties>
                 <string name="Name">ReactSharedInternals</string>
                 <string name="Source"><![CDATA[--!strict
@@ -55871,7 +55918,7 @@ local ReactSharedInternals = {
 return ReactSharedInternals
 ]]></string>
               </Properties>
-              <Item class="ModuleScript" referent="339">
+              <Item class="ModuleScript" referent="344">
                 <Properties>
                   <string name="Name">IsSomeRendererActing</string>
                   <string name="Source"><![CDATA[--!strict
@@ -55896,7 +55943,7 @@ return IsSomeRendererActing
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="340">
+              <Item class="ModuleScript" referent="345">
                 <Properties>
                   <string name="Name">ReactCurrentBatchConfig</string>
                   <string name="Source"><![CDATA[--!strict
@@ -55922,7 +55969,7 @@ return ReactCurrentBatchConfig
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="341">
+              <Item class="ModuleScript" referent="346">
                 <Properties>
                   <string name="Name">ReactCurrentDispatcher</string>
                   <string name="Source"><![CDATA[--!strict
@@ -56031,7 +56078,7 @@ return ReactCurrentDispatcher
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="342">
+              <Item class="ModuleScript" referent="347">
                 <Properties>
                   <string name="Name">ReactCurrentOwner</string>
                   <string name="Source"><![CDATA[--!strict
@@ -56065,7 +56112,7 @@ return ReactCurrentOwner
 ]]></string>
                 </Properties>
               </Item>
-              <Item class="ModuleScript" referent="343">
+              <Item class="ModuleScript" referent="348">
                 <Properties>
                   <string name="Name">ReactDebugCurrentFrame</string>
                   <string name="Source"><![CDATA[--!strict
@@ -56126,7 +56173,7 @@ return ReactDebugCurrentFrame
                 </Properties>
               </Item>
             </Item>
-            <Item class="ModuleScript" referent="344">
+            <Item class="ModuleScript" referent="349">
               <Properties>
                 <string name="Name">ReactSymbols</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/b61174fb7b09580c1ec2a8f55e73204b706d2935/packages/shared/ReactSymbols.js
@@ -56243,7 +56290,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="345">
+            <Item class="ModuleScript" referent="350">
               <Properties>
                 <string name="Name">ReactTypes</string>
                 <string name="Source"><![CDATA[--!strict
@@ -56516,7 +56563,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="346">
+            <Item class="ModuleScript" referent="351">
               <Properties>
                 <string name="Name">ReactVersion</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/a89854bc936668d325cac9a22e2ebfa128c7addf/packages/shared/ReactVersion.js
@@ -56533,7 +56580,7 @@ return "17.3.7"
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="347">
+            <Item class="ModuleScript" referent="352">
               <Properties>
                 <string name="Name">Symbol.roblox</string>
                 <string name="Source"><![CDATA[--[[
@@ -56583,7 +56630,7 @@ return Symbol
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="348">
+            <Item class="ModuleScript" referent="353">
               <Properties>
                 <string name="Name">Type.roblox</string>
                 <string name="Source"><![CDATA[--[[
@@ -56642,7 +56689,7 @@ return Type
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="349">
+            <Item class="ModuleScript" referent="354">
               <Properties>
                 <string name="Name">UninitializedState.roblox</string>
                 <string name="Source"><![CDATA[--[[
@@ -56696,7 +56743,7 @@ return UninitializedState
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="350">
+            <Item class="ModuleScript" referent="355">
               <Properties>
                 <string name="Name">checkPropTypes</string>
                 <string name="Source"><![CDATA[--!strict
@@ -56895,7 +56942,7 @@ return checkPropTypes
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="351">
+            <Item class="ModuleScript" referent="356">
               <Properties>
                 <string name="Name">console</string>
                 <string name="Source"><![CDATA[--[[
@@ -56939,7 +56986,7 @@ return console
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="352">
+            <Item class="ModuleScript" referent="357">
               <Properties>
                 <string name="Name">consoleWithStackDev</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/cb141681750c8221ac799074df09df2bb448c7a4/packages/shared/consoleWithStackDev.js
@@ -57006,7 +57053,7 @@ return exports
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="353">
+            <Item class="ModuleScript" referent="358">
               <Properties>
                 <string name="Name">enqueueTask.roblox</string>
                 <string name="Source"><![CDATA[--!strict
@@ -57029,7 +57076,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="354">
+            <Item class="ModuleScript" referent="359">
               <Properties>
                 <string name="Name">flowtypes.roblox</string>
                 <string name="Source"><![CDATA[--[[
@@ -57269,7 +57316,7 @@ return {}
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="355">
+            <Item class="ModuleScript" referent="360">
               <Properties>
                 <string name="Name">formatProdErrorMessage</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/75955bf1d7ff6c2c1f4052f4a84dd2ce6944c62e/packages/shared/formatProdErrorMessage.js
@@ -57308,7 +57355,7 @@ return formatProdErrorMessage
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="356">
+            <Item class="ModuleScript" referent="361">
               <Properties>
                 <string name="Name">getComponentName</string>
                 <string name="Source"><![CDATA[--!strict
@@ -57470,7 +57517,7 @@ return getComponentName
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="357">
+            <Item class="ModuleScript" referent="362">
               <Properties>
                 <string name="Name">invariant</string>
                 <string name="Source"><![CDATA[--!strict
@@ -57510,7 +57557,7 @@ return invariant
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="358">
+            <Item class="ModuleScript" referent="363">
               <Properties>
                 <string name="Name">invokeGuardedCallbackImpl</string>
                 <string name="Source"><![CDATA[--!strict
@@ -57731,7 +57778,7 @@ return invokeGuardedCallbackImpl
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="359">
+            <Item class="ModuleScript" referent="364">
               <Properties>
                 <string name="Name">isValidElementType</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/b61174fb7b09580c1ec2a8f55e73204b706d2935/packages/shared/isValidElementType.js
@@ -57811,7 +57858,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="360">
+            <Item class="ModuleScript" referent="365">
               <Properties>
                 <string name="Name">objectIs</string>
                 <string name="Source"><![CDATA[--!strict
@@ -57840,7 +57887,7 @@ return objectIs
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="361">
+            <Item class="ModuleScript" referent="366">
               <Properties>
                 <string name="Name">shallowEqual</string>
                 <string name="Source"><![CDATA[-- ROBLOX upstream: https://github.com/facebook/react/blob/a9b035b0c2b8235405835beca0c4db2cc37f18d0/packages/shared/shallowEqual.js
@@ -57896,7 +57943,7 @@ return shallowEqual
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="362">
+          <Item class="ModuleScript" referent="367">
             <Properties>
               <string name="Name">String</string>
               <string name="Source"><![CDATA[return {
@@ -57919,7 +57966,7 @@ return shallowEqual
 }
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="363">
+            <Item class="ModuleScript" referent="368">
               <Properties>
                 <string name="Name">charCodeAt</string>
                 <string name="Source"><![CDATA[--!strict
@@ -57964,7 +58011,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="364">
+            <Item class="ModuleScript" referent="369">
               <Properties>
                 <string name="Name">endsWith</string>
                 <string name="Source"><![CDATA[--!strict
@@ -57989,7 +58036,7 @@ return endsWith
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="365">
+            <Item class="ModuleScript" referent="370">
               <Properties>
                 <string name="Name">findOr</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58052,7 +58099,7 @@ return findOr
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="366">
+            <Item class="ModuleScript" referent="371">
               <Properties>
                 <string name="Name">includes</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58093,7 +58140,7 @@ return includes
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="367">
+            <Item class="ModuleScript" referent="372">
               <Properties>
                 <string name="Name">indexOf</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58130,7 +58177,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="368">
+            <Item class="ModuleScript" referent="373">
               <Properties>
                 <string name="Name">lastIndexOf</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58173,7 +58220,7 @@ return lastIndexOf
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="369">
+            <Item class="ModuleScript" referent="374">
               <Properties>
                 <string name="Name">slice</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58216,7 +58263,7 @@ return slice
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="370">
+            <Item class="ModuleScript" referent="375">
               <Properties>
                 <string name="Name">split</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58290,7 +58337,7 @@ return split
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="371">
+            <Item class="ModuleScript" referent="376">
               <Properties>
                 <string name="Name">startsWith</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58316,7 +58363,7 @@ return startsWith
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="372">
+            <Item class="ModuleScript" referent="377">
               <Properties>
                 <string name="Name">substr</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58329,7 +58376,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="373">
+            <Item class="ModuleScript" referent="378">
               <Properties>
                 <string name="Name">trim</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58343,7 +58390,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="374">
+            <Item class="ModuleScript" referent="379">
               <Properties>
                 <string name="Name">trimEnd</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58353,7 +58400,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="375">
+            <Item class="ModuleScript" referent="380">
               <Properties>
                 <string name="Name">trimStart</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58364,7 +58411,7 @@ end
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="376">
+          <Item class="ModuleScript" referent="381">
             <Properties>
               <string name="Name">Symbol</string>
               <string name="Source"><![CDATA[--!strict
@@ -58391,7 +58438,7 @@ SymbolObject.for_ = GlobalRegistry.getOrInit
 return SymbolObject
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="377">
+            <Item class="ModuleScript" referent="382">
               <Properties>
                 <string name="Name">Registry.global</string>
                 <string name="Source"><![CDATA[local Symbol = require(script.Parent.Symbol)
@@ -58414,7 +58461,7 @@ return {
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="378">
+            <Item class="ModuleScript" referent="383">
               <Properties>
                 <string name="Name">Symbol</string>
                 <string name="Source"><![CDATA[--!strict
@@ -58450,7 +58497,7 @@ return {
               </Properties>
             </Item>
           </Item>
-          <Item class="ModuleScript" referent="379">
+          <Item class="ModuleScript" referent="384">
             <Properties>
               <string name="Name">Timers</string>
               <string name="Source"><![CDATA[--!strict
@@ -58467,7 +58514,7 @@ export type Interval = makeIntervalImpl.Interval
 return Object.assign({}, makeTimerImpl(task.delay), makeIntervalImpl(task.delay))
 ]]></string>
             </Properties>
-            <Item class="ModuleScript" referent="380">
+            <Item class="ModuleScript" referent="385">
               <Properties>
                 <string name="Name">makeIntervalImpl</string>
                 <string name="Source"><![CDATA[local Status = newproxy(false)
@@ -58525,7 +58572,7 @@ end
 ]]></string>
               </Properties>
             </Item>
-            <Item class="ModuleScript" referent="381">
+            <Item class="ModuleScript" referent="386">
               <Properties>
                 <string name="Name">makeTimerImpl</string>
                 <string name="Source"><![CDATA[local Status = newproxy(false)
@@ -58583,26 +58630,26 @@ end
       </Item>
     </Item>
   </Item>
-  <Item class="ServerScriptService" referent="382">
+  <Item class="ServerScriptService" referent="387">
     <Properties>
       <string name="Name">ServerScriptService</string>
     </Properties>
-    <Item class="Folder" referent="383">
+    <Item class="Folder" referent="388">
       <Properties>
         <string name="Name">TS</string>
       </Properties>
-      <Item class="Folder" referent="384">
+      <Item class="Folder" referent="389">
         <Properties>
-          <string name="Name">CoinService</string>
+          <string name="Name">coinService</string>
         </Properties>
-        <Item class="Script" referent="385">
+        <Item class="Script" referent="390">
           <Properties>
-            <string name="Name">CoinService</string>
+            <string name="Name">coinService</string>
             <token name="RunContext">0</token>
             <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
-local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData", "PlayerData")
+local playerData = TS.import(script, game:GetService("ServerStorage"), "TS", "playerData", "playerData")
 local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
 local coinsFolder = getInstance({
 	instancePath = "Workspace/World/Coins",
@@ -58616,9 +58663,9 @@ local function onCoinTouched(coin, otherPart)
 			-- Player touched a coin
 			coin.Transparency = 1
 			coin:SetAttribute("Enabled", false)
-			PlayerData:updateValue({
+			playerData:updateValue({
 				player = player,
-				key = PlayerData.COIN_KEY_NAME,
+				key = playerData.COIN_KEY_NAME,
 			})
 			task.wait(10)
 			coin.Transparency = 0
@@ -58635,9 +58682,9 @@ for _, coin in coins do
 end
 local function onPlayerAdded(player)
 	-- Reset player coins to 0
-	PlayerData:resetValue({
+	playerData:resetValue({
 		player = player,
-		key = PlayerData.COIN_KEY_NAME,
+		key = playerData.COIN_KEY_NAME,
 	})
 	player.CharacterAdded:Connect(function(character)
 		-- WaitForChild would stop the player loop, so below should be done in a separate thread
@@ -58646,9 +58693,9 @@ local function onPlayerAdded(player)
 			local humanoid = character:WaitForChild("Humanoid")
 			humanoid.Died:Connect(function()
 				-- Reset player coins to 0
-				PlayerData:resetValue({
+				playerData:resetValue({
 					player = player,
-					key = PlayerData.COIN_KEY_NAME,
+					key = playerData.COIN_KEY_NAME,
 				})
 			end)
 		end)
@@ -58659,9 +58706,9 @@ for _, player in Players:GetPlayers() do
 	onPlayerAdded(player)
 end
 local function onPlayerRemoved(player)
-	PlayerData:resetValue({
+	playerData:resetValue({
 		player = player,
-		key = PlayerData.COIN_KEY_NAME,
+		key = playerData.COIN_KEY_NAME,
 	})
 end
 Players.PlayerAdded:Connect(onPlayerAdded)
@@ -58670,13 +58717,13 @@ Players.PlayerRemoving:Connect(onPlayerRemoved)
           </Properties>
         </Item>
       </Item>
-      <Item class="Folder" referent="386">
+      <Item class="Folder" referent="391">
         <Properties>
-          <string name="Name">HazardService</string>
+          <string name="Name">hazardService</string>
         </Properties>
-        <Item class="Script" referent="387">
+        <Item class="Script" referent="392">
           <Properties>
-            <string name="Name">HazardService</string>
+            <string name="Name">hazardService</string>
             <token name="RunContext">0</token>
             <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
@@ -58709,22 +58756,22 @@ end
           </Properties>
         </Item>
       </Item>
-      <Item class="Folder" referent="388">
+      <Item class="Folder" referent="393">
         <Properties>
-          <string name="Name">JumpService</string>
+          <string name="Name">jumpService</string>
         </Properties>
-        <Item class="Script" referent="389">
+        <Item class="Script" referent="394">
           <Properties>
-            <string name="Name">JumpService</string>
+            <string name="Name">jumpService</string>
             <token name="RunContext">0</token>
             <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
-local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard", "Leaderboard")
-local PlayerData = TS.import(script, game:GetService("ServerStorage"), "TS", "PlayerData", "PlayerData")
+local leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "leaderboard", "leaderboard")
+local playerData = TS.import(script, game:GetService("ServerStorage"), "TS", "playerData", "playerData")
 local increaseJumpPowerRemoteFunction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "remoteFunctions", "increaseJumpPowerRemoteFunction", "increaseJumpPowerRemoteFunction").increaseJumpPowerRemoteFunction
-local JUMP_KEY_NAME = PlayerData.JUMP_KEY_NAME
-local COIN_KEY_NAME = PlayerData.COIN_KEY_NAME
+local JUMP_KEY_NAME = playerData.JUMP_KEY_NAME
+local COIN_KEY_NAME = playerData.COIN_KEY_NAME
 local JUMP_POWER_INCREMENT = 30
 local JUMP_COIN_COST = 5
 local function updateJumpPower(player, newJumpPower)
@@ -58734,13 +58781,13 @@ local function updateJumpPower(player, newJumpPower)
 	if humanoid then
 		humanoid.JumpPower = newJumpPower
 		-- Update the jump power data
-		PlayerData:setValue({
+		playerData:setValue({
 			player = player,
 			key = JUMP_KEY_NAME,
 			value = newJumpPower,
 		})
 		-- Update the jump leaderboard
-		Leaderboard:setStat({
+		leaderboard:setStat({
 			player = player,
 			statName = JUMP_KEY_NAME,
 			value = newJumpPower,
@@ -58748,7 +58795,7 @@ local function updateJumpPower(player, newJumpPower)
 	end
 end
 local function onPurchaseJumpIncrease(player)
-	local _condition = PlayerData:getValue({
+	local _condition = playerData:getValue({
 		player = player,
 		key = COIN_KEY_NAME,
 	})
@@ -58760,7 +58807,7 @@ local function onPurchaseJumpIncrease(player)
 		return false
 	end
 	-- Increase player's jump power
-	local _condition_1 = PlayerData:getValue({
+	local _condition_1 = playerData:getValue({
 		player = player,
 		key = JUMP_KEY_NAME,
 	})
@@ -58771,13 +58818,13 @@ local function onPurchaseJumpIncrease(player)
 	updateJumpPower(player, oldJumpPower + JUMP_POWER_INCREMENT)
 	-- Update the coin table
 	local newCoinAmount = coinAmount - JUMP_COIN_COST
-	PlayerData:setValue({
+	playerData:setValue({
 		player = player,
 		key = COIN_KEY_NAME,
 		value = newCoinAmount,
 	})
 	-- Update the coin leaderboard
-	Leaderboard:setStat({
+	leaderboard:setStat({
 		player = player,
 		statName = COIN_KEY_NAME,
 		value = newCoinAmount,
@@ -58808,35 +58855,25 @@ Players.PlayerRemoving:Connect(onPlayerRemoved)
           </Properties>
         </Item>
       </Item>
-      <Item class="Folder" referent="390">
-        <Properties>
-          <string name="Name">utils</string>
-        </Properties>
-        <Item class="Folder" referent="391">
-          <Properties>
-            <string name="Name">RemoteFunctionHandler</string>
-          </Properties>
-        </Item>
-      </Item>
     </Item>
   </Item>
-  <Item class="ServerStorage" referent="392">
+  <Item class="ServerStorage" referent="395">
     <Properties>
       <string name="Name">ServerStorage</string>
     </Properties>
-    <Item class="Folder" referent="393">
+    <Item class="Folder" referent="396">
       <Properties>
         <string name="Name">TS</string>
       </Properties>
-      <Item class="Folder" referent="394">
+      <Item class="Folder" referent="397">
         <Properties>
-          <string name="Name">Leaderboard</string>
+          <string name="Name">leaderboard</string>
         </Properties>
-        <Item class="ModuleScript" referent="395">
+        <Item class="ModuleScript" referent="398">
           <Properties>
-            <string name="Name">Leaderboard</string>
+            <string name="Name">leaderboard</string>
             <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
-local Leaderboard = {
+local leaderboard = {
 	setStat = function(self, props)
 		local leaderstats = props.player:FindFirstChild("leaderstats")
 		if not leaderstats then
@@ -58856,26 +58893,26 @@ local Leaderboard = {
 		stat.Value = props.value
 	end,
 }
-return Leaderboard
+return leaderboard
 ]]></string>
           </Properties>
         </Item>
       </Item>
-      <Item class="Folder" referent="396">
+      <Item class="Folder" referent="399">
         <Properties>
-          <string name="Name">PlayerData</string>
+          <string name="Name">playerData</string>
         </Properties>
-        <Item class="ModuleScript" referent="397">
+        <Item class="ModuleScript" referent="400">
           <Properties>
-            <string name="Name">PlayerData</string>
+            <string name="Name">playerData</string>
             <string name="Source"><![CDATA[-- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "Leaderboard", "Leaderboard")
-local playerData = {}
+local leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "leaderboard", "leaderboard")
+local playerDataEntries = {}
 local function getData(props)
 	local userId = tostring(props.player.UserId)
 	local entry
-	for _, item in playerData do
+	for _, item in playerDataEntries do
 		if item.userId == userId then
 			entry = item
 			break
@@ -58898,11 +58935,11 @@ local function getData(props)
 			userId = userId,
 			data = data,
 		}
-		table.insert(playerData, _arg0)
+		table.insert(playerDataEntries, _arg0)
 	end
 	return data
 end
-local PlayerData = {
+local playerData = {
 	COIN_KEY_NAME = "Coins",
 	JUMP_KEY_NAME = "Jump",
 	getValue = function(self, props)
@@ -58921,7 +58958,7 @@ local PlayerData = {
 		local oldValue = _condition
 		local newValue = oldValue + 1
 		data[props.key] = newValue
-		Leaderboard:setStat({
+		leaderboard:setStat({
 			player = props.player,
 			statName = props.key,
 			value = newValue,
@@ -58934,7 +58971,7 @@ local PlayerData = {
 		})
 		local newValue = 0
 		data[props.key] = newValue
-		Leaderboard:setStat({
+		leaderboard:setStat({
 			player = props.player,
 			statName = props.key,
 			value = newValue,
@@ -58946,7 +58983,7 @@ local PlayerData = {
 			player = props.player,
 		})
 		data[props.key] = props.value
-		Leaderboard:setStat({
+		leaderboard:setStat({
 			player = props.player,
 			statName = props.key,
 			value = props.value,
@@ -58954,51 +58991,41 @@ local PlayerData = {
 		return props.value
 	end,
 }
-return PlayerData
+return playerData
 ]]></string>
-          </Properties>
-        </Item>
-      </Item>
-      <Item class="Folder" referent="398">
-        <Properties>
-          <string name="Name">utils</string>
-        </Properties>
-        <Item class="Folder" referent="399">
-          <Properties>
-            <string name="Name">createServerInvokeHandler</string>
           </Properties>
         </Item>
       </Item>
     </Item>
   </Item>
-  <Item class="SoundService" referent="400">
+  <Item class="SoundService" referent="401">
     <Properties>
       <string name="Name">SoundService</string>
       <bool name="RespectFilteringEnabled">true</bool>
     </Properties>
   </Item>
-  <Item class="StarterPlayer" referent="401">
+  <Item class="StarterPlayer" referent="402">
     <Properties>
       <string name="Name">StarterPlayer</string>
     </Properties>
-    <Item class="StarterPlayerScripts" referent="402">
+    <Item class="StarterPlayerScripts" referent="403">
       <Properties>
         <string name="Name">StarterPlayerScripts</string>
       </Properties>
-      <Item class="Folder" referent="403">
+      <Item class="Folder" referent="404">
         <Properties>
           <string name="Name">TS</string>
         </Properties>
       </Item>
     </Item>
   </Item>
-  <Item class="Workspace" referent="404">
+  <Item class="Workspace" referent="405">
     <Properties>
       <string name="Name">Workspace</string>
       <bool name="FilteringEnabled">true</bool>
       <bool name="NeedsPivotMigration">false</bool>
     </Properties>
-    <Item class="Part" referent="405">
+    <Item class="Part" referent="406">
       <Properties>
         <string name="Name">Baseplate</string>
         <bool name="Anchored">true</bool>
