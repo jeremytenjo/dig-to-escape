@@ -16,6 +16,7 @@ local function Button(props)
 		TextSize = 32,
 		Font = Enum.Font.GothamBold,
 		Position = props.position,
+		AnchorPoint = props.anchorPoint,
 		BorderSizePixel = 4,
 		BorderColor3 = hex("#00AA00"),
 		Event = {

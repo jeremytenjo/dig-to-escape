@@ -20,7 +20,7 @@ mountScreenGuiComponent({
   props: {
     text: 'Buy Jump Power',
     onClick: onButtonClicked,
-    // posiion bottom right
-    position: new UDim2(1, -110, 1, -60),
+    position: UDim2.fromScale(1, 1),
+    anchorPoint: new Vector2(1, 1),
   },
 })

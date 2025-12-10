@@ -7,6 +7,7 @@ export type ButtonProps = {
   text: string
   onClick?: () => void
   position?: UDim2
+  anchorPoint?: Vector2
 }
 
 export default function Button(props: ButtonProps) {
@@ -21,6 +22,7 @@ export default function Button(props: ButtonProps) {
       TextSize={32}
       Font={Enum.Font.GothamBold}
       Position={props.position}
+      AnchorPoint={props.anchorPoint}
       BorderSizePixel={4}
       BorderColor3={hex('#00AA00')}
       Event={{
