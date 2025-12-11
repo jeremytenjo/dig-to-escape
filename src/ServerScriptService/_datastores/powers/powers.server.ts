@@ -22,9 +22,8 @@ Players.PlayerAdded.Connect(async (player: Player) => {
   try {
     const document = await playerDataCollection.load(userId, [player.UserId])
 
-    if (player.Parent === undefined) {
-      await document.close()
-      return
+    if (!player.IsDescendantOf(Players)) {
+      return document.close()
     }
 
     documents[userId] = document

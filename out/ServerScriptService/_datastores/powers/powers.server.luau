@@ -16,9 +16,8 @@ Players.PlayerAdded:Connect(TS.async(function(player)
 	local userId = tostring(player.UserId)
 	local _exitType, _returns = TS.try(function()
 		local document = TS.await(playerDataCollection:load(userId, { player.UserId }))
-		if player.Parent == nil then
-			TS.await(document:close())
-			return TS.TRY_RETURN, {}
+		if not player:IsDescendantOf(Players) then
+			return TS.TRY_RETURN, { document:close() }
 		end
 		documents[userId] = document
 	end, function(error)
