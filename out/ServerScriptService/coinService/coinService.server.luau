@@ -17,12 +17,8 @@ local function onCoinTouched(coin, otherPart)
 			coin.Transparency = 1
 			coin:SetAttribute("Enabled", false)
 			print("1")
-			powersRemotes.powers.setCoins:fire(100)
+			powersRemotes.setCoins:fire(100)
 			print("2")
-			playerData:updateValue({
-				player = player,
-				key = "Coins",
-			})
 			task.wait(10)
 			coin.Transparency = 0
 			coin:SetAttribute("Enabled", true)

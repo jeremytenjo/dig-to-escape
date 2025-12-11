@@ -2,6 +2,7 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local createCollection = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "lapis", "out").createCollection
 local powersCollectionName = TS.import(script, game:GetService("ServerScriptService"), "TS", "_datastores", "powers", "powers.config").powersCollectionName
+local powersRemotes = TS.import(script, game:GetService("ServerScriptService"), "TS", "_datastores", "powers", "powers.remotes").powersRemotes
 local playerDataCollection = createCollection(powersCollectionName, {
 	defaultData = function()
 		return {
@@ -39,3 +40,7 @@ Players.PlayerRemoving:Connect(TS.async(function(player)
 		end)
 	end
 end))
+-- listeners
+powersRemotes.setCoins:connect(function(player, coins)
+	print(`Setting coins for player {player.Name} to {coins}`)
+end)

@@ -3,6 +3,7 @@ import { createCollection } from '@rbxts/lapis'
 
 import type { PowersSchema } from './powers.schema.js'
 import { powersCollectionName } from './powers.config.js'
+import { powersRemotes } from './powers.remotes.js'
 
 const playerDataCollection = createCollection<PowersSchema>(powersCollectionName, {
   defaultData: () => {
@@ -47,4 +48,9 @@ Players.PlayerRemoving.Connect(async (player: Player) => {
       )
     }
   }
+})
+
+// listeners
+powersRemotes.setCoins.connect((player, coins) => {
+  print(`Setting coins for player ${player.Name} to ${coins}`)
 })

@@ -20,13 +20,8 @@ function onCoinTouched(coin: BasePart, otherPart: Instance): void {
       coin.SetAttribute('Enabled', false)
 
       print('1')
-      powersRemotes.powers.setCoins.fire(100)
+      powersRemotes.setCoins.fire(100)
       print('2')
-
-      playerData.updateValue({
-        player,
-        key: 'Coins',
-      })
 
       task.wait(10)
       coin.Transparency = 0
