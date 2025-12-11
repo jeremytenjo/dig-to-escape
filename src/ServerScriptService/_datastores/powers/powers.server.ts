@@ -1,3 +1,4 @@
+import type { Document } from '@rbxts/lapis'
 import { createCollection } from '@rbxts/lapis'
 
 import type { PowersSchema } from './powers.schema.js'
@@ -13,7 +14,7 @@ const playerDataCollection = createCollection<PowersSchema>(powersCollectionName
 })
 
 const Players = game.GetService('Players')
-const documents: { [index: string]: unknown } = {}
+const documents: { [index: string]: Document<PowersSchema, true> } = {}
 
 Players.PlayerAdded.Connect(async (player: Player) => {
   const userId = tostring(player.UserId)
@@ -31,7 +32,7 @@ Players.PlayerRemoving.Connect(async (player: Player) => {
 
   if (document) {
     try {
-      documents[userId] = undefined
+      delete documents[userId]
     } catch (error) {
       warn(`Failed to close document for player ${userId}:`, error)
     }

@@ -24,7 +24,7 @@ end))
 Players.PlayerRemoving:Connect(TS.async(function(player)
 	local userId = tostring(player.UserId)
 	local document = documents[userId]
-	if document ~= 0 and document == document and document ~= "" and document then
+	if document then
 		TS.try(function()
 			documents[userId] = nil
 		end, function(error)
