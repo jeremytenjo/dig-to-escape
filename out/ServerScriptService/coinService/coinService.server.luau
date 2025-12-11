@@ -3,6 +3,7 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
 local getInstance = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "utils", "getInstance", "getInstance").default
 local playerData = TS.import(script, game:GetService("ServerScriptService"), "TS", "_datastores", "playerData", "playerData.module").default
+local powersRemotes = TS.import(script, game:GetService("ServerScriptService"), "TS", "_datastores", "powers", "powers.remotes").powersRemotes
 local coinsFolder = getInstance({
 	instancePath = "Workspace/World/Coins",
 })
@@ -15,6 +16,9 @@ local function onCoinTouched(coin, otherPart)
 			-- Player touched a coin - increment coins using unified playerData system
 			coin.Transparency = 1
 			coin:SetAttribute("Enabled", false)
+			print("1")
+			powersRemotes.powers.setCoins:fire(100)
+			print("2")
 			playerData:updateValue({
 				player = player,
 				key = "Coins",

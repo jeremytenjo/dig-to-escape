@@ -2,6 +2,7 @@ import { Players } from '@rbxts/services'
 
 import getInstance from '../../ReplicatedStorage/utils/getInstance/getInstance.js'
 import playerData from '../_datastores/playerData/playerData.module.js'
+import { powersRemotes } from '../_datastores/powers/powers.remotes.js'
 
 const coinsFolder = getInstance<Folder>({
   instancePath: 'Workspace/World/Coins',
@@ -17,6 +18,10 @@ function onCoinTouched(coin: BasePart, otherPart: Instance): void {
       // Player touched a coin - increment coins using unified playerData system
       coin.Transparency = 1
       coin.SetAttribute('Enabled', false)
+
+      print('1')
+      powersRemotes.powers.setCoins.fire(100)
+      print('2')
 
       playerData.updateValue({
         player,
