@@ -14,7 +14,7 @@ const playerDataCollection = createCollection<PowersSchema>(powersCollectionName
 })
 
 const Players = game.GetService('Players')
-const documents: { [index: string]: Document<PowersSchema, true> } = {}
+const documents: { [index: string]: Document<PowersSchema> } = {}
 
 Players.PlayerAdded.Connect(async (player: Player) => {
   const userId = tostring(player.UserId)
