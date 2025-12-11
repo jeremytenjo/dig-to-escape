@@ -6,7 +6,7 @@
     "build": "rbxtsc && rojo build -o build.rbxlx",
     "prettify": "prettier --config ./devtools/prettier/prettier.config.js  --write . ",
     "lint": "eslint .",
-    "lint:types": "tsc --noEmit"
+    "lint:types": "tsgo --noEmit"
   },
   "devDependencies": {
     "@rbxts/compiler-types": "3.0.0-types.0",
@@ -26,12 +26,14 @@
   "dependencies": {
     "@jeremytenjo/super-code-generator": "4.60.0",
     "@rbxts/colour-utils": "1.4.1",
+    "@rbxts/lapis": "0.3.8",
     "@rbxts/react": "17.3.7-ts.1",
     "@rbxts/react-roblox": "17.3.7-ts.1",
     "@rbxts/remo": "1.5.3",
     "@rbxts/services": "1.6.0",
     "@rbxts/t": "3.2.1",
     "@rbxts/ui-labs": "2.4.2",
+    "@typescript/native-preview": "7.0.0-dev.20251210.1",
     "change-case": "4.1.2",
     "eslint-plugin-import": "2.32.0"
   }

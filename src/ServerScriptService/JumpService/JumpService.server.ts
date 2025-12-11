@@ -1,8 +1,8 @@
 import { Players } from '@rbxts/services'
 
 import leaderboard from '../../ServerStorage/leaderboard/leaderboard.js'
-import playerData from '../../ServerStorage/playerData/playerData.js'
 import { increaseJumpPowerRemoteFunction } from '../../ReplicatedStorage/remoteFunctions/increaseJumpPowerRemoteFunction/increaseJumpPowerRemoteFunction.js'
+import playerData from '../_datastores/playerData/playerData.server.js'
 
 const JUMP_POWER_INCREMENT = 30
 const JUMP_COIN_COST = 5

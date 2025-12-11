@@ -1,7 +1,7 @@
 import { Players } from '@rbxts/services'
 
-import playerData from '../../ServerStorage/playerData/playerData.js'
 import getInstance from '../../ReplicatedStorage/utils/getInstance/getInstance.js'
+import playerData from '../_datastores/playerData/playerData.server.js'
 
 const coinsFolder = getInstance<Folder>({
   instancePath: 'Workspace/World/Coins',
