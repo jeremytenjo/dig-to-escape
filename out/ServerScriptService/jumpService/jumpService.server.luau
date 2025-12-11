@@ -2,8 +2,8 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
 local leaderboard = TS.import(script, game:GetService("ServerStorage"), "TS", "leaderboard", "leaderboard")
-local playerData = TS.import(script, game:GetService("ServerStorage"), "TS", "playerData", "playerData")
 local increaseJumpPowerRemoteFunction = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "remoteFunctions", "increaseJumpPowerRemoteFunction", "increaseJumpPowerRemoteFunction").increaseJumpPowerRemoteFunction
+local playerData = TS.import(script, game:GetService("ServerScriptService"), "TS", "_datastores", "playerData", "playerData.module").default
 local JUMP_POWER_INCREMENT = 30
 local JUMP_COIN_COST = 5
 local function updateJumpPower(player, newJumpPower)
@@ -12,7 +12,7 @@ local function updateJumpPower(player, newJumpPower)
 	local humanoid = character:FindFirstChildWhichIsA("Humanoid")
 	if humanoid then
 		humanoid.JumpPower = newJumpPower
-		-- Update the jump power data
+		-- Update the jump power data using unified playerData system
 		playerData:setValue({
 			player = player,
 			key = "Jump",
@@ -27,28 +27,23 @@ local function updateJumpPower(player, newJumpPower)
 	end
 end
 local function onPurchaseJumpIncrease(player)
-	local _condition = playerData:getValue({
+	-- Get current coin amount from unified playerData
+	local coinAmountResult = playerData:getValue({
 		player = player,
 		key = "Coins",
 	})
-	if _condition == nil then
-		_condition = 0
-	end
-	local coinAmount = _condition
+	local coinAmount = coinAmountResult.returnValue
 	if coinAmount < JUMP_COIN_COST then
 		return false
 	end
-	-- Increase player's jump power
-	local _condition_1 = playerData:getValue({
+	-- Increase player's jump power from unified playerData
+	local jumpPowerResult = playerData:getValue({
 		player = player,
 		key = "Jump",
 	})
-	if _condition_1 == nil then
-		_condition_1 = 0
-	end
-	local oldJumpPower = _condition_1
+	local oldJumpPower = jumpPowerResult.returnValue
 	updateJumpPower(player, oldJumpPower + JUMP_POWER_INCREMENT)
-	-- Update the coin table
+	-- Update the coin amount using unified playerData system
 	local newCoinAmount = coinAmount - JUMP_COIN_COST
 	playerData:setValue({
 		player = player,

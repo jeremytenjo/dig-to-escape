@@ -1,44 +1,39 @@
-import { createCollection, type CollectionOptions } from '@rbxts/lapis'
+import { createCollection } from '@rbxts/lapis'
 
-import type { PlayerDataSchema } from './playerData.schema.js'
+import type { PowersSchema } from './powers.schema.js'
+import { powersCollectionName } from './powers.config.js'
 
-const playerDataOptions: CollectionOptions<PlayerDataSchema> = {
+const playerDataCollection = createCollection<PowersSchema>(powersCollectionName, {
   defaultData: () => {
     return {
       Coins: 0,
       Jump: 0,
     }
   },
-}
-
-const playerDataCollection = createCollection('PlayerData', playerDataOptions)
-const loadedDocuments: { [index: string]: any } = {}
+})
 
 const Players = game.GetService('Players')
+const documents: { [index: string]: unknown } = {}
 
-// Load player data on join
 Players.PlayerAdded.Connect(async (player: Player) => {
   const userId = tostring(player.UserId)
-
   try {
     const document = await playerDataCollection.load(userId, [player.UserId])
-    loadedDocuments[userId] = document
+    documents[userId] = document
   } catch (error) {
     warn(`Failed to load data for player ${userId}:`, error)
   }
 })
 
-// Save and cleanup on player leave
 Players.PlayerRemoving.Connect(async (player: Player) => {
   const userId = tostring(player.UserId)
-  const document = loadedDocuments[userId]
+  const document = documents[userId]
 
   if (document) {
     try {
-      await document.close()
+      documents[userId] = undefined
     } catch (error) {
       warn(`Failed to close document for player ${userId}:`, error)
     }
-    loadedDocuments[userId] = undefined
   }
 })

@@ -1,7 +1,7 @@
 import { Players } from '@rbxts/services'
 
 import getInstance from '../../ReplicatedStorage/utils/getInstance/getInstance.js'
-import playerData from '../_datastores/playerData/playerData.server.js'
+import playerData from '../_datastores/playerData/playerData.module.js'
 
 const coinsFolder = getInstance<Folder>({
   instancePath: 'Workspace/World/Coins',
@@ -14,7 +14,7 @@ function onCoinTouched(coin: BasePart, otherPart: Instance): void {
     const player = Players.GetPlayerFromCharacter(character)
 
     if (player) {
-      // Player touched a coin
+      // Player touched a coin - increment coins using unified playerData system
       coin.Transparency = 1
       coin.SetAttribute('Enabled', false)
 
@@ -39,7 +39,7 @@ for (const coin of coins) {
 }
 
 function onPlayerAdded(player: Player): void {
-  // Reset player coins to 0
+  // Reset player coins to 0 when joining
   playerData.resetValue({
     player,
     key: 'Coins',
@@ -48,10 +48,9 @@ function onPlayerAdded(player: Player): void {
   player.CharacterAdded.Connect((character) => {
     // WaitForChild would stop the player loop, so below should be done in a separate thread
     task.spawn(() => {
-      // When a player dies
+      // When a player dies, reset coins
       const humanoid = character.WaitForChild('Humanoid') as Humanoid
       humanoid.Died.Connect(() => {
-        // Reset player coins to 0
         playerData.resetValue({
           player,
           key: 'Coins',
@@ -67,6 +66,7 @@ for (const player of Players.GetPlayers()) {
 }
 
 function onPlayerRemoved(player: Player): void {
+  // Cleanup when player leaves - data persists via lapis
   playerData.resetValue({
     player,
     key: 'Coins',

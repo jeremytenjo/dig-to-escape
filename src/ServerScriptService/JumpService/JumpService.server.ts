@@ -2,7 +2,7 @@ import { Players } from '@rbxts/services'
 
 import leaderboard from '../../ServerStorage/leaderboard/leaderboard.js'
 import { increaseJumpPowerRemoteFunction } from '../../ReplicatedStorage/remoteFunctions/increaseJumpPowerRemoteFunction/increaseJumpPowerRemoteFunction.js'
-import playerData from '../_datastores/playerData/playerData.server.js'
+import playerData from '../_datastores/playerData/playerData.module.js'
 
 const JUMP_POWER_INCREMENT = 30
 const JUMP_COIN_COST = 5
@@ -14,7 +14,7 @@ function updateJumpPower(player: Player, newJumpPower: number): void {
   if (humanoid) {
     ;(humanoid as Humanoid).JumpPower = newJumpPower
 
-    // Update the jump power data
+    // Update the jump power data using unified playerData system
     playerData.setValue({
       player,
       key: 'Jump',
@@ -31,26 +31,27 @@ function updateJumpPower(player: Player, newJumpPower: number): void {
 }
 
 function onPurchaseJumpIncrease(player: Player): boolean {
-  const coinAmount =
-    playerData.getValue({
-      player,
-      key: 'Coins',
-    }) ?? 0
+  // Get current coin amount from unified playerData
+  const coinAmountResult = playerData.getValue({
+    player,
+    key: 'Coins',
+  })
+  const coinAmount = coinAmountResult.returnValue as number
 
   if (coinAmount < JUMP_COIN_COST) {
     return false
   }
 
-  // Increase player's jump power
-  const oldJumpPower =
-    playerData.getValue({
-      player,
-      key: 'Jump',
-    }) ?? 0
+  // Increase player's jump power from unified playerData
+  const jumpPowerResult = playerData.getValue({
+    player,
+    key: 'Jump',
+  })
+  const oldJumpPower = jumpPowerResult.returnValue as number
 
   updateJumpPower(player, oldJumpPower + JUMP_POWER_INCREMENT)
 
-  // Update the coin table
+  // Update the coin amount using unified playerData system
   const newCoinAmount = coinAmount - JUMP_COIN_COST
 
   playerData.setValue({
