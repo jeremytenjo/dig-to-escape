@@ -18,11 +18,18 @@ const documents: { [index: string]: Document<PowersSchema, true> } = {}
 
 Players.PlayerAdded.Connect(async (player: Player) => {
   const userId = tostring(player.UserId)
+
   try {
     const document = await playerDataCollection.load(userId, [player.UserId])
+
+    if (player.Parent === undefined) {
+      await document.close()
+      return
+    }
+
     documents[userId] = document
   } catch (error) {
-    warn(`Failed to load data for player ${userId}:`, error)
+    warn(`Failed to load ${powersCollectionName} data for player ${userId}:`, error)
   }
 })
 
@@ -33,8 +40,12 @@ Players.PlayerRemoving.Connect(async (player: Player) => {
   if (document) {
     try {
       delete documents[userId]
+      await document.close()
     } catch (error) {
-      warn(`Failed to close document for player ${userId}:`, error)
+      warn(
+        `Failed to close ${powersCollectionName} document for player ${userId}:`,
+        error,
+      )
     }
   }
 })

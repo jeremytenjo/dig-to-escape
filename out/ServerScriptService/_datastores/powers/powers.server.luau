@@ -14,12 +14,19 @@ local Players = game:GetService("Players")
 local documents = {}
 Players.PlayerAdded:Connect(TS.async(function(player)
 	local userId = tostring(player.UserId)
-	TS.try(function()
+	local _exitType, _returns = TS.try(function()
 		local document = TS.await(playerDataCollection:load(userId, { player.UserId }))
+		if player.Parent == nil then
+			TS.await(document:close())
+			return TS.TRY_RETURN, {}
+		end
 		documents[userId] = document
 	end, function(error)
-		warn(`Failed to load data for player {userId}:`, error)
+		warn(`Failed to load {powersCollectionName} data for player {userId}:`, error)
 	end)
+	if _exitType then
+		return unpack(_returns)
+	end
 end))
 Players.PlayerRemoving:Connect(TS.async(function(player)
 	local userId = tostring(player.UserId)
@@ -27,8 +34,9 @@ Players.PlayerRemoving:Connect(TS.async(function(player)
 	if document then
 		TS.try(function()
 			documents[userId] = nil
+			TS.await(document:close())
 		end, function(error)
-			warn(`Failed to close document for player {userId}:`, error)
+			warn(`Failed to close {powersCollectionName} document for player {userId}:`, error)
 		end)
 	end
 end))
