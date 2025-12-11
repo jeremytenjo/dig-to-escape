@@ -12,7 +12,7 @@ const playerDataOptions: CollectionOptions<PlayerDataSchema> = {
 }
 
 const playerDataCollection = createCollection('PlayerData', playerDataOptions)
-export const loadedDocuments: { [index: string]: any } = {}
+const loadedDocuments: { [index: string]: any } = {}
 
 const Players = game.GetService('Players')
 

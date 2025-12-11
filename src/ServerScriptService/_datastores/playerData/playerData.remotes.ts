@@ -2,14 +2,9 @@ import { createRemoteFunction } from '@rbxts/lapis'
 
 import leaderboard from '../../../ServerStorage/leaderboard/leaderboard.js'
 
-import {
-  loadedDocuments,
-  type GetValueProps,
-  type UpdateValueProps,
-  type ResetValueProps,
-  type SetValueProps,
-} from './playerData.server.js'
 import type { PlayerDataKey } from './playerData.schema.js'
+
+const loadedDocuments: { [index: string]: any } = {}
 
 const playerData = {
   getValue(props: GetValueProps) {
