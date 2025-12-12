@@ -9,9 +9,8 @@ import eslintPluginRequireJsExtension from 'eslint-plugin-require-js-extension'
 import prettierConfig from './devtools/prettier/prettier.config.js'
 
 export default defineConfig([
-  eslintPluginPrettierRecommended,
-
   // Global settings
+  eslintPluginPrettierRecommended,
   {
     ignores: ['/out'],
   },
