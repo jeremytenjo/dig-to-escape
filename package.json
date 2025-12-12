@@ -5,8 +5,8 @@
     "dev": "rbxtsc --watch & rojo serve",
     "build": "rbxtsc && rojo build -o build.rbxlx",
     "prettify": "prettier --config ./devtools/prettier/prettier.config.js  --write . ",
-    "lint": "eslint .",
-    "lint:types": "tsgo --noEmit"
+    "tests:lint": "eslint .",
+    "tests:ts-types": "tsgo --noEmit"
   },
   "devDependencies": {
     "@rbxts/compiler-types": "3.0.0-types.0",
