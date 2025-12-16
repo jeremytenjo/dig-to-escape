@@ -29,5 +29,6 @@
     }
   },
   "eslint.run": "onType",
-  "eslint.format.enable": true
+  "eslint.format.enable": true,
+  "restartRobloxStudioSimulator.websocketPort": 3011
 }
