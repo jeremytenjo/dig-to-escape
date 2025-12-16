@@ -13,7 +13,7 @@ local function onCoinTouched(coin, otherPart)
 		local character = otherPart.Parent
 		local player = Players:GetPlayerFromCharacter(character)
 		if player then
-			-- Player touched a coin - increment coins using unified playerData system
+			-- Player touched a coin - increment coins using unified player Data system
 			coin.Transparency = 1
 			coin:SetAttribute("Enabled", false)
 			print("1")

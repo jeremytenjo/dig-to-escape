@@ -15,7 +15,7 @@ function onCoinTouched(coin: BasePart, otherPart: Instance): void {
     const player = Players.GetPlayerFromCharacter(character)
 
     if (player) {
-      // Player touched a coin - increment coins using unified playerData system
+      // Player touched a coin - increment coins using unified player Data system
       coin.Transparency = 1
       coin.SetAttribute('Enabled', false)
 
