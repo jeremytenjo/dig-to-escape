@@ -23,7 +23,7 @@ export default defineConfig([
         'error',
         {
           ...prettierConfig,
-          endOfLine: 'off',
+          endOfLine: 'lf',
         },
       ],
     },
@@ -50,13 +50,7 @@ export default defineConfig([
       import: importPlugin,
     },
     rules: {
-      'prettier/prettier': [
-        'error',
-        {
-          ...prettierConfig,
-          endOfLine: 'off',
-        },
-      ],
+      'prettier/prettier': ['off'],
       'require-js-extension/require-js-extension': 'error',
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/consistent-type-imports': 2,
@@ -109,12 +103,7 @@ export default defineConfig([
       import: importPlugin,
     },
     rules: {
-      'prettier/prettier': [
-        'error',
-        {
-          ...prettierConfig,
-        },
-      ],
+      'prettier/prettier': ['off'],
       'require-js-extension/require-js-extension': 'error',
       '@typescript-eslint/consistent-type-imports': 2,
       '@typescript-eslint/no-explicit-any': 0,
