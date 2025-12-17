@@ -6,8 +6,6 @@ import importPlugin from 'eslint-plugin-import'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import eslintPluginRequireJsExtension from 'eslint-plugin-require-js-extension'
 
-import prettierConfig from './devtools/prettier/prettier.config.js'
-
 export default defineConfig([
   // Global settings
   eslintPluginPrettierRecommended,
@@ -19,13 +17,7 @@ export default defineConfig([
   {
     files: ['eslint.config.js'],
     rules: {
-      'prettier/prettier': [
-        'error',
-        {
-          ...prettierConfig,
-          endOfLine: 'lf',
-        },
-      ],
+      'prettier/prettier': ['off'],
     },
   },
 
