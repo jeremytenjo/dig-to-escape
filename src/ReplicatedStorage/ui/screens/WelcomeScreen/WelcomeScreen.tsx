@@ -15,22 +15,6 @@ export default function WelcomeScreen(props: WelcomeScreenProps) {
       backgroundColor={Color3.fromRGB(100, 120, 140)}
       borderSizePixel={0}
     >
-      {/* Title Section */}
-      <Box
-        size={new UDim2(1, 0, 0.15, 0)}
-        backgroundColor={Color3.fromRGB(60, 60, 60)}
-        borderSizePixel={0}
-      >
-        <Text
-          text='DIG TO ESCAPE'
-          size={new UDim2(1, 0, 1, 0)}
-          backgroundTransparency={1}
-          color={Color3.fromRGB(255, 255, 255)}
-          textScaled={true}
-          font={Enum.Font.GothamBold}
-        />
-      </Box>
-
       {/* Story Cards Container */}
       <Box
         position={new UDim2(0.05, 0, 0.2, 0)}
