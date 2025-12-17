@@ -22,12 +22,12 @@ export default function WelcomeScreen(props: WelcomeScreenProps) {
         borderSizePixel={0}
       >
         <Text
-          Text='DIG TO ESCAPE'
-          Size={new UDim2(1, 0, 1, 0)}
-          BackgroundTransparency={1}
-          TextColor3={Color3.fromRGB(255, 255, 255)}
-          TextScaled={true}
-          Font={Enum.Font.GothamBold}
+          text='DIG TO ESCAPE'
+          size={new UDim2(1, 0, 1, 0)}
+          backgroundTransparency={1}
+          color={Color3.fromRGB(255, 255, 255)}
+          textScaled={true}
+          font={Enum.Font.GothamBold}
         />
       </Box>
 
@@ -94,23 +94,23 @@ function StoryCard(props: StoryCardProps) {
       borderColor={Color3.fromRGB(0, 0, 0)}
     >
       <Text
-        Text={props.title}
-        Size={new UDim2(1, 0, 0.4, 0)}
-        BackgroundTransparency={1}
-        TextColor3={Color3.fromRGB(255, 50, 50)}
-        TextScaled={true}
-        Font={Enum.Font.GothamBold}
-        TextWrapped={true}
+        text={props.title}
+        size={new UDim2(1, 0, 0.4, 0)}
+        backgroundTransparency={1}
+        color={Color3.fromRGB(255, 50, 50)}
+        textScaled={true}
+        font={Enum.Font.GothamBold}
+        textWrapped={true}
       />
       <Text
-        Text={props.description}
-        Position={new UDim2(0, 0, 0.4, 0)}
-        Size={new UDim2(1, 0, 0.6, 0)}
-        BackgroundTransparency={1}
-        TextColor3={textColor}
-        TextScaled={true}
-        Font={Enum.Font.Gotham}
-        TextWrapped={true}
+        text={props.description}
+        position={new UDim2(0, 0, 0.4, 0)}
+        size={new UDim2(1, 0, 0.6, 0)}
+        backgroundTransparency={1}
+        color={textColor}
+        textScaled={true}
+        font={Enum.Font.Gotham}
+        textWrapped={true}
       />
     </Box>
   )
