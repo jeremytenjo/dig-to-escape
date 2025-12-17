@@ -8,12 +8,16 @@ const story = CreateReactStory(
   {
     react: React,
     reactRoblox: ReactRoblox,
-    controls: {
-      name: 'WelcomeScreen',
-    },
+    controls: {},
   },
-  (props) => {
-    return <WelcomeScreen {...props.controls} />
+  () => {
+    return (
+      <WelcomeScreen
+        onPlayClick={() => {
+          print('asdfa')
+        }}
+      />
+    )
   },
 )
 
