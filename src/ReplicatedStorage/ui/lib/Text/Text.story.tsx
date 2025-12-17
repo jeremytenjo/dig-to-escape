@@ -9,7 +9,7 @@ const story = CreateReactStory(
     react: React,
     reactRoblox: ReactRoblox,
     controls: {
-      name: 'hello',
+      text: 'hello',
     },
   },
   (props) => {
