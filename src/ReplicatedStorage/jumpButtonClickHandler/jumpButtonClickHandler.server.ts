@@ -1,6 +1,6 @@
 import { increaseJumpPowerRemoteFunction } from '../remoteFunctions/increaseJumpPowerRemoteFunction/increaseJumpPowerRemoteFunction.js'
-import Button from '../gui/lib/Button/Button.js'
-import mountScreenGuiComponent from '../gui/utils/mountScreenGuiComponent/mountScreenGuiComponent.js'
+import Button from '../ui/lib/Button/Button.js'
+import mountScreenGuiComponent from '../ui/utils/mountScreenGuiComponent/mountScreenGuiComponent.js'
 
 async function onButtonClicked() {
   try {
