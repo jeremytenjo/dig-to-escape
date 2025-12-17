@@ -1,21 +1,24 @@
 import React from '@rbxts/react'
 
+import Button from '../../lib/Button/Button.js'
+import Box from '../../lib/Box/Box.js'
+
 export type WelcomeScreenProps = {
   onPlayClick?: () => void
 }
 
 export default function WelcomeScreen(props: WelcomeScreenProps) {
   return (
-    <frame
-      Size={new UDim2(1, 0, 1, 0)}
-      BackgroundColor3={Color3.fromRGB(100, 120, 140)}
-      BorderSizePixel={0}
+    <Box
+      size={new UDim2(1, 0, 1, 0)}
+      backgroundColor={Color3.fromRGB(100, 120, 140)}
+      borderSizePixel={0}
     >
       {/* Title Section */}
-      <frame
-        Size={new UDim2(1, 0, 0.15, 0)}
-        BackgroundColor3={Color3.fromRGB(60, 60, 60)}
-        BorderSizePixel={0}
+      <Box
+        size={new UDim2(1, 0, 0.15, 0)}
+        backgroundColor={Color3.fromRGB(60, 60, 60)}
+        borderSizePixel={0}
       >
         <textlabel
           Text='DIG TO ESCAPE'
@@ -25,13 +28,14 @@ export default function WelcomeScreen(props: WelcomeScreenProps) {
           TextScaled={true}
           Font={Enum.Font.GothamBold}
         />
-      </frame>
+      </Box>
+
       {/* Story Cards Container */}
-      <frame
-        Position={new UDim2(0.05, 0, 0.2, 0)}
-        Size={new UDim2(0.9, 0, 0.55, 0)}
-        BackgroundTransparency={1}
-        BorderSizePixel={0}
+      <Box
+        position={new UDim2(0.05, 0, 0.2, 0)}
+        size={new UDim2(0.9, 0, 0.55, 0)}
+        backgroundTransparency={1}
+        borderSizePixel={0}
       >
         <uilistlayout
           FillDirection={Enum.FillDirection.Horizontal}
@@ -57,25 +61,16 @@ export default function WelcomeScreen(props: WelcomeScreenProps) {
           description='But be careful, the EVIL GUARD patrols at night 😢'
           backgroundColor={Color3.fromRGB(30, 30, 60)}
         />
-      </frame>
+      </Box>
+
       {/* Play Button */}
-      <textbutton
-        Position={new UDim2(0.35, 0, 0.8, 0)}
-        Size={new UDim2(0.3, 0, 0.12, 0)}
-        BackgroundColor3={Color3.fromRGB(0, 255, 0)}
-        BorderSizePixel={2}
-        BorderColor3={Color3.fromRGB(0, 200, 0)}
-        Text='PLAY'
-        TextScaled={true}
-        Font={Enum.Font.GothamBold}
-        TextColor3={Color3.fromRGB(255, 255, 255)}
-        Event={{
-          Activated: () => {
-            return props.onPlayClick?.()
-          },
-        }}
+      <Button
+        text='Play'
+        position={new UDim2(0.5, 0, 0.85, 0)}
+        anchorPoint={new Vector2(0.5, 0.5)}
+        onClick={props.onPlayClick}
       />
-    </frame>
+    </Box>
   )
 }
 
@@ -91,11 +86,11 @@ function StoryCard(props: StoryCardProps) {
   const bgColor = props.backgroundColor ?? Color3.fromRGB(50, 50, 50)
 
   return (
-    <frame
-      Size={new UDim2(0.28, 0, 1, 0)}
-      BackgroundColor3={bgColor}
-      BorderSizePixel={2}
-      BorderColor3={Color3.fromRGB(0, 0, 0)}
+    <Box
+      size={new UDim2(0.28, 0, 1, 0)}
+      backgroundColor={bgColor}
+      borderSizePixel={2}
+      borderColor={Color3.fromRGB(0, 0, 0)}
     >
       <textlabel
         Text={props.title}
@@ -116,6 +111,6 @@ function StoryCard(props: StoryCardProps) {
         Font={Enum.Font.Gotham}
         TextWrapped={true}
       />
-    </frame>
+    </Box>
   )
 }
