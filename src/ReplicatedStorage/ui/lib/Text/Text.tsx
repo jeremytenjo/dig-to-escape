@@ -4,7 +4,7 @@ export type TextProps = {
   text: string
   size?: UDim2
   backgroundTransparency?: number
-  textColor3?: Color3
+  color?: Color3
   textScaled?: boolean
   font?: Enum.Font
 }
@@ -15,7 +15,7 @@ export default function Text(props: TextProps) {
       Text={props.text}
       Size={props.size}
       BackgroundTransparency={props.backgroundTransparency}
-      TextColor3={props.textColor3}
+      TextColor3={props.color}
       TextScaled={props.textScaled}
       Font={props.font}
     />
