@@ -8,6 +8,12 @@ export type BoxProps = {
   borderSizePixel?: number
   borderColor?: Color3
   backgroundTransparency?: number
+  layout?: {
+    fillDirection?: Enum.FillDirection
+    padding?: UDim
+    horizontalAlignment?: Enum.HorizontalAlignment
+    verticalAlignment?: Enum.VerticalAlignment
+  }
 }
 
 export default function Box(props: BoxProps) {
@@ -20,6 +26,15 @@ export default function Box(props: BoxProps) {
       Position={props.position}
       BackgroundTransparency={props.backgroundTransparency}
     >
+      {props.layout && (
+        <uilistlayout
+          FillDirection={props.layout.fillDirection}
+          Padding={props.layout.padding}
+          HorizontalAlignment={props.layout.horizontalAlignment}
+          VerticalAlignment={props.layout.verticalAlignment}
+        />
+      )}
+
       {props.children}
     </frame>
   )

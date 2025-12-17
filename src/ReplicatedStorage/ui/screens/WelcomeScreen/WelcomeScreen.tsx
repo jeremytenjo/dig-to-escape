@@ -21,14 +21,13 @@ export default function WelcomeScreen(props: WelcomeScreenProps) {
         size={new UDim2(0.9, 0, 0.55, 0)}
         backgroundTransparency={1}
         borderSizePixel={0}
+        layout={{
+          fillDirection: Enum.FillDirection.Horizontal,
+          padding: new UDim(0.02, 0),
+          horizontalAlignment: Enum.HorizontalAlignment.Center,
+          verticalAlignment: Enum.VerticalAlignment.Center,
+        }}
       >
-        <uilistlayout
-          FillDirection={Enum.FillDirection.Horizontal}
-          Padding={new UDim(0.02, 0)}
-          HorizontalAlignment={Enum.HorizontalAlignment.Center}
-          VerticalAlignment={Enum.VerticalAlignment.Center}
-        />
-
         <StoryCard
           title='ARRESTED'
           description="You got ARRESTED. Now you're stuck in prison forever 😢"
