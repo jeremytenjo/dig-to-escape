@@ -2,6 +2,7 @@ import React from '@rbxts/react'
 
 import Button from '../../lib/Button/Button.js'
 import Box from '../../lib/Box/Box.js'
+import Text from '../../lib/Text/Text.js'
 
 export type WelcomeScreenProps = {
   onPlayClick?: () => void
@@ -20,7 +21,7 @@ export default function WelcomeScreen(props: WelcomeScreenProps) {
         backgroundColor={Color3.fromRGB(60, 60, 60)}
         borderSizePixel={0}
       >
-        <textlabel
+        <Text
           Text='DIG TO ESCAPE'
           Size={new UDim2(1, 0, 1, 0)}
           BackgroundTransparency={1}
@@ -92,7 +93,7 @@ function StoryCard(props: StoryCardProps) {
       borderSizePixel={2}
       borderColor={Color3.fromRGB(0, 0, 0)}
     >
-      <textlabel
+      <Text
         Text={props.title}
         Size={new UDim2(1, 0, 0.4, 0)}
         BackgroundTransparency={1}
@@ -101,7 +102,7 @@ function StoryCard(props: StoryCardProps) {
         Font={Enum.Font.GothamBold}
         TextWrapped={true}
       />
-      <textlabel
+      <Text
         Text={props.description}
         Position={new UDim2(0, 0, 0.4, 0)}
         Size={new UDim2(1, 0, 0.6, 0)}
