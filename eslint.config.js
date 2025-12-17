@@ -23,6 +23,7 @@ export default defineConfig([
         'error',
         {
           ...prettierConfig,
+          endOfLine: 'off',
         },
       ],
     },
@@ -53,6 +54,7 @@ export default defineConfig([
         'error',
         {
           ...prettierConfig,
+          endOfLine: 'off',
         },
       ],
       'require-js-extension/require-js-extension': 'error',
