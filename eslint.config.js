@@ -6,6 +6,17 @@ import importPlugin from 'eslint-plugin-import'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import eslintPluginRequireJsExtension from 'eslint-plugin-require-js-extension'
 
+import prettierConfig from './devtools/prettier/prettier.config.js'
+
+const prettierEslintConfig = {
+  'prettier/prettier': [
+    'error',
+    {
+      ...prettierConfig,
+    },
+  ],
+}
+
 export default defineConfig([
   // Global settings
   eslintPluginPrettierRecommended,
@@ -17,7 +28,7 @@ export default defineConfig([
   {
     files: ['eslint.config.js'],
     rules: {
-      'prettier/prettier': ['off'],
+      ...prettierEslintConfig,
     },
   },
 
@@ -42,7 +53,7 @@ export default defineConfig([
       import: importPlugin,
     },
     rules: {
-      'prettier/prettier': ['off'],
+      ...prettierEslintConfig,
       'require-js-extension/require-js-extension': 'error',
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/consistent-type-imports': 2,
@@ -95,7 +106,7 @@ export default defineConfig([
       import: importPlugin,
     },
     rules: {
-      'prettier/prettier': ['off'],
+      ...prettierEslintConfig,
       'require-js-extension/require-js-extension': 'error',
       '@typescript-eslint/consistent-type-imports': 2,
       '@typescript-eslint/no-explicit-any': 0,
